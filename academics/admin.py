@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Attendance, Homework, HomeworkSubmission
+from .models import Attendance, Homework, HomeworkSubmission, LessonSchedule
 
 
 @admin.register(Attendance)
@@ -48,3 +48,6 @@ class HomeworkSubmissionAdmin(admin.ModelAdmin):
     def student_name(self, obj):
         return obj.student.user.get_full_name()
     student_name.short_description = 'Student'
+
+
+admin.site.register(LessonSchedule)

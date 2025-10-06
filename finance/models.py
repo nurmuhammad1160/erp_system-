@@ -26,6 +26,8 @@ class Payment(TimestampedModel):
     approved_by = models.ForeignKey('accounts.AdminProfile', on_delete=models.SET_NULL, null=True, blank=True, related_name='approved_payments')
     note = models.TextField(blank=True)
     status = models.CharField(max_length=30, choices=PaymentStatus.choices, default=PaymentStatus.PENDING)
+    course = models.ForeignKey('courses.Course', on_delete=models.SET_NULL, null=True, blank=True)
+    group = models.ForeignKey('courses.Group', on_delete=models.SET_NULL, null=True, blank=True) 
 
     class Meta:
         ordering = ['-payment_date']

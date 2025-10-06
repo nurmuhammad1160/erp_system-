@@ -117,6 +117,7 @@ class StudentProfile(models.Model):
     join_date = models.DateField(default=timezone.now)
     balance = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='active')
+    avatar = models.ImageField(upload_to='student_profile/avatars', null=True, blank=True, default='student_profile/default.jpg')
 
 
     def __str__(self):

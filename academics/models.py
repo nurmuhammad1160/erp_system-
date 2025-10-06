@@ -4,6 +4,7 @@ from django.utils import timezone
 from core.models import TimestampedModel
 
 
+
 class AttendanceStatus(models.TextChoices):
     PRESENT = 'present', 'Present'
     ABSENT = 'absent', 'Absent'

@@ -9,6 +9,8 @@ from core.models import TimestampedModel, Branch
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from courses.models import GroupStatus
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -108,7 +110,7 @@ class StudentProfile(models.Model):
         ('finished', 'Finished'),
         ('blocked', 'Blocked'),
     )
-
+    group = models.ForeignKey('courses.Group', on_delete=models.SET_NULL, null=True, blank=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='student_profile')
     parent_name = models.CharField(max_length=200, blank=True)
     parent_phone = models.CharField(max_length=30, blank=True)

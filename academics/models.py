@@ -57,3 +57,15 @@ class HomeworkSubmission(TimestampedModel):
 
     def __str__(self):
         return f"Submission by {self.student.user.get_full_name()} for {self.homework.title}"
+
+
+
+class LessonSchedule(TimestampedModel):
+    group = models.ForeignKey('courses.Group', on_delete=models.CASCADE, related_name='schedules')
+    day_of_week = models.PositiveSmallIntegerField(choices=[(1, 'Dushanba-Chorshanba-Juma'), (2, 'Seshanba-Payshanba-Shanba'), (3, 'Dushanba-Juma'), (4, 'Dushanba-Shanba')])
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    room = models.CharField(max_length=50, blank=True, null=True) 
+
+    def __str__(self):
+        return f"{self.get_day_of_week_display()} - {self.start_time} - {self.end_time}"

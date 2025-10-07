@@ -1,0 +1,26 @@
+{% extends "base_student.html" % }
+
+
+
+{% block content %}
+<h2>Your Grades</h2>
+<table>
+  <tr>
+    <th>Course</th>
+    <th>Homework</th>
+    <th>Score</th>
+  </tr>
+  {% for sub in submissions %}
+  <tr>
+    <td>{{ sub.homework.course.name }}</td>
+    <td>{{ sub.homework.title }}</td>
+    <td>{{ sub.score }}</td>
+  </tr>
+  {% empty %}
+  <tr>
+    <td colspan="3">No grades yet.</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock content %}

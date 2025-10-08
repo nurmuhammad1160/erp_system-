@@ -1,147 +1,53 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="container">
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f7f9fc;
-      color: #333;
-    }
+<h2>Welcome, {{ student.user.get_full_name|default:student.user.username }}</h2>
 
-    h2 {
-      margin-top: 40px;
-      margin-bottom: 15px;
-      color: #2c3e50;
-      border-left: 5px solid #3498db;
-      padding-left: 10px;
-    }
+<section>
+    <h3>Your Groups</h3>
+    <ul>
+        {% for group in groups %}
+            <li>{{ group.name }} ({{ group.course.name }})</li>
+        {% empty %}
+            <li>No groups assigned.</li>
+        {% endfor %}
+    </ul>
+</section>
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 40px;
-      background: white;
-      box-shadow: 0 0 6px rgba(0,0,0,0.1);
-      border-radius: 6px;
-      overflow: hidden;
-    }
+<section>
+    <h3>Your Courses</h3>
+    <ul>
+        {% for course in courses %}
+            <li>{{ course.name }}</li>
+        {% empty %}
+            <li>No courses found.</li>
+        {% endfor %}
+    </ul>
+</section>
 
-    th, td {
-      padding: 12px 15px;
-      border: 1px solid #e0e0e0;
-      text-align: left;
-    }
+<section>
+    <h3>Upcoming Lessons</h3>
+    <ul>
+        {% for schedule in schedules %}
+            <li>{{ schedule.date }} - {{ schedule.topic }}</li>
+        {% empty %}
+            <li>No lessons scheduled.</li>
+        {% endfor %}
+    </ul>
+</section>
 
-    th {
-      background-color: #34495e;
-      color: white;
-      text-transform: uppercase;
-      font-size: 0.85em;
-      letter-spacing: 0.5px;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    .homework-desc {
-      display: none;
-      font-size: 0.9em;
-      color: #555;
-      margin-top: 5px;
-    }
-
-    .btn-toggle {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      cursor: pointer;
-      border-radius: 4px;
-      font-size: 0.85em;
-      transition: background 0.3s;
-    }
-
-    .btn-toggle:hover {
-      background: #2980b9;
-    }
-  </style>
-
-  <h2>{{ student.first_name }}</h2>
-
-  <!-- Groups Table -->
-  <h2 id="groups">Groups You Have</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Group Name</th>
-        <th>Courses</th>
-        <th>Created At</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for gr in student_groups %}
-      <tr>
-        <td>{{ gr.name }}</td>
-        <td>{{ gr.course }}</td>
-        <td>{{ gr.created_at|date:"Y-m-d" }}</td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="3">No groups assigned.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <!-- Homework Table -->
-  <h2 id="homework">Homework</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Deadline</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for hw in homeworks %}
-      <tr>
-        <td>{{ hw.title }}</td>
-        <td>
-          <span class="homework-short">{{ hw.description|truncatewords:10 }}</span>
-          <div class="homework-desc">{{ hw.description }}</div>
-        </td>
-        <td>{{ hw.deadline }}</td>
-        <td>
-
-          <a href="{% url 'student_homework' hw.id %}" class="btn-toggle">Go</a>
-
-        </td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="4">No homework assigned.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-
-<script>
-  function toggleDescription(btn) {
-    const desc = btn.closest('tr').querySelector('.homework-desc');
-    if (desc.style.display === 'block') {
-      desc.style.display = 'none';
-      btn.textContent = 'Show More';
-    } else {
-      desc.style.display = 'block';
-      btn.textContent = 'Show Less';
-    }
-  }
-</script>
-{% endblock content %}
+<section>
+    <h3>Homeworks</h3>
+    <ul>
+        {% for hw in homeworks %}
+            <li>
+                <a href="{% url 'student:homework' hw.pk %}">{{ hw.title }}</a>
+                (Deadline: {{ hw.deadline|date:"M d, Y H:i" }})
+            </li>
+        {% empty %}
+            <li>No homeworks assigned.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

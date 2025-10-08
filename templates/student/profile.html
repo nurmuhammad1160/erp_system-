@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
 
-</body>
-</html>
+{% block content %}
+<h2>My Profile</h2>
+
+<div>
+    {% if student.avatar %}
+        <img src="{{ student.avatar.url }}" alt="Avatar" style="width:120px;height:120px;border-radius:50%;">
+    {% else %}
+        <img src="{% static 'student_profile/default.jpg' %}" alt="Default Avatar" style="width:120px;height:120px;border-radius:50%;">
+    {% endif %}
+</div>
+
+<p><strong>Username:</strong> {{ user.username }}</p>
+<p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+<p><strong>Parent Name:</strong> {{ student.parent_name }}</p>
+<p><strong>Parent Phone:</strong> {{ student.parent_phone }}</p>
+<p><strong>Status:</strong> {{ student.get_status_display }}</p>
+<p><strong>Balance:</strong> ${{ student.balance }}</p>
+
+<a href="#">Edit Profile</a>
+{% endblock %}

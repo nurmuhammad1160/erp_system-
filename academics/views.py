@@ -1,69 +1,67 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
 from .models import Homework, HomeworkSubmission
 from courses.models import Course, Group
 from accounts.models import StudentProfile
-from django.shortcuts import get_object_or_404
-# Create your views here.
+from .models import LessonSchedule
+from django.contrib.auth.models import User
 
-# ============STUDENT=UCHUN=VIEWLAR================================================
 
-def courseslist(request):
-    """this function will return a list of all courses and groups for the student"""
-    student = get_object_or_404(StudentProfile, user=request.user)
-    groups = Group.objects.filter(students = request.user)
-    courses = Course.objects.filter(groups = groups)
 
-    context = {
-        'courses': courses,
-        'groups': groups,
-    }
-    return render(request, 'student/courses.html', context)
+# =======================================================================================
+# ==============================STUDENT=VIEWS=START======================================
+# =======================================================================================
 
 
 def dashboard(request):
-    """this function will return the dashboard of the student. contains the iformtion of the student"""
-    student = StudentProfile.objects.get(user=request.user)
-    homeworks = Homework.objects.filter(group=student.group).order_by('-id')
-    student_groups = Group.objects.filter(students=student)
+    """dashboard of the student acts like a homepage for a student
+       gives all the information related to student """
+    student = get_object_or_404(StudentProfile, user=request.user)
 
+    groups = student.groups.all()
+    courses = Course.objects.filter(groups__students=student).distinct()
+    homeworks = Homework.objects.filter(group__students=student).distinct()
+    schedules = LessonSchedule.objects.filter(group__students=student).distinct()
     context = {
         'homeworks': homeworks,
-        'student_groups': student_groups,
-        'student': student,
+        'courses': courses,
+        'students': student,
+        'groups': groups,
+        'schedules': schedules,
     }
 
     return render(request, 'student/dashboard.html', context)
 
 
+def courses(request):
+    """a list of courses that student have"""
+    student = get_object_or_404(StudentProfile, user=request.user)
+    courses = Course.objects.filter(groups__students=student).distinct()
+    context = {
+        'courses': courses,
+        }
+    return render(request, 'student/courses.html', context)
+
+
 def grades(request):
-
-
-    """Render the grades page for a student"""
-
-    student = StudentProfile.objects.get(user=request.user)
-    homeworksubmissions = HomeworkSubmission.objects.filter(student=student) #grades are included
-
-    # Student courses
-    groups = Group.objects.filter(students=request.user)
-    courses = Course.objects.filter(groups=groups)
-    homeworks = Homework.objects.filter(group=student.group).order_by('-id')
+    """returnes a homeworks student uploaded with every field included scores"""
+    student = get_object_or_404(StudentProfile, user=request.user)
+    courses = Course.objects.filter(groups__students=student).distinct()
+    homeworksubs = HomeworkSubmission.objects.filter(group__students=student).distinct()
 
     context = {
-        'courses': courses,  # student’s courses
-        'submissions': homeworksubmissions,  # contains .score and .homework
-        'homeworks': homeworks,
+        'courses': courses,
+        'homeworksubs': homeworksubs, #contains grades in scores field
+
     }
 
-    return render(request, 'student/grades.html', context)
 
-
-def student_homework(request, pk):
+def homework(request, pk):
     """this function  is used to show the selected homework and upload the homework with file.
-    checks the homework wether done or note and sends corresponding responce"""
+       checks the homework wether done or note and sends corresponding responce"""
     student = get_object_or_404(StudentProfile, user=request.user)
     homework = get_object_or_404(Homework, pk=pk)
 
-    # Check if already submitted
     existing_submission = HomeworkSubmission.objects.filter(
         homework=homework,
         student=student
@@ -85,19 +83,20 @@ def student_homework(request, pk):
     return render(request, 'student/homework.html', context)
 
 
-def student_profile(request):
-    """Student can edit and see its own profile information."""
-    student = StudentProfile.objects.get(user=request.user)
+def profile(request):
+    """this function is used to show the student profile page and can edit partialy or fully"""
+    student = get_object_or_404(StudentProfile, user=request.user)
+    additional_info = User.objects.get(student_profile=student)
     context = {
-        'student': student.user,
-
-            }
-    return render(request, 'student/student_page.html', context)
-
-
-# ============STUDENT=UCHUN=VIEWLAR================================================
+        'student': student,
+        'additional_info': additional_info,
+    }
+    return render(request, 'student/profile.html', context)
 
 
+# =======================================================================================
+# ==============================STUDENT=VIEWS=END========================================
+# =======================================================================================
 
 
 

@@ -1,3 +1,7 @@
 Django==5.2.5
 pillow==11.3.0
+<<<<<<< HEAD
 "student uchun views yoildi jumladan: courselist, dashboard, grades, student_homework, student_profile"
+=======
+django-widget-tweaks
+>>>>>>> a29fb977a5829ec732df702013b2b1fca7ed585a

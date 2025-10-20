@@ -8,9 +8,12 @@
 </head>
 <body>
     <header>
-        <h1>College ERP - Student Portal</h1>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <button class="mobile-nav-toggle" aria-label="Toggle navigation" id="navToggle">☰</button>
+            <h1 style="margin:0;">College ERP - Student Portal</h1>
+        </div>
         <nav>
-            <ul>
+            <ul id="mainNav">
                 <li><a href="{% url 'student:dashboard' %}">Dashboard</a></li>
                 <li><a href="{% url 'student:courses' %}">Courses</a></li>
                 <li><a href="{% url 'student:grades' %}">Grades</a></li>
@@ -28,4 +31,15 @@
         <p>&copy; {{ year|default:2025 }} College ERP</p>
     </footer>
 </body>
+<script>
+    (function(){
+        var btn = document.getElementById('navToggle');
+        var nav = document.getElementById('mainNav');
+        if(btn && nav){
+            btn.addEventListener('click', function(){
+                nav.classList.toggle('open');
+            });
+        }
+    })();
+</script>
 </html>

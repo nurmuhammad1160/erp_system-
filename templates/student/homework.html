@@ -1,26 +1,42 @@
-{% extends 'base.html' %}
-{% block title %}Homework - {{ homework.title }}{% endblock %}
+{% extends 'student/base_student.html' %}
+{% block title %}{{ title|default:homework.title|default:'Homework' }}{% endblock %}
 
 {% block content %}
-<h2>{{ homework.title }}</h2>
-<p><strong>Description:</strong> {{ homework.description }}</p>
-<p><strong>Deadline:</strong> {{ homework.deadline|date:"M d, Y H:i" }}</p>
-<p><strong>Teacher:</strong> {{ homework.teacher.user.get_full_name }}</p>
+    <div class="card">
+        <h2>{{ title|default:homework.title|default:'Homework' }}</h2>
+        <p><strong>Description:</strong> {{ homework.description|linebreaksbr }}</p>
+        <p><strong>Deadline:</strong> {{ homework.deadline|date:"M d, Y H:i"|default:'-' }}</p>
+        <p><strong>Teacher:</strong>
+            {% if homework.teacher %}
+                {{ homework.teacher.user.get_full_name }}
+            {% else %}
+                -
+            {% endif %}
+        </p>
 
-{% if submission %}
-    <p><strong>Your Submission:</strong></p>
-    <p>{{ submission.text }}</p>
-    {% if submission.file %}
-        <p>File: <a href="{{ submission.file.url }}" target="_blank">Download</a></p>
-    {% endif %}
-{% else %}
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="file">Upload File:</label>
-        <input type="file" name="file" id="file"><br><br>
-        <label for="text">Notes:</label>
-        <textarea name="text" id="text"></textarea><br>
-        <button type="submit">Submit Homework</button>
-    </form>
-{% endif %}
+        {% if submission %}
+            <div class="submission">
+                <p><strong>Your Submission</strong></p>
+                <div class="submission-text">{{ submission.text|linebreaksbr }}</div>
+                {% if submission.file %}
+                    <p>File: <a href="{{ submission.file.url }}" target="_blank" rel="noopener">Download</a></p>
+                {% endif %}
+            </div>
+        {% else %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row">
+                    <label for="file">Upload File</label>
+                    <input type="file" name="file" id="file">
+                </div>
+                <div class="form-row">
+                    <label for="text">Notes</label>
+                    <textarea name="text" id="text" rows="4" class="full-width"></textarea>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="goto-btn">Submit Homework</button>
+                </div>
+            </form>
+        {% endif %}
+    </div>
 {% endblock %}

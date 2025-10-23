@@ -1,110 +1,90 @@
 {% extends 'student/base_student.html' %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}{{ title|default:'Dashboard' }}{% endblock %}
 
 {% block content %}
-<h2>Welcome, {{ student.user.first_name|default:student.user.username }}</h2>
+        <div class="dashboard-header">
+            <h2>{{ title|default:'Dashboard' }}</h2>
+           {% if student.user.get_full_name %}
+            <p class="muted">Welcome, {{ student.user.get_full_name|default:student.user.username }}</p>
+            {% else %}
+            <p class="muted">Welcome, User</p>
+            {% endif %}
+        </div>
 
-<div class="dashboard-tables">
+    <div class="dashboard-tables">
 
-    <section class="table-section">
-        <h3>Your Groups</h3>
-        <table class="classic-table">
-            <thead>
-                <tr>
-                    <th>Group</th>
-                    <th>Course</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for group in groups %}
-                <tr>
-                    <td data-label="Group">{{ group.name }}</td>
-                    <td data-label="Course">{{ group.course.title }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="2">No groups assigned.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+        <section class="table-section">
+            <h3>Your Groups</h3>
+            <table class="classic-table">
+                <thead>
+                    <tr><th>Group</th><th>Course</th></tr>
+                </thead>
+                <tbody>
+                    {% for group in groups %}
+                    <tr>
+                        <td data-label="Group">{{ group.name }}</td>
+                        <td data-label="Course">{{ group.course.title }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2">No groups assigned.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
 
-    <section class="table-section">
-        <h3>Your Courses</h3>
-        <table class="classic-table">
-            <thead>
-                <tr>
-                    <th>Course</th>
-                    <th>Level</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for course in courses %}
-                <tr>
-                    <td data-label="Course">{{ course.title }}</td>
-                    <td data-label="Level">{{ course.get_level_display }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="2">No courses found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+        <section class="table-section">
+            <h3>Your Courses</h3>
+            <table class="classic-table">
+                <thead>
+                    <tr><th>Course</th><th>Level</th></tr>
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                    <tr>
+                        <td data-label="Course">{{ course.title }}</td>
+                        <td data-label="Level">{{ course.get_level_display }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2">No courses found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
 
-    <section class="table-section">
-        <h3>Upcoming Lessons</h3>
-        <table class="classic-table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Room / Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for schedule in schedules %}
-                <tr>
-                    <td data-label="Date">{{ schedule.date|date:"M d, Y" }}</td>
-                    <td data-label="Time">{{ schedule.start_time }} - {{ schedule.end_time }}</td>
-                    <td data-label="Room / Notes">{{ schedule.room|default:'-' }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3">No lessons scheduled.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+    
 
-    <section class="table-section">
-        <h3>Homeworks</h3>
-        <table class="classic-table">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Course</th>
-                    <th>Deadline</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for hw in homeworks %}
-                <tr>
-                    <td data-label="Title"><a href="{% url 'student:homework' hw.pk %}">{{ hw.title }}</a></td>
-                    <td data-label="Group">{{ hw.group.course.title }}</td>
-                    <td data-label="Deadline">{{ hw.deadline|date:"M d, Y H:i" }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3">No homeworks assigned.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+        <section class="table-section">
+            <h3>Homeworks</h3>
+            <table class="classic-table">
+                <thead>
+                    <tr><th>Course</th><th>Title</th><th>Deadline</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    {% for hw in homeworks %}
+                    <tr>
+                        <td data-label="Course">{{ hw.group.course.title }}</td>
+                        <td data-label="Title"><a href="{% url 'student:homework' hw.pk %}">{{ hw.title }}</a></td>
+                        <td data-label="Deadline">{% if hw.deadline %}{{ hw.deadline|date:"M d, Y H:i" }}{% else %}&mdash;{% endif %}</td>
+                        <td data-label="Status">
+                            {% if hw.submission %}
+                                {% if hw.submission.score is not None %}
+                                    <span class="date">Graded</span> — <strong>{{ hw.submission.score }}%</strong>
+                                {% else %}
+                                    <span class="date">Submitted</span><br><small>{{ hw.submission.submitted_at|date:"M d, Y H:i" }}</small>
+                                {% endif %}
+                            {% else %}
+                                <span class="date">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td data-label="Actions"><a class="goto-btn" href="{% url 'student:homework' hw.pk %}">Open</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6">No homeworks assigned.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
 
-</div>
+    </div>
+
 {% endblock %}

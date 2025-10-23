@@ -1,13 +1,37 @@
-{% extends 'base.html' %}
-{% block title %}My Courses{% endblock %}
+{% extends 'student/base_student.html' %}
+{% block title %}{{ title|default:'My Courses' }}{% endblock %}
 
 {% block content %}
-<h2>My Courses</h2>
-<ul>
-    {% for course in courses %}
-        <li>{{ course.name }} - {{ course.description }}</li>
-    {% empty %}
-        <li>You are not enrolled in any courses.</li>
-    {% endfor %}
-</ul>
+  <div class="dashboard-header">
+    <h2>{{ title|default:'My Courses' }}</h2>
+  </div>
+
+  <section class="table-section">
+    <table class="classic-table">
+      <thead>
+        <tr>
+          <th>Course</th>
+          <th>Description</th>
+          <th>Level</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for course in courses %}
+        <tr>
+          <td data-label="Course">{{ course.title }}</td>
+            <td data-label="Description">{{ course.description }}</td>
+          <td data-label="Level">{{ course.get_level_display }}</td>
+          <td data-label="Price">{{ course.price }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">You are not enrolled in any courses.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+
+
+
 {% endblock %}

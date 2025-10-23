@@ -1,30 +1,64 @@
-{% extends 'base.html' %}
-{% block title %}Grades{% endblock %}
+{% extends 'student/base_student.html' %}
+{% block title %}{{ title|default:'Grades' }}{% endblock %}
 
 {% block content %}
-<h2>My Grades</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Homework</th>
-            <th>Course</th>
-            <th>Score</th>
-            <th>Submitted On</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for sub in homeworksubs %}
-        <tr>
-            <td>{{ sub.homework.title }}</td>
-            <td>{{ sub.homework.group.course.name }}</td>
-            <td>{{ sub.score|default:"Not graded yet" }}</td>
-            <td>{{ sub.created_at|date:"M d, Y H:i" }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">No homework submissions yet.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="dashboard-header"><h2>{{ title|default:'Grades' }}</h2></div>
+
+    {% if course_grades %}
+        <div class="grades-grid">
+            {% for cg in course_grades %}
+                <section class="card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+                        <div>
+                            <h3 style="margin:0">{% if cg.course %}{{ cg.course.title }}{% else %}General{% endif %}</h3>
+                            {% if cg.course %}
+                                <div class="date">{% if cg.course.level %}{{ cg.course.get_level_display|default:cg.course.level }}{% endif %}</div>
+                            {% endif %}
+                        </div>
+                        <div style="text-align:right">
+                                            {% if cg.average %}
+                                            <div style="font-size:18px;font-weight:700;color:#123">{{ cg.average }}%</div>
+                                            <div class="grade-bar-wrap" style="margin-top:6px">
+                                                <div class="grade-bar" style="width:{{ cg.average|default:0 }}%"></div>
+                                            </div>
+                            {% else %}
+                                <div class="date">No grades yet</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div style="margin-top:12px">
+                        <table class="classic-table" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Assignment</th>
+                                    <th>Submitted</th>
+                                    <th>Score</th>
+                                    <th>Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in cg.assignments %}
+                                    <tr>
+                                        <td data-label="Assignment">{{ a.title }}</td>
+                                        <td data-label="Submitted">{% if a.submitted_at %}{{ a.submitted_at|date:"M d, Y H:i" }}{% else %}&mdash;{% endif %}</td>
+                                        <td data-label="Score">{% if a.score is not None %}{{ a.score }}%{% else %}&mdash;{% endif %}</td>
+                                        <td data-label="Grade">{% if a.score is not None %}
+                                                {% if a.score >= 90 %}A{% elif a.score >= 80 %}B{% elif a.score >= 70 %}C{% elif a.score >= 60 %}D{% else %}F{% endif %}
+                                            {% else %}&mdash;{% endif %}
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr><td colspan="4">No assignments recorded.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No grades available yet. Check back after assignments are graded.</p>
+    {% endif %}
+
 {% endblock %}

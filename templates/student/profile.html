@@ -1,25 +1,59 @@
-{% extends 'base.html' %}
+{% extends 'student/base_student.html' %}
+{% block title %}{{ title|default:'Profile' }}{% endblock %}
 {% load static %}
-{% block title %}Profile{% endblock %}
-
 {% block content %}
-<h2>My Profile</h2>
+  <div class="dashboard-header"><h2>{{ title|default:'Profile' }}</h2></div>
 
-<div>
-    {% if student.avatar %}
-        <img src="{{ student.avatar.url }}" alt="Avatar" style="width:120px;height:120px;border-radius:50%;">
-    {% else %}
-        <img src="{% static 'student_profile/default.jpg' %}" alt="Default Avatar" style="width:120px;height:120px;border-radius:50%;">
-    {% endif %}
-</div>
+  <section class="profile-card">
+    <div class="profile-avatar">
+      {% if student.avatar %}
+        <img src="{{ student.avatar.url }}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+      {% else %}
+        <span>{{ user.first_name|default:user.username|slice:":1"|upper }}</span>
+      {% endif %}
+    </div>
 
-<p><strong>Username:</strong> {{ user.username }}</p>
-<p><strong>Full Name:</strong> {{ user.get_full_name }}</p>
-<p><strong>Email:</strong> {{ user.email }}</p>
-<p><strong>Parent Name:</strong> {{ student.parent_name }}</p>
-<p><strong>Parent Phone:</strong> {{ student.parent_phone }}</p>
-<p><strong>Status:</strong> {{ student.get_status_display }}</p>
-<p><strong>Balance:</strong> ${{ student.balance }}</p>
+    <div class="profile-info">
+      <div class="profile-row">
+        <div class="profile-label">Full name</div>
+        <div class="profile-value">{{ user.get_full_name|default:user.username }}</div>
+      </div>
 
-<a href="#">Edit Profile</a>
+      <div class="profile-row">
+        <div class="profile-label">Username</div>
+        <div class="profile-value">{{ user.username }}</div>
+      </div>
+
+      <div class="profile-row">
+        <div class="profile-label">Email</div>
+        <div class="profile-value">{{ user.email|default:'-' }}</div>
+      </div>
+
+      <div class="profile-row">
+        <div class="profile-label">Parent</div>
+        <div class="profile-value">{{ student.parent_name|default:'-' }}</div>
+      </div>
+
+      <div class="profile-row">
+        <div class="profile-label">Parent phone</div>
+        <div class="profile-value">{{ student.parent_phone|default:'-' }}</div>
+      </div>
+
+      <div class="profile-row">
+        <div class="profile-label">Status</div>
+        <div class="profile-value">{{ student.get_status_display|default:student.status|default:'-' }}</div>
+      </div>
+
+      <div class="profile-row">
+        <div class="profile-label">Balance</div>
+        <div class="profile-value">${{ student.balance|default:'0.00' }}</div>
+      </div>
+
+      <div class="profile-row">
+        <a class="edit-btn" href="{% url 'accounts:edit_profile' %}">Edit Profile</a>
+      </div>
+    </div>
+  </section>
+
+  
 {% endblock %}

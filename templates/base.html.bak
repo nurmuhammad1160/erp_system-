@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ERP Platform</title>
+  <style>
+    /* ===== RESET ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background:  #34495e;
+      color: #fff;
+      padding: 15px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #fff;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffd700;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      padding: 6px 30px 6px 10px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+    }
+
+    .search-box button {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #333;
+      cursor: pointer;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      background: #e6ecff;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .hero button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 30px;
+      background: #2b4eff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .hero button:hover {
+      background: #1f37b6;
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    main {
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: #2b4eff;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background:  #34495e;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #ffd700;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="logo">StudyZone</div>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Courses</a></li>
+        <li><a href="#">Quizzes</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </nav>
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Search...">
+      <button onclick="searchContent()">🔍</button>
+    </div>
+  </header>
+
+
+
+<!--  ===== Block Content ======-->
+
+  {% block content %}
+  {% endblock content %}
+
+
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 StudyZone | <a href="#">Privacy Policy</a> | <a href="#">Contact</a></p>
+  </footer>
+
+  <script>
+    function searchContent() {
+      let query = document.getElementById("search").value.trim();
+      if(query) {
+        alert("Searching for: " + query);
+      } else {
+        alert("Please enter something to search!");
+      }
+    }
+  </script>
+</body>
+</html>

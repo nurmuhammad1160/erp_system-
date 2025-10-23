@@ -1,45 +1,36 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Student Portal{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <header>
-        <div style="display:flex; align-items:center; gap:12px;">
-            <button class="mobile-nav-toggle" aria-label="Toggle navigation" id="navToggle">☰</button>
-            <h1 style="margin:0;">College ERP - Student Portal</h1>
-        </div>
-        <nav>
-            <ul id="mainNav">
-                <li><a href="{% url 'student:dashboard' %}">Dashboard</a></li>
-                <li><a href="{% url 'student:courses' %}">Courses</a></li>
-                <li><a href="{% url 'student:grades' %}">Grades</a></li>
-                <li><a href="{% url 'student:profile' %}">Profile</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>{% block title %}Student Portal{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <script defer src="{% static 'js/site.js' %}"></script>
+    </head>
+    <body class="app-root">
+        <header class="site-header">
+            <div class="header-left">
+                <button id="navToggle" class="mobile-nav-toggle" aria-expanded="false" aria-controls="mainNav">☰</button>
+                <a class="brand" href="/">College ERP</a>
+            </div>
+            <nav aria-label="Student navigation">
+                <ul id="mainNav" class="main-nav">
+                    <li><a href="{% url 'student:dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'student:courses' %}">Courses</a></li>
+                    <li><a href="{% url 'student:grades' %}">Grades</a></li>
+                    <li><a href="{% url 'student:profile' %}">Profile</a></li>
+                    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
 
-    <footer>
-        <p>&copy; {{ year|default:2025 }} College ERP</p>
-    </footer>
-</body>
-<script>
-    (function(){
-        var btn = document.getElementById('navToggle');
-        var nav = document.getElementById('mainNav');
-        if(btn && nav){
-            btn.addEventListener('click', function(){
-                nav.classList.toggle('open');
-            });
-        }
-    })();
-</script>
+        <footer>
+            <div class="container">&copy; {{ year|default:2025 }} College ERP</div>
+        </footer>
+    </body>
 </html>

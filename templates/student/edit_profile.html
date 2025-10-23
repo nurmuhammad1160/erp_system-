@@ -1,0 +1,77 @@
+{% extends 'student/base_student.html' %}
+{% block title %}{{ title|default:'Edit Profile' }}{% endblock %}
+{% load static %}
+{% block content %}
+  <div class="dashboard-header"><h2>{{ title|default:'Edit Profile' }}</h2></div>
+
+  <section class="card">
+    <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex:0 0 140px">
+        <div class="profile-avatar" style="width:128px;height:128px">
+          {% if student.avatar %}
+            <img src="{{ student.avatar.url }}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+          {% else %}
+            <span style="font-size:40px">{{ user.first_name|default:user.username|slice:':1'|upper }}</span>
+          {% endif %}
+        </div>
+      </div>
+
+      <form method="post" enctype="multipart/form-data" style="flex:1;min-width:260px">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+          <div class="card" style="background:#fff4f4;border:1px solid #ffd6d6;padding:12px;margin-bottom:8px;color:#7a1a1a">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+
+        <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label for="id_first_name">First name</label>
+            {{ form.first_name }}
+          </div>
+
+          <div>
+            <label for="id_last_name">Last name</label>
+            {{ form.last_name }}
+          </div>
+
+          <div style="grid-column:1 / -1">
+            <label for="id_email">Email</label>
+            {{ form.email }}
+          </div>
+
+          <div>
+            <label for="id_phone">Phone</label>
+            {{ form.phone }}
+          </div>
+
+          <div>
+            <label for="id_parent_name">Parent name</label>
+            {{ form.parent_name }}
+          </div>
+
+          <div>
+            <label for="id_parent_phone">Parent phone</label>
+            {{ form.parent_phone }}
+          </div>
+
+          <div>
+            <label for="id_status">Status</label>
+            {{ form.status }}
+          </div>
+
+          <div>
+            <label for="id_avatar">Change avatar</label>
+            {{ form.avatar }}
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <button class="goto-btn" type="submit">Save changes</button>
+          <a class="goto-btn" href="{% url 'student:profile' %}" style="margin-left:8px">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </section>
+
+{% endblock %}

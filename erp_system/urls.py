@@ -11,6 +11,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     path('auth/', include('accounts.urls')),
+    # also expose accounts under /accounts/ for compatibility with links that expect that path
+    path('accounts/', include('accounts.urls')),
     
     path('', include('core.urls')), 
     

@@ -5,6 +5,51 @@ import re
 
 User = get_user_model()
 
+
+class StudentProfileForm(forms.Form):
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    phone = forms.CharField(required=False)
+
+    def __init__(self, *args, user=None, student=None, **kwargs):
+        # allow editing both User and StudentProfile fields in a single form
+        super().__init__(*args, **kwargs)
+        self.user = user
+        self.student = student
+        # Dynamically construct fields
+        if user is not None:
+            self.fields['first_name'] = forms.CharField(required=False, initial=user.first_name)
+            self.fields['last_name'] = forms.CharField(required=False, initial=user.last_name)
+            self.fields['email'] = forms.EmailField(required=True, initial=user.email)
+            self.fields['phone'] = forms.CharField(required=False, initial=user.phone)
+        if student is not None:
+            self.fields['parent_name'] = forms.CharField(required=False, initial=student.parent_name)
+            self.fields['parent_phone'] = forms.CharField(required=False, initial=student.parent_phone)
+            self.fields['avatar'] = forms.ImageField(required=False)
+           
+    def save(self, commit=True):
+        # save user fields
+        if self.user is not None:
+            self.user.first_name = self.cleaned_data.get('first_name', self.user.first_name)
+            self.user.last_name = self.cleaned_data.get('last_name', self.user.last_name)
+            self.user.email = self.cleaned_data.get('email', self.user.email)
+            self.user.phone = self.cleaned_data.get('phone', self.user.phone)
+            if commit:
+                self.user.save()
+
+        if self.student is not None:
+            self.student.parent_name = self.cleaned_data.get('parent_name', self.student.parent_name)
+            self.student.parent_phone = self.cleaned_data.get('parent_phone', self.student.parent_phone)
+            # avatar file handling
+            avatar = self.cleaned_data.get('avatar')
+            if avatar:
+                self.student.avatar = avatar
+            self.student.status = self.cleaned_data.get('status', self.student.status)
+            if commit:
+                self.student.save()
+
+        return self.user if self.user is not None else self.student
+
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label="Parol")
     password2 = forms.CharField(widget=forms.PasswordInput, label="Parolni takrorlang")

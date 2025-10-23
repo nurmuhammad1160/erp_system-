@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Attendance, Homework, HomeworkSubmission, LessonSchedule
+from .models import Attendance, Homework, HomeworkSubmission, LessonSchedule, Grades
+
+
+admin.site.register(Grades)
 
 
 @admin.register(Attendance)

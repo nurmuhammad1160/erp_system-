@@ -1,0 +1,6 @@
+{% extends 'student/base_student.html' %}
+{% block title %}Dashboard (backup){% endblock %}
+
+{% block content %}
+Backup of dashboard template
+{% endblock %}

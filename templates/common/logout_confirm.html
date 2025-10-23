@@ -29,7 +29,7 @@
         <h2 class="h4 text-warning mb-3">Tizimdan Chiqish</h2>
         <p class="mb-4">Haqiqatan ham hisobingizdan chiqmoqchimisiz?</p>
         
-        <form method="post" action="{% url 'logout' %}">
+    <form method="post" action="{% url 'accounts:logout' %}">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger w-100 mb-3 fw-semibold">Ha, Chiqish</button>
         </form>

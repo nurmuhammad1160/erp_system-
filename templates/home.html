@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bosh Sahifa - ERP Sistema{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <i class="bi bi-mortarboard-fill" style="font-size: 5rem; color: #667eea;"></i>
+                <h1 class="mt-4 mb-3">ERP Sistema</h1>
+                <p class="lead text-muted mb-4">
+                    O'quv markazlar uchun professional boshqaruv tizimi
+                </p>
+                
+                {% if user.is_authenticated %}
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle"></i> 
+                        Siz tizimga kirgansiz: <strong>{{ user.get_full_name|default:user.email }}</strong>
+                    </div>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <a href="{% url 'accounts:profile' %}" class="btn btn-primary btn-lg">
+                            <i class="bi bi-person"></i> Profilga O'tish
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="d-flex gap-3 justify-content-center">
+                        <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-lg">
+                            <i class="bi bi-box-arrow-in-right"></i> Tizimga Kirish
+                        </a>
+                        <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-person-plus"></i> Ro'yxatdan O'tish
+                        </a>
+                    </div>
+                {% endif %}
+                
+                <!-- Features -->
+                <div class="row mt-5 text-start">
+                    <div class="col-md-4 mb-3">
+                        <div class="p-3 border rounded">
+                            <i class="bi bi-people-fill text-primary" style="font-size: 2rem;"></i>
+                            <h5 class="mt-2">Talabalar Boshqaruvi</h5>
+                            <p class="text-muted small mb-0">Talabalarni boshqarish, davomat va natijalarni kuzatish</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="p-3 border rounded">
+                            <i class="bi bi-book-fill text-success" style="font-size: 2rem;"></i>
+                            <h5 class="mt-2">Kurslar va Guruhlar</h5>
+                            <p class="text-muted small mb-0">Kurslarni yaratish va guruhlarni tashkil qilish</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="p-3 border rounded">
+                            <i class="bi bi-cash-stack text-warning" style="font-size: 2rem;"></i>
+                            <h5 class="mt-2">Moliya Boshqaruvi</h5>
+                            <p class="text-muted small mb-0">To'lovlar, xarajatlar va hisobotlar</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- System Status -->
+                <div class="alert alert-info mt-4">
+                    <i class="bi bi-info-circle"></i> 
+                    <strong>Tizim Holati:</strong> URLs va funksiyalar hali to'liq sozlanmoqda.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

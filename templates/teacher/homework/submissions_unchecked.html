@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Baholanmagan Topshiriqlar - ERP Sistema{% endblock %}
+
+{% block page_title %}Baholanmagan Topshiriqlar{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<a href="{% url 'teacher:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a> / 
+<span>Baholanmaganlar</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .submissions-header {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .submission-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        border-left: 5px solid #ffc107;
+        transition: all 0.3s;
+    }
+    
+    .submission-card:hover {
+        transform: translateX(5px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+    }
+    
+    .student-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    
+    .time-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .time-recent {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .time-old {
+        background: #f8d7da;
+        color: #721c24;
+    }
+    
+    .filter-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+    }
+    
+    .btn-grade {
+        padding: 8px 20px;
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="submissions-header">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h2 class="mb-2"><i class="bi bi-inbox-fill"></i> Baholanmagan Topshiriqlar</h2>
+            <p class="mb-0 opacity-75">Talabalar tomonidan yuborilgan, lekin hali baholanmagan topshiriqlar</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <h5 class="mb-0">Jami</h5>
+            <h1 class="mb-0">{{ submissions.count }}</h1>
+            <p class="mb-0 opacity-75">baholanmagan</p>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="filter-card">
+    <div class="row align-items-center">
+        <div class="col-md-4">
+            <select class="form-select" id="groupFilter">
+                <option value="">Barcha guruhlar</option>
+                {% for group in teacher.groups.all %}
+                    <option value="{{ group.id }}">{{ group.name }} - {{ group.course.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" id="homeworkFilter">
+                <option value="">Barcha topshiriqlar</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" id="sortFilter">
+                <option value="oldest">Eng eski</option>
+                <option value="newest">Eng yangi</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Submissions List -->
+{% if submissions %}
+    <div id="submissionsList">
+        {% for submission in submissions %}
+        <div class="submission-card" data-group="{{ submission.homework.group.id }}">
+            <div class="row align-items-center">
+                
+                <!-- Student Info -->
+                <div class="col-md-4">
+                    <div class="d-flex align-items-center">
+                        <div class="student-avatar me-3">
+                            {{ submission.student.user.first_name.0|upper }}{{ submission.student.user.last_name.0|upper }}
+                        </div>
+                        <div>
+                            <h6 class="mb-0">{{ submission.student.user.get_full_name }}</h6>
+                            <small class="text-muted">{{ submission.student.user.email }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Homework Info -->
+                <div class="col-md-5">
+                    <h6 class="mb-1">{{ submission.homework.title }}</h6>
+                    <p class="text-muted mb-1 small">
+                        <i class="bi bi-book"></i> {{ submission.homework.group.course.title }} - 
+                        <i class="bi bi-people"></i> {{ submission.homework.group.name }}
+                    </p>
+                    <div class="d-flex align-items-center gap-2">
+                        <small class="text-muted">
+                            <i class="bi bi-calendar"></i> {{ submission.submitted_at|date:"d M, Y H:i" }}
+                        </small>
+                        {% now "U" as current_time %}
+                        {% if submission.submitted_at|date:"U"|add:"-86400" > current_time %}
+                            <span class="time-badge time-recent">
+                                <i class="bi bi-clock"></i> Yangi
+                            </span>
+                        {% elif submission.submitted_at|date:"U"|add:"-259200" < current_time %}
+                            <span class="time-badge time-old">
+                                <i class="bi bi-exclamation-circle"></i> 3+ kun
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <div class="col-md-3 text-end">
+                    <a href="{% url 'teacher:edit_submission' submission.id %}" class="btn btn-primary btn-grade">
+                        <i class="bi bi-pencil-square"></i> Baholash
+                    </a>
+                </div>
+                
+            </div>
+            
+            <!-- Submission Preview -->
+            <div class="mt-3 pt-3 border-top">
+                <div class="row">
+                    {% if submission.file %}
+                    <div class="col-md-6">
+                        <small class="text-muted d-block mb-1">
+                            <i class="bi bi-file-earmark"></i> Yuklangan fayl:
+                        </small>
+                        <a href="{{ submission.file.url }}" target="_blank" class="text-primary">
+                            <i class="bi bi-download"></i> Faylni yuklab olish
+                        </a>
+                    </div>
+                    {% endif %}
+                    
+                    {% if submission.text %}
+                    <div class="col-md-6">
+                        <small class="text-muted d-block mb-1">
+                            <i class="bi bi-text-paragraph"></i> Matnli javob:
+                        </small>
+                        <p class="mb-0 small">{{ submission.text|truncatewords:15 }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if submissions.has_other_pages %}
+    <nav aria-label="Pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if submissions.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ submissions.previous_page_number }}">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% for num in submissions.paginator.page_range %}
+                {% if submissions.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if submissions.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ submissions.next_page_number }}">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    
+{% else %}
+    <!-- Empty State -->
+    <div class="empty-state">
+        <i class="bi bi-check-circle" style="font-size: 5rem; color: #28a745;"></i>
+        <h3 class="mt-4 text-success">Ajoyib! Barcha topshiriqlar baholangan!</h3>
+        <p class="text-muted mb-4">Hozircha baholanishi kerak bo'lgan topshiriqlar yo'q</p>
+        <div class="d-flex gap-2 justify-content-center">
+            <a href="{% url 'teacher:dashboard' %}" class="btn btn-outline-primary">
+                <i class="bi bi-house"></i> Dashboardga qaytish
+            </a>
+            <a href="{% url 'teacher:scored_homeworks' %}" class="btn btn-primary">
+                <i class="bi bi-check-circle"></i> Baholanganlarni ko'rish
+            </a>
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // Group Filter
+        const groupFilter = document.getElementById('groupFilter');
+        const cards = document.querySelectorAll('.submission-card');
+        
+        if (groupFilter) {
+            groupFilter.addEventListener('change', function() {
+                const selectedGroup = this.value;
+                
+                cards.forEach(card => {
+                    const cardGroup = card.getAttribute('data-group');
+                    
+                    if (!selectedGroup || cardGroup === selectedGroup) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+        
+        // Sort Filter
+        const sortFilter = document.getElementById('sortFilter');
+        const submissionsList = document.getElementById('submissionsList');
+        
+        if (sortFilter && submissionsList) {
+            sortFilter.addEventListener('change', function() {
+                const sortValue = this.value;
+                const cardsArray = Array.from(cards);
+                
+                // Get submission dates and sort
+                cardsArray.sort((a, b) => {
+                    const dateA = a.querySelector('.text-muted small').textContent;
+                    const dateB = b.querySelector('.text-muted small').textContent;
+                    
+                    if (sortValue === 'newest') {
+                        return dateB.localeCompare(dateA);
+                    } else {
+                        return dateA.localeCompare(dateB);
+                    }
+                });
+                
+                // Re-append sorted cards
+                cardsArray.forEach(card => {
+                    submissionsList.appendChild(card);
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

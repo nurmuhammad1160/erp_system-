@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>{% block title %}ERP Sistema{% endblock %}</title>
+    
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.ico' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+    
+    <style>
+        /* Asosiy stillar (o'zgartirishsiz) */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .wrapper { display: flex; width: 100%; align-items: stretch; }
+        #sidebar { min-width: 250px; max-width: 250px; min-height: 100vh; background: #2c3e50; color: #fff; transition: all 0.3s; }
+        #sidebar.active { margin-left: -250px; }
+        #sidebar .sidebar-header { padding: 20px; background: #1a252f; }
+        #sidebar ul.components { padding: 20px 0; }
+        #sidebar ul li a { padding: 15px; font-size: 1rem; display: block; color: #fff; text-decoration: none; transition: 0.3s; }
+        #sidebar ul li a:hover, #sidebar ul li.active > a { background: #34495e; border-left: 4px solid #3498db; }
+        #sidebar ul li a i { margin-right: 10px; width: 20px; }
+        #content { width: 100%; padding: 20px; min-height: 100vh; transition: all 0.3s; background-color: #f8f9fa; }
+        .top-navbar { background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.08); padding: 15px 30px; margin-bottom: 30px; }
+        footer { background: #fff; padding: 20px; margin-top: 40px; border-top: 1px solid #dee2e6; }
+
+        /* ======== YANGI QO'SHILGAN STILLAR ======== */
+        /* Login/Register sahifasi uchun maxsus class */
+        body.auth-page {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+        }
+
+        /* auth-page ichidagi #content'ni markazga keltirish uchun */
+        .auth-page #content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent; /* Orqa fonni body'dan oladi */
+            padding: 20px;
+        }
+    </style>
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    
+    <div class="wrapper">
+        
+        {% if user.is_authenticated %}
+            {% include 'components/sidebar.html' %}
+        {% endif %}
+        
+        <div id="content">
+            
+            {% if user.is_authenticated %}
+                {% include 'components/navbar.html' %}
+            {% endif %}
+            
+            {% include 'components/alerts.html' %}
+            
+            {% block content %}
+            {% endblock %}
+            
+            {% if user.is_authenticated %}
+                {% include 'components/footer.html' %}
+            {% endif %}
+            
+        </div>
+        
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarCollapse');
+            const sidebar = document.getElementById('sidebar');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

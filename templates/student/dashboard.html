@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Dashboard - ERP Sistema{% endblock %}
+
+{% block page_title %}Talaba Dashboard{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<span>Dashboard</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stat-card {
+        border-radius: 10px;
+        padding: 20px;
+        color: white;
+        transition: transform 0.3s;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .stat-card.blue {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .stat-card.green {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    
+    .stat-card.orange {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    .stat-card.red {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+    
+    .stat-card h3 {
+        font-size: 2.5rem;
+        margin: 10px 0;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        transition: transform 0.3s;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Error handling -->
+{% if student_profile_missing %}
+<div class="alert alert-danger">
+    <i class="bi bi-exclamation-triangle"></i> 
+    <strong>Diqqat!</strong> Sizning talaba profilingiz topilmadi. Iltimos, administrator bilan bog'laning.
+</div>
+{% else %}
+
+<!-- Welcome Section -->
+<div class="mb-4">
+    <h2>Xush kelibsiz! 👋</h2>
+    <p class="text-muted">Talaba Dashboard - Bugungi sana: {% now "d F, Y" %}</p>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    
+    <!-- Kurslar -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card blue">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="mb-0">Kurslarim</p>
+                    <h3>{{ courses.count|default:0 }}</h3>
+                    <small>Faol kurslar</small>
+                </div>
+                <i class="bi bi-book" style="font-size: 3rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Guruhlar -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card green">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="mb-0">Guruhlarim</p>
+                    <h3>{{ groups.count|default:0 }}</h3>
+                    <small>Faol guruhlar</small>
+                </div>
+                <i class="bi bi-people" style="font-size: 3rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Topshiriqlar -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card orange">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="mb-0">Topshiriqlar</p>
+                    <h3>{{ homeworks.count|default:0 }}</h3>
+                    <small>Yangi topshiriqlar</small>
+                </div>
+                <i class="bi bi-file-text" style="font-size: 3rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Balans -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card red">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="mb-0">Balans</p>
+                    <h3>{{ student.balance|floatformat:0|default:0 }}</h3>
+                    <small>so'm</small>
+                </div>
+                <i class="bi bi-wallet2" style="font-size: 3rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<!-- Main Content -->
+<div class="row">
+    
+    <!-- Welcome Card -->
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-emoji-smile" style="font-size: 4rem; color: #667eea;"></i>
+                <h3 class="mt-3 mb-3">Talaba Dashboard</h3>
+                <p class="text-muted mb-4">
+                    Bu yerda sizning barcha ma'lumotlaringiz ko'rinadi.<br>
+                    Kurslar, topshiriqlar, baholar va boshqa ma'lumotlar.
+                </p>
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> 
+                    <strong>Eslatma:</strong> URLs lar hali to'liq sozlanmagan. 
+                    Tizim rivojlantirilmoqda.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Info -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Tezkor Ma'lumot</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <small class="text-muted">Email:</small><br>
+                    <strong>{{ user.email }}</strong>
+                </div>
+                <div class="mb-3">
+                    <small class="text-muted">Rol:</small><br>
+                    <strong>{{ user.get_type_display }}</strong>
+                </div>
+                <div class="mb-3">
+                    <small class="text-muted">Status:</small><br>
+                    <span class="badge bg-success">Faol</span>
+                </div>
+                <hr>
+                <div class="d-grid">
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-outline-primary">
+                        <i class="bi bi-person"></i> Profilni Ko'rish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    console.log('Student Dashboard loaded - Minimal version');
+</script>
+{% endblock %}

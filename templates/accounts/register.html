@@ -1,0 +1,226 @@
+
+<!-- ============================================ -->
+<!-- templates/accounts/register.html -->
+<!-- ============================================ -->
+
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Ro'yxatdan O'tish - ERP Sistema{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .wrapper {
+        width: 100%;
+    }
+    
+    #sidebar {
+        display: none;
+    }
+    
+    #content {
+        width: 100%;
+        padding: 20px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+    
+    .register-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        overflow: hidden;
+        max-width: 600px;
+        width: 100%;
+        margin: 20px;
+    }
+    
+    .register-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .register-body {
+        padding: 40px;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .btn-register {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 12px;
+        font-weight: bold;
+    }
+    
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="register-card">
+    
+    <!-- Header -->
+    <div class="register-header">
+        <i class="bi bi-person-plus-fill" style="font-size: 2.5rem;"></i>
+        <h2 class="mt-3 mb-0">Ro'yxatdan O'tish</h2>
+        <p class="mb-0">ERP Sistema da akkount yarating</p>
+    </div>
+    
+    <!-- Body -->
+    <div class="register-body">
+        
+        <form method="post" action="{% url 'accounts:register' %}">
+            {% csrf_token %}
+            
+            <div class="row">
+                
+                <!-- First Name -->
+                <div class="col-md-6 mb-3">
+                    <label for="id_first_name" class="form-label">
+                        <i class="bi bi-person"></i> Ism
+                    </label>
+                    {% render_field form.first_name class="form-control" placeholder="Ismingiz" %}
+                    {% if form.first_name.errors %}
+                        <div class="text-danger small mt-1">{{ form.first_name.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Last Name -->
+                <div class="col-md-6 mb-3">
+                    <label for="id_last_name" class="form-label">
+                        <i class="bi bi-person"></i> Familiya
+                    </label>
+                    {% render_field form.last_name class="form-control" placeholder="Familiyangiz" %}
+                    {% if form.last_name.errors %}
+                        <div class="text-danger small mt-1">{{ form.last_name.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+            </div>
+            
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="id_email" class="form-label">
+                    <i class="bi bi-envelope"></i> Email
+                </label>
+                {% render_field form.email class="form-control" placeholder="email@example.com" %}
+                {% if form.email.errors %}
+                    <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- Phone -->
+            <div class="mb-3">
+                <label for="id_phone" class="form-label">
+                    <i class="bi bi-telephone"></i> Telefon
+                </label>
+                {% render_field form.phone class="form-control" placeholder="+998 90 123 45 67" %}
+                {% if form.phone.errors %}
+                    <div class="text-danger small mt-1">{{ form.phone.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- User Type -->
+            <!-- <div class="mb-3">
+                <label for="id_type" class="form-label">
+                    <i class="bi bi-person-badge"></i> Rol
+                </label>
+                {% render_field form.type class="form-select" %}
+                {% if form.type.errors %}
+                    <div class="text-danger small mt-1">{{ form.type.errors.0 }}</div>
+                {% endif %}
+                <small class="text-muted">O'zingizning rolini tanlang</small>
+            </div> -->
+            
+            <div class="row">
+                
+                <!-- Password -->
+                <div class="col-md-6 mb-3">
+                    <label for="id_password1" class="form-label">
+                        <i class="bi bi-lock"></i> Parol
+                    </label>
+                    {% render_field form.password1 class="form-control" placeholder="Parol" type="password" %}
+                    {% if form.password1.errors %}
+                        <div class="text-danger small mt-1">{{ form.password1.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Password Confirmation -->
+                <div class="col-md-6 mb-3">
+                    <label for="id_password2" class="form-label">
+                        <i class="bi bi-lock-fill"></i> Parolni tasdiqlash
+                    </label>
+                    {% render_field form.password2 class="form-control" placeholder="Parolni qayta kiriting" type="password" %}
+                    {% if form.password2.errors %}
+                        <div class="text-danger small mt-1">{{ form.password2.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+            </div>
+            
+            <!-- Password Requirements -->
+            <div class="alert alert-info small mb-3">
+                <i class="bi bi-info-circle"></i> Parol kamida 8 belgidan iborat bo'lishi kerak.
+            </div>
+            
+            <!-- Non-field errors -->
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors.0 }}
+                </div>
+            {% endif %}
+            
+            <!-- Terms -->
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="terms" required>
+                <label class="form-check-label" for="terms">
+                    <small>
+                        Ro'yxatdan o'tish orqali 
+                        <a href="#" class="text-decoration-none">Foydalanish shartlari</a> 
+                        va 
+                        <a href="#" class="text-decoration-none">Maxfiylik siyosati</a>ga rozilik bildirasiz
+                    </small>
+                </label>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary btn-register">
+                    <i class="bi bi-person-plus"></i> Ro'yxatdan O'tish
+                </button>
+            </div>
+            
+            <!-- Links -->
+            <div class="text-center">
+                <small class="text-muted">
+                    Akkauntingiz bormi? 
+                    <a href="{% url 'accounts:login' %}" class="text-decoration-none">Tizimga kirish</a>
+                </small>
+            </div>
+            
+        </form>
+        
+    </div>
+    
+</div>
+{% endblock %}

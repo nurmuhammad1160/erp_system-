@@ -1,0 +1,53 @@
+
+<!-- ============================================ -->
+<!-- templates/accounts/logout_confirm.html - LOGOUT TASDIQLASH -->
+<!-- ============================================ -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tizimdan Chiqish - ERP Sistema{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: #f8f9fa;
+    }
+    
+    .logout-card {
+        max-width: 500px;
+        margin: 100px auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        padding: 40px;
+        text-align: center;
+    }
+    
+    .logout-icon {
+        font-size: 4rem;
+        color: #ffc107;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="logout-card">
+    <i class="bi bi-box-arrow-right logout-icon"></i>
+    <h3 class="mb-3">Tizimdan chiqmoqchimisiz?</h3>
+    <p class="text-muted mb-4">Siz haqiqatan ham tizimdan chiqishni xohlaysizmi?</p>
+    
+    <form method="post" action="{% url 'accounts:logout' %}">
+        {% csrf_token %}
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-danger btn-lg">
+                <i class="bi bi-box-arrow-right"></i> Ha, Chiqish
+            </button>
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-x-circle"></i> Yo'q, Qaytish
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

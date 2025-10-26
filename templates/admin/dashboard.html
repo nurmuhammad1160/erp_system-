@@ -1,0 +1,478 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard - ERP Sistema{% endblock %}
+
+{% block page_title %}Administrator Dashboard{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<span>Dashboard</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stat-card {
+        border-radius: 15px;
+        padding: 30px;
+        color: white;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        transition: all 0.5s;
+    }
+    
+    .stat-card:hover::before {
+        top: -60%;
+        right: -60%;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+    
+    .stat-card.blue {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .stat-card.orange {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    
+    .stat-card.teal {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    .stat-card.green {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+    
+    .stat-card h2 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin: 15px 0;
+    }
+    
+    .stat-card .icon {
+        font-size: 4rem;
+        opacity: 0.3;
+    }
+    
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s;
+    }
+    
+    .card:hover {
+        box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+    }
+    
+    .table-card {
+        border-radius: 10px;
+    }
+    
+    .table thead {
+        background: #f8f9fa;
+    }
+    
+    .badge-custom {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+    
+    .progress-custom {
+        height: 8px;
+        border-radius: 10px;
+    }
+    
+    .revenue-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 25px;
+    }
+    
+    .recent-activity-item {
+        padding: 12px;
+        border-bottom: 1px solid #e9ecef;
+        transition: all 0.3s;
+    }
+    
+    .recent-activity-item:hover {
+        background: #f8f9fa;
+        transform: translateX(5px);
+    }
+    
+    .recent-activity-item:last-child {
+        border-bottom: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Welcome Section -->
+<div class="mb-4">
+    <h2>Administrator Dashboard 🎛️</h2>
+    <p class="text-muted">Tizim umumiy ko'rinishi va statistika</p>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    
+    <!-- Total Students -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card blue">
+            <div class="d-flex justify-content-between align-items-center position-relative">
+                <div>
+                    <p class="mb-0 opacity-75">Jami Talabalar</p>
+                    <h2>{{ total_students }}</h2>
+                    <small class="opacity-75">
+                        <i class="bi bi-arrow-up"></i> +12% bu oyda
+                    </small>
+                </div>
+                <i class="bi bi-people-fill icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Total Teachers -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card orange">
+            <div class="d-flex justify-content-between align-items-center position-relative">
+                <div>
+                    <p class="mb-0 opacity-75">Jami O'qituvchilar</p>
+                    <h2>{{ total_teachers }}</h2>
+                    <small class="opacity-75">
+                        <i class="bi bi-arrow-up"></i> +3 yangi
+                    </small>
+                </div>
+                <i class="bi bi-person-badge-fill icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pending Payments -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card teal">
+            <div class="d-flex justify-content-between align-items-center position-relative">
+                <div>
+                    <p class="mb-0 opacity-75">Kutilayotgan To'lovlar</p>
+                    <h2>{{ pending_payments }}</h2>
+                    <small class="opacity-75">
+                        Tasdiqlash kerak
+                    </small>
+                </div>
+                <i class="bi bi-hourglass-split icon"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Total Revenue -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card green">
+            <div class="d-flex justify-content-between align-items-center position-relative">
+                <div>
+                    <p class="mb-0 opacity-75">Jami Daromad</p>
+                    <h2>{{ total_revenue|floatformat:0 }}</h2>
+                    <small class="opacity-75">
+                        Bu oyda so'm
+                    </small>
+                </div>
+                <i class="bi bi-cash-stack icon"></i>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<!-- Charts and Tables Row -->
+<div class="row mb-4">
+    
+    <!-- Revenue Chart -->
+    <div class="col-lg-8 mb-4">
+        <div class="card">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-graph-up"></i> Daromad Statistikasi</h5>
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-primary active">Haftalik</button>
+                    <button type="button" class="btn btn-outline-primary">Oylik</button>
+                    <button type="button" class="btn btn-outline-primary">Yillik</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="revenueChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Stats -->
+    <div class="col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-speedometer2"></i> Tezkor Statistika</h5>
+            </div>
+            <div class="card-body">
+                
+                <!-- Active Courses -->
+                <div class="mb-3 pb-3 border-bottom">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted">Faol Kurslar</span>
+                        <strong class="text-primary">{{ active_courses }}</strong>
+                    </div>
+                    <div class="progress progress-custom">
+                        <div class="progress-bar bg-primary" style="width: 85%"></div>
+                    </div>
+                </div>
+                
+                <!-- Active Groups -->
+                <div class="mb-3 pb-3 border-bottom">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted">Faol Guruhlar</span>
+                        <strong class="text-success">{{ active_groups }}</strong>
+                    </div>
+                    <div class="progress progress-custom">
+                        <div class="progress-bar bg-success" style="width: 75%"></div>
+                    </div>
+                </div>
+                
+                <!-- Attendance Rate -->
+                <div class="mb-3 pb-3 border-bottom">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted">Davomat Ko'rsatkichi</span>
+                        <strong class="text-info">92%</strong>
+                    </div>
+                    <div class="progress progress-custom">
+                        <div class="progress-bar bg-info" style="width: 92%"></div>
+                    </div>
+                </div>
+                
+                <!-- Payment Success Rate -->
+                <div class="mb-0">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted">To'lov Muvaffaqiyati</span>
+                        <strong class="text-warning">88%</strong>
+                    </div>
+                    <div class="progress progress-custom">
+                        <div class="progress-bar bg-warning" style="width: 88%"></div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<!-- Recent Activities and Pending Actions -->
+<div class="row">
+    
+    <!-- Recent Students -->
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-person-plus"></i> Yangi Talabalar</h5>
+                <a href="{% url 'admin_panel:students_list' %}" class="btn btn-sm btn-outline-primary">
+                    Barchasi
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Ism</th>
+                                <th>Email</th>
+                                <th>Guruh</th>
+                                <th>Status</th>
+                                <th>Ro'yxatdan o'tgan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Sample data -->
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                                            AK
+                                        </div>
+                                        <span>Alisher Karimov</span>
+                                    </div>
+                                </td>
+                                <td>alisher@mail.uz</td>
+                                <td><span class="badge bg-info">Python A1</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td><small class="text-muted">2 kun oldin</small></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                                            NU
+                                        </div>
+                                        <span>Nodira Usmanova</span>
+                                    </div>
+                                </td>
+                                <td>nodira@mail.uz</td>
+                                <td><span class="badge bg-warning">Web Dev B2</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
+                                <td><small class="text-muted">1 hafta oldin</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pending Payments -->
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-clock-history"></i> Kutilayotgan To'lovlar</h5>
+                <a href="{% url 'finance:payment_list' %}" class="btn btn-sm btn-outline-warning">
+                    Barchasi
+                </a>
+            </div>
+            <div class="card-body p-0">
+                {% if pending_payments > 0 %}
+                    <div class="recent-activity-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Alisher Karimov</strong>
+                                <p class="mb-0 small text-muted">Python kursi uchun to'lov</p>
+                            </div>
+                            <div class="text-end">
+                                <strong class="text-primary">1,500,000 so'm</strong><br>
+                                <a href="#" class="btn btn-sm btn-success">Tasdiqlash</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recent-activity-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Nodira Usmanova</strong>
+                                <p class="mb-0 small text-muted">Web Development kursi</p>
+                            </div>
+                            <div class="text-end">
+                                <strong class="text-primary">2,000,000 so'm</strong><br>
+                                <a href="#" class="btn btn-sm btn-success">Tasdiqlash</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-check-circle" style="font-size: 3rem; color: #28a745;"></i>
+                        <p class="mt-2 text-success">Barcha to'lovlar tasdiqlangan!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<!-- System Health -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0"><i class="bi bi-heart-pulse"></i> Tizim Salomatligi</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-check-circle-fill text-success" style="font-size: 2rem;"></i>
+                            <h6 class="mt-2 mb-0">Server</h6>
+                            <small class="text-success">Online</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-check-circle-fill text-success" style="font-size: 2rem;"></i>
+                            <h6 class="mt-2 mb-0">Database</h6>
+                            <small class="text-success">Connected</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-check-circle-fill text-success" style="font-size: 2rem;"></i>
+                            <h6 class="mt-2 mb-0">Storage</h6>
+                            <small class="text-success">75% Free</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-check-circle-fill text-success" style="font-size: 2rem;"></i>
+                            <h6 class="mt-2 mb-0">Backup</h6>
+                            <small class="text-success">Updated</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Revenue Chart
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba'],
+            datasets: [{
+                label: 'Daromad (mln so\'m)',
+                data: [12, 19, 15, 17, 22, 18, 14],
+                backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                borderColor: 'rgb(102, 126, 234)',
+                borderWidth: 2,
+                borderRadius: 8
+            }, {
+                label: 'Xarajat (mln so\'m)',
+                data: [5, 8, 7, 6, 9, 8, 6],
+                backgroundColor: 'rgba(245, 87, 108, 0.8)',
+                borderColor: 'rgb(245, 87, 108)',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

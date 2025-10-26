@@ -1,0 +1,415 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Topshiriq Yaratish - ERP Sistema{% endblock %}
+
+{% block page_title %}Yangi Topshiriq Yaratish{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<a href="{% url 'teacher:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a> / 
+<span>Topshiriq Yaratish</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .form-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+    
+    .form-section {
+        margin-bottom: 30px;
+        padding-bottom: 30px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+    
+    .form-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    .form-section h5 {
+        color: #667eea;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+    
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .required-indicator {
+        color: #dc3545;
+        font-weight: bold;
+    }
+    
+    .help-text {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+    
+    .preview-card {
+        background: #f8f9fa;
+        border: 2px dashed #dee2e6;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    
+    .character-count {
+        font-size: 0.875rem;
+        color: #6c757d;
+        text-align: right;
+        margin-top: 5px;
+    }
+    
+    .tips-card {
+        background: #e7f3ff;
+        border-left: 4px solid #667eea;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .btn-create {
+        padding: 12px 40px;
+        font-size: 1.1rem;
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="form-header">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h2 class="mb-2"><i class="bi bi-plus-circle"></i> Yangi Topshiriq Yaratish</h2>
+            <p class="mb-0 opacity-75">Talabalarga topshiriq berish va baholash uchun</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <i class="bi bi-file-earmark-text" style="font-size: 4rem; opacity: 0.3;"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Tips Card -->
+<div class="tips-card">
+    <h6 class="mb-2"><i class="bi bi-lightbulb"></i> Maslahatlar:</h6>
+    <ul class="mb-0 small">
+        <li>Topshiriq nomini aniq va tushunarli qiling</li>
+        <li>Topshiriq tavsifida barcha talablarni batafsil yozing</li>
+        <li>Muddat belgilashni unutmang</li>
+        <li>Talabalar uchun namuna yoki resurslar bering</li>
+    </ul>
+</div>
+
+<!-- Main Form -->
+<div class="row">
+    <div class="col-lg-8">
+        <div class="form-card">
+            <form method="post" action="{% url 'teacher:homework_create' %}" id="homeworkForm">
+                {% csrf_token %}
+                
+                <!-- Section 1: Basic Info -->
+                <div class="form-section">
+                    <h5><i class="bi bi-info-circle"></i> Asosiy Ma'lumotlar</h5>
+                    
+                    <!-- Group Selection -->
+                    <div class="mb-4">
+                        <label for="id_group" class="form-label">
+                            <i class="bi bi-people"></i> Guruh <span class="required-indicator">*</span>
+                        </label>
+                        {% render_field form.group class="form-select" id="id_group" required="required" %}
+                        {% if form.group.errors %}
+                            <div class="text-danger small mt-1">{{ form.group.errors.0 }}</div>
+                        {% endif %}
+                        <div class="help-text">
+                            <i class="bi bi-info-circle"></i> Qaysi guruhga topshiriq berayotganingizni tanlang
+                        </div>
+                    </div>
+                    
+                    <!-- Title -->
+                    <div class="mb-4">
+                        <label for="id_title" class="form-label">
+                            <i class="bi bi-text-left"></i> Topshiriq Nomi <span class="required-indicator">*</span>
+                        </label>
+                        {% render_field form.title class="form-control" id="id_title" placeholder="Masalan: Python - Dars 5: Funksiyalar" maxlength="255" required="required" %}
+                        {% if form.title.errors %}
+                            <div class="text-danger small mt-1">{{ form.title.errors.0 }}</div>
+                        {% endif %}
+                        <div class="character-count" id="titleCount">0 / 255</div>
+                    </div>
+                </div>
+                
+                <!-- Section 2: Description -->
+                <div class="form-section">
+                    <h5><i class="bi bi-file-text"></i> Topshiriq Tavsifi</h5>
+                    
+                    <div class="mb-4">
+                        <label for="id_description" class="form-label">
+                            <i class="bi bi-card-text"></i> Batafsil Tavsif <span class="required-indicator">*</span>
+                        </label>
+                        {% render_field form.description class="form-control" id="id_description" rows="8" placeholder="Topshiriqni batafsil tushuntiring:
+- Nima qilish kerak
+- Qanday formatda topshirish kerak
+- Qanday resurslardan foydalanish mumkin
+- Baholash mezonlari" required="required" %}
+                        {% if form.description.errors %}
+                            <div class="text-danger small mt-1">{{ form.description.errors.0 }}</div>
+                        {% endif %}
+                        <div class="help-text">
+                            <i class="bi bi-info-circle"></i> Talabalar topshiriqni to'g'ri bajarishi uchun barcha ma'lumotlarni bering
+                        </div>
+                        <div class="character-count" id="descCount">0 ta belgi</div>
+                    </div>
+                    
+                    <!-- Preview -->
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="previewBtn">
+                        <i class="bi bi-eye"></i> Ko'rinishini ko'rish
+                    </button>
+                    
+                    <div class="preview-card d-none" id="previewCard">
+                        <h6 class="mb-2">Ko'rinishi:</h6>
+                        <div id="previewContent" class="text-muted"></div>
+                    </div>
+                </div>
+                
+                <!-- Section 3: Deadline -->
+                <div class="form-section">
+                    <h5><i class="bi bi-calendar-event"></i> Muddat</h5>
+                    
+                    <div class="mb-4">
+                        <label for="id_deadline" class="form-label">
+                            <i class="bi bi-clock"></i> Topshirish Muddati
+                        </label>
+                        {% render_field form.deadline class="form-control" id="id_deadline" type="datetime-local" %}
+                        {% if form.deadline.errors %}
+                            <div class="text-danger small mt-1">{{ form.deadline.errors.0 }}</div>
+                        {% endif %}
+                        <div class="help-text">
+                            <i class="bi bi-info-circle"></i> Talabalar qachongacha topshirishlari kerak (Ixtiyoriy)
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Date Buttons -->
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setDeadline(1)">
+                            <i class="bi bi-calendar-plus"></i> 1 kun
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setDeadline(3)">
+                            <i class="bi bi-calendar-plus"></i> 3 kun
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setDeadline(7)">
+                            <i class="bi bi-calendar-plus"></i> 1 hafta
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="setDeadline(14)">
+                            <i class="bi bi-calendar-plus"></i> 2 hafta
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Non-field Errors -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors.0 }}
+                    </div>
+                {% endif %}
+                
+                <!-- Submit Buttons -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a href="{% url 'teacher:dashboard' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> Bekor qilish
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-create">
+                        <i class="bi bi-check-circle"></i> Topshiriq Yaratish
+                    </button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    
+    <!-- Right Sidebar - Help & Info -->
+    <div class="col-lg-4">
+        
+        <!-- Help Card -->
+        <div class="form-card">
+            <h5 class="mb-3"><i class="bi bi-question-circle"></i> Yordam</h5>
+            
+            <div class="mb-3">
+                <h6><i class="bi bi-check-circle text-success"></i> Yaxshi Topshiriq:</h6>
+                <ul class="small text-muted">
+                    <li>Aniq va tushunarli nom</li>
+                    <li>Batafsil va strukturali tavsif</li>
+                    <li>Aniq muddat</li>
+                    <li>Baholash mezonlari</li>
+                    <li>Namuna yoki resurslar</li>
+                </ul>
+            </div>
+            
+            <div class="mb-3">
+                <h6><i class="bi bi-x-circle text-danger"></i> Xato Topshiriq:</h6>
+                <ul class="small text-muted">
+                    <li>Noaniq nom</li>
+                    <li>Qisqa yoki tushunsiz tavsif</li>
+                    <li>Muddatsiz</li>
+                    <li>Baholash mezonisiz</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Example Card -->
+        <div class="form-card">
+            <h5 class="mb-3"><i class="bi bi-file-earmark-text"></i> Namuna</h5>
+            <div class="small">
+                <p class="mb-2"><strong>Nom:</strong></p>
+                <p class="text-muted mb-3">Python - Dars 5: Funksiyalar bilan ishlash</p>
+                
+                <p class="mb-2"><strong>Tavsif:</strong></p>
+                <p class="text-muted mb-3">
+                    Python dasturlash tilida funksiyalar mavzusi bo'yicha topshiriq.
+                    <br><br>
+                    <strong>Topshiriq:</strong><br>
+                    1. 3 ta turli funksiya yozing<br>
+                    2. Har bir funksiyani test qiling<br>
+                    3. Kod izohli bo'lsin<br>
+                    <br>
+                    <strong>Topshirish:</strong> .py fayl
+                </p>
+            </div>
+        </div>
+        
+        <!-- Statistics -->
+        <div class="form-card">
+            <h5 class="mb-3"><i class="bi bi-graph-up"></i> Statistika</h5>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Jami topshiriqlar:</span>
+                <strong>24</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Bu oyda:</span>
+                <strong class="text-success">+8</strong>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span class="text-muted">O'rtacha ball:</span>
+                <strong class="text-primary">87.5</strong>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // Character counter for title
+        const titleInput = document.getElementById('id_title');
+        const titleCount = document.getElementById('titleCount');
+        
+        if (titleInput && titleCount) {
+            titleInput.addEventListener('input', function() {
+                titleCount.textContent = this.value.length + ' / 255';
+            });
+        }
+        
+        // Character counter for description
+        const descInput = document.getElementById('id_description');
+        const descCount = document.getElementById('descCount');
+        
+        if (descInput && descCount) {
+            descInput.addEventListener('input', function() {
+                descCount.textContent = this.value.length + ' ta belgi';
+            });
+        }
+        
+        // Preview functionality
+        const previewBtn = document.getElementById('previewBtn');
+        const previewCard = document.getElementById('previewCard');
+        const previewContent = document.getElementById('previewContent');
+        
+        if (previewBtn) {
+            previewBtn.addEventListener('click', function() {
+                if (descInput.value.trim()) {
+                    previewCard.classList.remove('d-none');
+                    previewContent.innerHTML = descInput.value.replace(/\n/g, '<br>');
+                } else {
+                    alert('Iltimos, avval tavsif yozing!');
+                }
+            });
+        }
+        
+        // Form validation
+        const form = document.getElementById('homeworkForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const title = titleInput.value.trim();
+                const desc = descInput.value.trim();
+                const group = document.getElementById('id_group').value;
+                
+                if (!title || !desc || !group) {
+                    e.preventDefault();
+                    alert('Iltimos, barcha majburiy maydonlarni to\'ldiring!');
+                    return false;
+                }
+                
+                if (title.length < 5) {
+                    e.preventDefault();
+                    alert('Topshiriq nomi kamida 5 belgidan iborat bo\'lishi kerak!');
+                    return false;
+                }
+                
+                if (desc.length < 20) {
+                    e.preventDefault();
+                    alert('Tavsif kamida 20 belgidan iborat bo\'lishi kerak!');
+                    return false;
+                }
+            });
+        }
+    });
+    
+    // Quick deadline setter
+    function setDeadline(days) {
+        const deadlineInput = document.getElementById('id_deadline');
+        if (deadlineInput) {
+            const now = new Date();
+            now.setDate(now.getDate() + days);
+            now.setHours(23, 59, 0, 0);
+            
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            
+            deadlineInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+    }
+</script>
+{% endblock %}

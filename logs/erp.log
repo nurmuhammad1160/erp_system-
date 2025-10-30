@@ -2337,3 +2337,841 @@ INFO 2025-10-26 19:38:11 basehttp "GET /accounts/register/ HTTP/1.1" 200 10371
 INFO 2025-10-26 19:39:02 basehttp "GET /accounts/register/ HTTP/1.1" 200 10380
 WARNING 2025-10-26 19:39:49 views Registration xatosi: <ul class="errorlist"><li>type<ul class="errorlist" id="id_type_error"><li>Ushbu maydon to&#x27;ldirilishi shart.</li></ul></li></ul>
 INFO 2025-10-26 19:39:49 basehttp "POST /accounts/register/ HTTP/1.1" 200 10619
+INFO 2025-10-30 14:37:13 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 14:37:39 basehttp "GET / HTTP/1.1" 200 6092
+INFO 2025-10-30 14:37:39 basehttp "GET /static/js/main.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:37:39 basehttp "GET /static/css/style.css HTTP/1.1" 200 998
+INFO 2025-10-30 14:38:00 basehttp "GET / HTTP/1.1" 200 6092
+INFO 2025-10-30 14:38:05 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-10-30 14:38:05 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4171
+INFO 2025-10-30 14:38:05 basehttp "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+INFO 2025-10-30 14:38:05 basehttp "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2025-10-30 14:38:05 basehttp "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+INFO 2025-10-30 14:38:05 basehttp "GET /static/admin/js/theme.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:05 basehttp "GET /static/admin/css/login.css HTTP/1.1" 200 951
+INFO 2025-10-30 14:38:05 basehttp "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+INFO 2025-10-30 14:38:05 basehttp "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:10 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4410
+INFO 2025-10-30 14:38:18 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4403
+INFO 2025-10-30 14:38:39 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-10-30 14:38:39 basehttp "GET /admin/ HTTP/1.1" 200 23138
+INFO 2025-10-30 14:38:39 basehttp "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-10-30 14:38:39 basehttp "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-10-30 14:38:39 basehttp "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-10-30 14:38:43 basehttp "GET /admin/accounts/user/ HTTP/1.1" 200 23632
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+INFO 2025-10-30 14:38:43 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/js/core.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+INFO 2025-10-30 14:38:43 basehttp "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-10-30 14:38:51 basehttp "GET /accounts/login/ HTTP/1.1" 302 0
+INFO 2025-10-30 14:38:51 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:39:05 basehttp "GET /admin/accounts/user/2/change/ HTTP/1.1" 200 35575
+INFO 2025-10-30 14:39:06 basehttp "GET /static/admin/css/forms.css HTTP/1.1" 200 8525
+INFO 2025-10-30 14:39:06 basehttp "GET /static/admin/js/SelectBox.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:39:06 basehttp "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:39:06 basehttp "GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:39:06 basehttp "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+INFO 2025-10-30 14:39:06 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 14:39:06 basehttp "GET /static/admin/css/widgets.css HTTP/1.1" 200 11991
+INFO 2025-10-30 14:39:06 basehttp "GET /static/admin/img/selector-icons.svg HTTP/1.1" 200 3291
+INFO 2025-10-30 14:39:12 basehttp "GET /admin/accounts/studentprofile/ HTTP/1.1" 200 21814
+INFO 2025-10-30 14:39:12 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 14:39:17 basehttp "GET /admin/accounts/studentprofile/2/change/ HTTP/1.1" 200 23484
+INFO 2025-10-30 14:39:17 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 14:39:17 basehttp "GET /static/admin/js/calendar.js HTTP/1.1" 200 9141
+INFO 2025-10-30 14:39:17 basehttp "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+INFO 2025-10-30 14:39:18 basehttp "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+INFO 2025-10-30 14:39:23 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:39:28 basehttp "POST /admin/accounts/studentprofile/2/change/ HTTP/1.1" 302 0
+INFO 2025-10-30 14:39:28 basehttp "GET /admin/accounts/studentprofile/ HTTP/1.1" 200 22053
+INFO 2025-10-30 14:39:28 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 14:39:30 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:39:32 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:39:32 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:39:33 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:39:36 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:39:39 basehttp "GET /accounts/logout-confirm/ HTTP/1.1" 200 12604
+INFO 2025-10-30 14:39:41 views User logout: admin@gmail.com
+INFO 2025-10-30 14:39:41 basehttp "POST /accounts/logout/ HTTP/1.1" 302 0
+INFO 2025-10-30 14:39:41 basehttp "GET / HTTP/1.1" 200 6092
+INFO 2025-10-30 14:39:42 basehttp "GET /accounts/login/ HTTP/1.1" 200 6105
+INFO 2025-10-30 14:39:46 views User login: admin@gmail.com (student)
+INFO 2025-10-30 14:39:46 basehttp "POST /accounts/login/ HTTP/1.1" 302 0
+INFO 2025-10-30 14:39:46 basehttp "GET /student/dashboard/ HTTP/1.1" 200 17078
+INFO 2025-10-30 14:39:51 basehttp "GET /admin/accounts/studentprofile/2/change/ HTTP/1.1" 200 23484
+INFO 2025-10-30 14:39:51 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 14:39:56 basehttp "POST /admin/accounts/studentprofile/2/change/ HTTP/1.1" 302 0
+INFO 2025-10-30 14:39:56 basehttp "GET /admin/accounts/studentprofile/ HTTP/1.1" 200 22052
+INFO 2025-10-30 14:39:57 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 14:39:59 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:40:00 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:40:00 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:40:00 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 14:40:00 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-10-30 15:09:39 basehttp "GET /admin/accounts/user/ HTTP/1.1" 200 23632
+INFO 2025-10-30 15:09:39 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 15:09:41 basehttp "GET /admin/accounts/user/2/change/ HTTP/1.1" 200 35575
+INFO 2025-10-30 15:09:41 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 15:09:48 basehttp "POST /admin/accounts/user/2/change/ HTTP/1.1" 302 0
+INFO 2025-10-30 15:09:48 basehttp "GET /admin/accounts/user/ HTTP/1.1" 200 23835
+INFO 2025-10-30 15:09:48 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 15:09:53 basehttp "GET / HTTP/1.1" 200 14030
+INFO 2025-10-30 15:09:59 basehttp "GET /accounts/logout-confirm/ HTTP/1.1" 200 12604
+INFO 2025-10-30 15:10:01 views User logout: admin@gmail.com
+INFO 2025-10-30 15:10:01 basehttp "POST /accounts/logout/ HTTP/1.1" 302 0
+INFO 2025-10-30 15:10:01 basehttp "GET / HTTP/1.1" 200 6092
+INFO 2025-10-30 15:10:02 basehttp "GET /accounts/login/ HTTP/1.1" 200 6105
+INFO 2025-10-30 15:10:06 views User login: admin@gmail.com (teacher)
+INFO 2025-10-30 15:10:06 basehttp "POST /accounts/login/ HTTP/1.1" 302 0
+ERROR 2025-10-30 15:10:06 log Internal Server Error: /teacher/dashboard/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'groups' not found. 'groups' is not a valid view function or pattern name.
+ERROR 2025-10-30 15:10:06 basehttp "GET /teacher/dashboard/ HTTP/1.1" 500 166363
+INFO 2025-10-30 15:19:19 autoreload /home/nurmuhammad/Documents/erp_system/academics/urls_teacher.py changed, reloading.
+INFO 2025-10-30 15:19:20 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:20:04 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:20:05 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:20:12 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:20:12 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:20:19 autoreload /home/nurmuhammad/Documents/erp_system/academics/urls_teacher.py changed, reloading.
+INFO 2025-10-30 15:20:20 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:20:23 autoreload /home/nurmuhammad/Documents/erp_system/academics/urls_teacher.py changed, reloading.
+INFO 2025-10-30 15:20:23 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:20:25 autoreload /home/nurmuhammad/Documents/erp_system/academics/urls_teacher.py changed, reloading.
+INFO 2025-10-30 15:20:25 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:20:28 autoreload /home/nurmuhammad/Documents/erp_system/academics/urls_teacher.py changed, reloading.
+INFO 2025-10-30 15:20:29 autoreload Watching for file changes with StatReloader
+ERROR 2025-10-30 15:20:35 log Internal Server Error: /teacher/dashboard/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'materials' not found. 'materials' is not a valid view function or pattern name.
+ERROR 2025-10-30 15:20:35 basehttp "GET /teacher/dashboard/ HTTP/1.1" 500 166606
+ERROR 2025-10-30 15:20:37 log Internal Server Error: /teacher/dashboard/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'materials' not found. 'materials' is not a valid view function or pattern name.
+ERROR 2025-10-30 15:20:37 basehttp "GET /teacher/dashboard/ HTTP/1.1" 500 166606
+ERROR 2025-10-30 15:20:37 log Internal Server Error: /teacher/dashboard/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'materials' not found. 'materials' is not a valid view function or pattern name.
+ERROR 2025-10-30 15:20:37 basehttp "GET /teacher/dashboard/ HTTP/1.1" 500 166606
+ERROR 2025-10-30 15:20:38 log Internal Server Error: /teacher/dashboard/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'materials' not found. 'materials' is not a valid view function or pattern name.
+ERROR 2025-10-30 15:20:38 basehttp "GET /teacher/dashboard/ HTTP/1.1" 500 166606
+ERROR 2025-10-30 15:20:38 log Internal Server Error: /teacher/dashboard/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'materials' not found. 'materials' is not a valid view function or pattern name.
+ERROR 2025-10-30 15:20:38 basehttp "GET /teacher/dashboard/ HTTP/1.1" 500 166606
+ERROR 2025-10-30 15:20:38 log Internal Server Error: /teacher/dashboard/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'materials' not found. 'materials' is not a valid view function or pattern name.
+ERROR 2025-10-30 15:20:38 basehttp "GET /teacher/dashboard/ HTTP/1.1" 500 166606
+ERROR 2025-10-30 15:20:38 log Internal Server Error: /teacher/dashboard/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'materials' not found. 'materials' is not a valid view function or pattern name.
+ERROR 2025-10-30 15:20:38 basehttp "GET /teacher/dashboard/ HTTP/1.1" 500 166606
+INFO 2025-10-30 15:27:49 autoreload /home/nurmuhammad/Documents/erp_system/academics/urls_teacher.py changed, reloading.
+INFO 2025-10-30 15:27:49 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:28:14 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:28:14 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:28:15 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:28:15 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:28:49 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:28:49 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:28:54 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:28:54 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:29:06 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:29:07 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:29:08 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:29:08 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:29:19 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:29:19 autoreload Watching for file changes with StatReloader
+ERROR 2025-10-30 15:29:35 log Internal Server Error: /teacher/dashboard/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'schedule' not found. 'schedule' is not a valid view function or pattern name.
+ERROR 2025-10-30 15:29:35 basehttp "GET /teacher/dashboard/ HTTP/1.1" 500 165749
+INFO 2025-10-30 15:34:57 autoreload /home/nurmuhammad/Documents/erp_system/academics/urls_teacher.py changed, reloading.
+INFO 2025-10-30 15:34:57 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:35:17 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:35:18 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:35:42 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:35:42 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:35:52 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:35:53 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:36:08 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:36:08 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:36:37 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:36:38 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:36:40 autoreload /home/nurmuhammad/Documents/erp_system/academics/views.py changed, reloading.
+INFO 2025-10-30 15:36:40 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 15:59:19 basehttp "GET /teacher/dashboard/ HTTP/1.1" 200 24903
+ERROR 2025-10-30 15:59:29 log Internal Server Error: /teacher/homework/create/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: teacher/homework_create.html
+ERROR 2025-10-30 15:59:29 basehttp "GET /teacher/homework/create/ HTTP/1.1" 500 88253
+WARNING 2025-10-30 15:59:29 log Not Found: /favicon.ico
+ERROR 2025-10-30 15:59:38 log Internal Server Error: /teacher/attendance/create/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: teacher/attendance_create.html
+ERROR 2025-10-30 15:59:38 basehttp "GET /teacher/attendance/create/ HTTP/1.1" 500 88301
+WARNING 2025-10-30 15:59:39 log Not Found: /favicon.ico
+ERROR 2025-10-30 15:59:41 log Internal Server Error: /teacher/materials/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: teacher/materials_list.html
+ERROR 2025-10-30 15:59:41 basehttp "GET /teacher/materials/ HTTP/1.1" 500 88184
+ERROR 2025-10-30 15:59:47 log Internal Server Error: /teacher/grades/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/accounts/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/contrib/auth/mixins.py", line 135, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/views/generic/base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/views/generic/list.py", line 178, in get
+    context = self.get_context_data()
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/academics/views.py", line 380, in get_context_data
+    avg=models.Avg('score')
+        ^^^^^^
+NameError: name 'models' is not defined
+ERROR 2025-10-30 15:59:47 basehttp "GET /teacher/grades/ HTTP/1.1" 500 101473
+INFO 2025-10-30 15:59:54 basehttp "GET /teacher/groups/1/ HTTP/1.1" 200 0
+INFO 2025-10-30 16:00:09 basehttp "GET /accounts/profile/ HTTP/1.1" 200 0
+INFO 2025-10-30 16:00:11 basehttp "GET /accounts/logout-confirm/ HTTP/1.1" 200 12604
+INFO 2025-10-30 16:00:14 basehttp "GET / HTTP/1.1" 200 14030
+INFO 2025-10-30 16:00:22 basehttp "GET / HTTP/1.1" 200 14030
+INFO 2025-10-30 16:00:28 basehttp "GET /accounts/logout-confirm/ HTTP/1.1" 200 12604
+WARNING 2025-10-30 16:00:29 log Not Found: /favicon.ico
+ERROR 2025-10-30 16:00:40 log Internal Server Error: /teacher/homework/unscored/
+Traceback (most recent call last):
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/nurmuhammad/Documents/erp_system/env/lib/python3.12/site-packages/django/template/loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: teacher/unchecked_submissions.html, academics/homeworksubmission_list.html
+ERROR 2025-10-30 16:00:40 basehttp "GET /teacher/homework/unscored/ HTTP/1.1" 500 90292
+INFO 2025-10-30 16:01:22 basehttp "GET / HTTP/1.1" 200 14030
+INFO 2025-10-30 20:48:10 autoreload Watching for file changes with StatReloader
+INFO 2025-10-30 20:48:13 basehttp "GET /teacher/dashboard/ HTTP/1.1" 302 0
+INFO 2025-10-30 20:48:13 basehttp "GET /accounts/login/?next=/teacher/dashboard/ HTTP/1.1" 200 6105
+INFO 2025-10-30 20:48:18 views User login: admin@gmail.com (teacher)
+INFO 2025-10-30 20:48:18 basehttp "POST /accounts/login/ HTTP/1.1" 302 0
+INFO 2025-10-30 20:48:18 basehttp "GET /teacher/dashboard/ HTTP/1.1" 200 25385
+INFO 2025-10-30 20:48:42 basehttp "GET /accounts/profile/ HTTP/1.1" 200 0
+WARNING 2025-10-30 20:48:42 log Not Found: /favicon.ico
+INFO 2025-10-30 20:48:45 basehttp "GET /admin/accounts/user/ HTTP/1.1" 200 23632
+INFO 2025-10-30 20:48:45 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 20:48:45 basehttp "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO 2025-10-30 20:48:45 basehttp "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+INFO 2025-10-30 20:48:45 basehttp "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO 2025-10-30 20:48:45 basehttp "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+INFO 2025-10-30 20:48:45 basehttp "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-10-30 20:48:45 basehttp "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-10-30 20:48:47 basehttp "GET /admin/accounts/user/2/change/ HTTP/1.1" 200 35575
+INFO 2025-10-30 20:48:48 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 20:48:48 basehttp "GET /static/admin/img/selector-icons.svg HTTP/1.1" 200 3291
+INFO 2025-10-30 20:48:55 basehttp "POST /admin/accounts/user/2/change/ HTTP/1.1" 302 0
+INFO 2025-10-30 20:48:55 basehttp "GET /admin/accounts/user/ HTTP/1.1" 200 23835
+INFO 2025-10-30 20:48:55 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-10-30 20:48:59 basehttp "GET /accounts/logout-confirm/ HTTP/1.1" 200 12604
+INFO 2025-10-30 20:49:00 views User logout: admin@gmail.com
+INFO 2025-10-30 20:49:00 basehttp "POST /accounts/logout/ HTTP/1.1" 302 0
+INFO 2025-10-30 20:49:00 basehttp "GET / HTTP/1.1" 200 6092
+INFO 2025-10-30 20:49:01 basehttp "GET /accounts/login/ HTTP/1.1" 200 6105
+INFO 2025-10-30 20:49:06 views User login: admin@gmail.com (student)
+INFO 2025-10-30 20:49:06 basehttp "POST /accounts/login/ HTTP/1.1" 302 0
+INFO 2025-10-30 20:49:06 basehttp "GET /student/dashboard/ HTTP/1.1" 200 17078

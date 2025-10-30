@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, TemplateView
 from django.db.models import Prefetch, Q
 from accounts.mixins import TeacherRequiredMixin, StudentRequiredMixin
-from accounts.models import StudentProfile
+from accounts.models import StudentProfile, TeacherProfile, User
 from courses.models import Course, Group
 from .models import Homework, HomeworkSubmission, Attendance
 from .forms import HomeworkForm, SubmissionCheckForm, AttendanceCreateForm
@@ -236,7 +236,255 @@ class AttendanceCreateView(TeacherRequiredMixin, CreateView):
             "Davomatni qayd qilishda xatolik."
         )
         return super().form_invalid(form)
+    
 
+class GroupsListView(TeacherRequiredMixin, ListView):
+    """
+    O'qituvchining guruhlari ro'yxati
+    """
+    model = Group
+    template_name = 'teacher/groups.html'
+    context_object_name = 'groups'
+    paginate_by = 20
+    
+    def get_queryset(self):
+        teacher = self.request.user.teacher_profile
+        return teacher.groups.all().select_related(
+            'course',
+            'teacher__user'
+        ).prefetch_related('students')
+
+
+class GroupDetailView(TeacherRequiredMixin, DetailView):
+    """
+    Guruh detallar - studentlar, homework, attendance
+    """
+    model = Group
+    template_name = 'teacher/group_detail.html'
+    context_object_name = 'group'
+    pk_url_kwarg = 'pk'
+    
+    def get_queryset(self):
+        teacher = self.request.user.teacher_profile
+        return teacher.groups.all()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        group = context['group']
+        
+        # Guruh studentlari
+        students = group.students.all().select_related('user')
+        
+        # Guruh homework'lari
+        homeworks = Homework.objects.filter(
+            group=group
+        ).order_by('-deadline')[:10]
+        
+        # Yaqinda davomat
+        attendances = Attendance.objects.filter(
+            group=group
+        ).select_related('student__user').order_by('-date')[:20]
+        
+        context.update({
+            'students': students,
+            'homeworks': homeworks,
+            'recent_attendances': attendances,
+            'students_count': students.count(),
+        })
+        
+        return context
+    
+
+class MaterialsListView(TeacherRequiredMixin, TemplateView):
+    """
+    O'qituvchining materiallari ro'yxati
+    """
+    template_name = 'teacher/materials_list.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        teacher = self.request.user.teacher_profile
+        
+        # Hozircha oddiy context
+        context['teacher'] = teacher
+        context['message'] = 'Materiallar tizimi tez orada qo\'shiladi'
+        
+        return context
+
+
+class MaterialUploadView(TeacherRequiredMixin, TemplateView):
+    """
+    Material yuklash
+    """
+    template_name = 'teacher/material_upload.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['message'] = 'Material yuklash tizimi tez orada qo\'shiladi'
+        return context
+
+
+class StudentsListView(TeacherRequiredMixin, ListView):
+    """
+    O'qituvchining barcha studentlari
+    """
+    model = StudentProfile
+    template_name = 'teacher/students_list.html'
+    context_object_name = 'students'
+    paginate_by = 50
+    
+    def get_queryset(self):
+        teacher = self.request.user.teacher_profile
+        
+        # O'qituvchining guruhlaridagi barcha studentlar
+        return StudentProfile.objects.filter(
+            groups__teacher=teacher
+        ).distinct().select_related('user').order_by('user__first_name')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        teacher = self.request.user.teacher_profile
+        context['teacher'] = teacher
+        context['total_students'] = self.get_queryset().count()
+        return context
+    
+
+class GradesListView(TeacherRequiredMixin, ListView):
+    """
+    Barcha baholar ro'yxati
+    """
+    model = HomeworkSubmission
+    template_name = 'teacher/grades_list.html'
+    context_object_name = 'submissions'
+    paginate_by = 50
+    
+    def get_queryset(self):
+        teacher = self.request.user.teacher_profile
+        
+        return HomeworkSubmission.objects.filter(
+            homework__teacher=teacher,
+            score__isnull=False
+        ).select_related(
+            'student__user',
+            'homework__group__course',
+            'homework'
+        ).order_by('-submitted_at')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        teacher = self.request.user.teacher_profile
+        
+        # Statistika
+        total_graded = self.get_queryset().count()
+        avg_score = self.get_queryset().aggregate(
+            avg=models.Avg('score')
+        )['avg'] or 0
+        
+        context.update({
+            'teacher': teacher,
+            'total_graded': total_graded,
+            'average_score': round(avg_score, 2),
+        })
+        
+        return context
+
+
+class ScheduleView(TeacherRequiredMixin, TemplateView):
+    """
+    Dars jadvali
+    """
+    template_name = 'teacher/schedule.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        teacher = self.request.user.teacher_profile
+        
+        # Hozircha oddiy placeholder
+        context['teacher'] = teacher
+        context['message'] = 'Dars jadvali tizimi tez orada qo\'shiladi'
+        
+        return context
+
+
+
+class ReportsView(TeacherRequiredMixin, TemplateView):
+    """
+    Hisobotlar
+    """
+    template_name = 'teacher/reports.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        teacher = self.request.user.teacher_profile
+        
+        # Hozircha oddiy statistika
+        total_students = StudentProfile.objects.filter(
+            groups__teacher=teacher
+        ).distinct().count()
+        
+        total_homeworks = Homework.objects.filter(
+            teacher=teacher
+        ).count()
+        
+        graded_submissions = HomeworkSubmission.objects.filter(
+            homework__teacher=teacher,
+            score__isnull=False
+        ).count()
+        
+        context.update({
+            'teacher': teacher,
+            'total_students': total_students,
+            'total_homeworks': total_homeworks,
+            'graded_submissions': graded_submissions,
+        })
+        
+        return context
+    
+
+class TeacherProfileView(TeacherRequiredMixin, DetailView):
+    """
+    O'qituvchi profili
+    """
+    model = TeacherProfile
+    template_name = 'teacher/profile.html'
+    context_object_name = 'teacher'
+    
+    def get_object(self):
+        return self.request.user.teacher_profile
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        
+        # Qo'shimcha statistika
+        teacher = context['teacher']
+        context['groups_count'] = teacher.groups.count()
+        context['students_count'] = StudentProfile.objects.filter(
+            groups__teacher=teacher
+        ).distinct().count()
+        
+        return context
+
+
+class HomeworkListView(TeacherRequiredMixin, ListView):
+    """
+    Barcha topshiriqlar ro'yxati
+    """
+    model = Homework
+    template_name = 'teacher/homework_list.html'
+    context_object_name = 'homeworks'
+    paginate_by = 20
+    
+    def get_queryset(self):
+        teacher = self.request.user.teacher_profile
+        return Homework.objects.filter(
+            teacher=teacher
+        ).select_related('group__course').order_by('-deadline')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['teacher'] = self.request.user.teacher_profile
+        return context
 
 # ============================================================================
 # STUDENT VIEWS

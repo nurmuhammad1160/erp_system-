@@ -6,6 +6,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 from .models import Homework, Attendance, HomeworkSubmission
 from courses.models import Group
+from django.db.models import Count
+from django.utils import timezone
 
 
 class HomeworkForm(forms.ModelForm):
@@ -55,57 +57,77 @@ class HomeworkForm(forms.ModelForm):
         return deadline
 
 
-class AttendanceCreateForm(forms.ModelForm):
+
+class AttendanceSelectForm(forms.Form):
     """
-    Davomat qayd qilish formasі
+    Guruh va sana tanlash forması - davomat qayd qilish uchun
     """
-    class Meta:
-        model = Attendance
-        fields = ['group', 'student', 'date', 'status']
-        widgets = {
-            'group': forms.Select(attrs={
-                'class': 'form-control',
-                'placeholder': 'Guruh tanlang',
-                'required': True
-            }),
-            'student': forms.Select(attrs={
-                'class': 'form-control',
-                'placeholder': 'Talaba tanlang',
-                'required': True
-            }),
-            'date': forms.DateInput(attrs={
-                'class': 'form-control',
-                'type': 'date',
-                'required': True
-            }),
-            'status': forms.Select(attrs={
-                'class': 'form-control',
-                'required': True
-            }),
-        }
+    group = forms.ModelChoiceField(
+        queryset=Group.objects.none(),
+        empty_label="Guruhni tanlang",
+        widget=forms.Select(attrs={
+            'class': 'form-select form-select-lg',
+            'required': True
+        }),
+        label="Guruh"
+    )
+    
+    date = forms.DateField(
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'form-control form-control-lg',
+            'required': True
+        }),
+        label="Sana",
+        initial=timezone.now().date()
+    )
     
     def __init__(self, *args, teacher=None, **kwargs):
         super().__init__(*args, **kwargs)
         
-        # O'qituvchining faqat o'z guruhlarini ko'rish
+        # O'qituvchining faqat o'z guruhlarini ko'rsatish
         if teacher:
             self.fields['group'].queryset = Group.objects.filter(
-                teacher=teacher
+                teacher=teacher,
+                status='active'  # Faqat faol guruhlar
+            ).select_related('course').annotate(
+                active_students=Count('students', distinct=True)
             )
+
+
+class BulkAttendanceForm(forms.Form):
+    """
+    Bir nechta talabalarning davomatini bir vaqtda qayd qilish
+    """
+    group_id = forms.IntegerField(widget=forms.HiddenInput())
+    date = forms.DateField(widget=forms.HiddenInput())
     
-    def clean(self):
-        """Group va student mos-kelishini tekshirish"""
-        cleaned_data = super().clean()
-        group = cleaned_data.get('group')
-        student = cleaned_data.get('student')
+    def __init__(self, *args, students=None, **kwargs):
+        super().__init__(*args, **kwargs)
         
-        if group and student:
-            if not group.students.filter(id=student.id).exists():
-                raise ValidationError(
-                    "Tanlab olgan talaba ushbu guruhda yo'q."
+        # Har bir talaba uchun status field yaratish
+        if students:
+            for student in students:
+                field_name = f'status_{student.id}'
+                self.fields[field_name] = forms.ChoiceField(
+                    choices=Attendance.STATUS_CHOICES,
+                    initial='present',
+                    widget=forms.RadioSelect(attrs={
+                        'class': 'btn-check'
+                    }),
+                    required=True
                 )
-        
-        return cleaned_data
+                
+                # Izoh field (ixtiyoriy)
+                note_field_name = f'note_{student.id}'
+                self.fields[note_field_name] = forms.CharField(
+                    required=False,
+                    widget=forms.Textarea(attrs={
+                        'class': 'form-control form-control-sm',
+                        'rows': 2,
+                        'placeholder': 'Izoh (ixtiyoriy)...'
+                    })
+                )
 
 
 class SubmissionCheckForm(forms.ModelForm):

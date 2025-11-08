@@ -14,11 +14,12 @@
 {% block extra_css %}
 <style>
     .grades-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         color: white;
         padding: 40px;
         border-radius: 15px;
         margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
     }
     
     .stat-card-small {
@@ -56,21 +57,10 @@
         box-shadow: 0 5px 20px rgba(0,0,0,0.12);
     }
     
-    .grade-card.excellent {
-        border-color: #28a745;
-    }
-    
-    .grade-card.good {
-        border-color: #17a2b8;
-    }
-    
-    .grade-card.average {
-        border-color: #ffc107;
-    }
-    
-    .grade-card.poor {
-        border-color: #dc3545;
-    }
+    .grade-card.excellent { border-color: #28a745; }
+    .grade-card.good { border-color: #17a2b8; }
+    .grade-card.average { border-color: #ffc107; }
+    .grade-card.poor { border-color: #dc3545; }
     
     .score-badge {
         font-size: 2rem;
@@ -79,25 +69,10 @@
         border-radius: 10px;
     }
     
-    .score-excellent {
-        background: #d4edda;
-        color: #155724;
-    }
-    
-    .score-good {
-        background: #d1ecf1;
-        color: #0c5460;
-    }
-    
-    .score-average {
-        background: #fff3cd;
-        color: #856404;
-    }
-    
-    .score-poor {
-        background: #f8d7da;
-        color: #721c24;
-    }
+    .score-excellent { background: #d4edda; color: #155724; }
+    .score-good { background: #d1ecf1; color: #0c5460; }
+    .score-average { background: #fff3cd; color: #856404; }
+    .score-poor { background: #f8d7da; color: #721c24; }
     
     .filter-section {
         background: white;
@@ -128,7 +103,7 @@
         </div>
         <div class="col-md-4 text-md-end">
             <h5 class="mb-0">O'rtacha Ball</h5>
-            <h1 class="mb-0">87.5</h1>
+            <h1 class="mb-0">{{ average_score|floatformat:1|default:"0.0" }}</h1>
         </div>
     </div>
 </div>
@@ -138,29 +113,37 @@
     <div class="col-lg-3 col-md-6 mb-3">
         <div class="stat-card-small">
             <i class="bi bi-check-circle-fill text-success" style="font-size: 2rem;"></i>
-            <div class="stat-number text-success">{{ submissions.count }}</div>
-            <p class="text-muted mb-0">Jami Topshiriqlar</p>
+            <div class="stat-number text-success">{{ total_graded|default:0 }}</div>
+            <p class="text-muted mb-0">Baholangan</p>
         </div>
     </div>
     <div class="col-lg-3 col-md-6 mb-3">
         <div class="stat-card-small">
             <i class="bi bi-trophy-fill text-warning" style="font-size: 2rem;"></i>
-            <div class="stat-number text-warning">87.5</div>
-            <p class="text-muted mb-0">O'rtacha Ball</p>
+            <div class="stat-number text-warning">{{ average_score|floatformat:1|default:"0.0" }}</div>
+            <p class="text-muted mb-0">O'rtacha</p>
         </div>
     </div>
     <div class="col-lg-3 col-md-6 mb-3">
         <div class="stat-card-small">
             <i class="bi bi-star-fill text-primary" style="font-size: 2rem;"></i>
-            <div class="stat-number text-primary">A+</div>
-            <p class="text-muted mb-0">Umumiy Daraja</p>
+            <div class="stat-number text-primary">
+                {% if average_score >= 90 %}A+
+                {% elif average_score >= 80 %}A
+                {% elif average_score >= 70 %}B
+                {% elif average_score >= 60 %}C
+                {% elif average_score >= 50 %}D
+                {% else %}F
+                {% endif %}
+            </div>
+            <p class="text-muted mb-0">Daraja</p>
         </div>
     </div>
     <div class="col-lg-3 col-md-6 mb-3">
         <div class="stat-card-small">
             <i class="bi bi-graph-up-arrow text-info" style="font-size: 2rem;"></i>
-            <div class="stat-number text-info">+5%</div>
-            <p class="text-muted mb-0">O'sish</p>
+            <div class="stat-number text-info">{{ highest_score|default:0 }}</div>
+            <p class="text-muted mb-0">Eng Yuqori</p>
         </div>
     </div>
 </div>
@@ -173,32 +156,44 @@
         
         <!-- Filter -->
         <div class="filter-section">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <label class="form-label mb-2"><i class="bi bi-funnel"></i> Kurs bo'yicha filtr</label>
-                    <select class="form-select" id="courseFilter">
-                        <option value="">Barcha kurslar</option>
-                        <option value="python">Python Asoslari</option>
-                        <option value="web">Web Development</option>
-                        <option value="data">Data Science</option>
-                    </select>
+            <form method="get" id="filterForm">
+                <div class="row align-items-end">
+                    <div class="col-md-6">
+                        <label class="form-label mb-2">
+                            <i class="bi bi-funnel"></i> Kurs bo'yicha filtr
+                        </label>
+                        <select class="form-select" name="course" id="courseFilter">
+                            <option value="">Barcha kurslar</option>
+                            {% for course in courses %}
+                            <option value="{{ course.id }}" {% if current_course == course.id|stringformat:"s" %}selected{% endif %}>
+                                {{ course.title }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> Qidirish
+                        </button>
+                    </div>
+                    {% if current_course %}
+                    <div class="col-md-2">
+                        <a href="{% url 'student:grades' %}" class="btn btn-outline-secondary w-100">
+                            <i class="bi bi-x"></i> Tozalash
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label mb-2"><i class="bi bi-sort-down"></i> Tartiblash</label>
-                    <select class="form-select" id="sortFilter">
-                        <option value="recent">Eng yangi</option>
-                        <option value="highest">Eng yuqori ball</option>
-                        <option value="lowest">Eng past ball</option>
-                    </select>
-                </div>
-            </div>
+            </form>
         </div>
         
         <!-- Grades List -->
         <div id="gradesList">
             {% if submissions %}
                 {% for submission in submissions %}
-                <div class="grade-card {% if submission.score >= 85 %}excellent{% elif submission.score >= 70 %}good{% elif submission.score >= 50 %}average{% else %}poor{% endif %}">
+                <div class="grade-card submission-card" 
+                     data-score="{{ submission.score }}" 
+                     data-max="{{ submission.homework.max_score }}">
                     <div class="row align-items-center">
                         <div class="col-md-7">
                             <h5 class="mb-1">{{ submission.homework.title }}</h5>
@@ -211,17 +206,14 @@
                             </small>
                         </div>
                         <div class="col-md-3 text-center">
-                            <div class="score-badge 
-                                {% if submission.score >= 85 %}score-excellent
-                                {% elif submission.score >= 70 %}score-good
-                                {% elif submission.score >= 50 %}score-average
-                                {% else %}score-poor{% endif %}">
+                            <div class="score-badge score-display">
                                 {{ submission.score|floatformat:0 }}
                             </div>
-                            <small class="text-muted d-block mt-1">/ 100 ball</small>
+                            <small class="text-muted d-block mt-1">/ {{ submission.homework.max_score }} ball</small>
+                            <small class="percentage-display badge bg-secondary mt-1"></small>
                         </div>
                         <div class="col-md-2 text-end">
-                            <a href="{% url 'student:homework' submission.homework.pk %}" class="btn btn-sm btn-outline-primary">
+                            <a href="{% url 'student:homework_detail' submission.homework.pk %}" class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-eye"></i> Ko'rish
                             </a>
                         </div>
@@ -229,52 +221,76 @@
                     
                     {% if submission.feedback %}
                     <div class="mt-3 pt-3 border-top">
-                        <small class="text-muted"><i class="bi bi-chat-quote"></i> O'qituvchi fikri:</small>
+                        <small class="text-muted">
+                            <i class="bi bi-chat-quote"></i> O'qituvchi izohi:
+                        </small>
                         <p class="mb-0 mt-2">{{ submission.feedback|truncatewords:20 }}</p>
+                        
+                        {% if submission.feedback|wordcount > 20 %}
+                        <button class="btn btn-sm btn-link p-0" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#feedback-{{ submission.id }}">
+                            To'liq ko'rish...
+                        </button>
+                        <div class="collapse" id="feedback-{{ submission.id }}">
+                            <p class="mt-2">{{ submission.feedback }}</p>
+                        </div>
+                        {% endif %}
                     </div>
                     {% endif %}
                 </div>
                 {% endfor %}
+                
+                <!-- Pagination -->
+                {% if is_paginated %}
+                <nav aria-label="Pagination" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_course %}&course={{ current_course }}{% endif %}">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        <li class="page-item active">
+                            <span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+                        
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_course %}&course={{ current_course }}{% endif %}">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+                
             {% else %}
                 <div class="text-center py-5">
                     <i class="bi bi-inbox" style="font-size: 5rem; color: #dee2e6;"></i>
                     <h4 class="mt-3 text-muted">Hali baholar yo'q</h4>
-                    <p class="text-muted">Siz hali hech qanday topshiriq yubormagan yoki baholanmagan</p>
-                    <a href="{% url 'student:homeworks' %}" class="btn btn-primary mt-3">
+                    <p class="text-muted">
+                        {% if current_course %}
+                            Bu kurs bo'yicha baholangan topshiriqlar topilmadi.
+                        {% else %}
+                            Siz hali hech qanday topshiriq yubormagan yoki baholanmagan.
+                        {% endif %}
+                    </p>
+                    {% if current_course %}
+                    <a href="{% url 'student:grades' %}" class="btn btn-outline-primary mt-3">
+                        <i class="bi bi-arrow-counterclockwise"></i> Barchasini Ko'rish
+                    </a>
+                    {% else %}
+                    <a href="{% url 'student:homework_list' %}" class="btn btn-primary mt-3">
                         <i class="bi bi-file-text"></i> Topshiriqlarga o'tish
                     </a>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>
-        
-        <!-- Pagination -->
-        {% if submissions.has_other_pages %}
-        <nav aria-label="Pagination" class="mt-4">
-            <ul class="pagination justify-content-center">
-                {% if submissions.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ submissions.previous_page_number }}">
-                        <i class="bi bi-chevron-left"></i>
-                    </a>
-                </li>
-                {% endif %}
-                
-                {% for num in submissions.paginator.page_range %}
-                <li class="page-item {% if submissions.number == num %}active{% endif %}">
-                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                </li>
-                {% endfor %}
-                
-                {% if submissions.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ submissions.next_page_number }}">
-                        <i class="bi bi-chevron-right"></i>
-                    </a>
-                </li>
-                {% endif %}
-            </ul>
-        </nav>
-        {% endif %}
         
     </div>
     
@@ -282,6 +298,7 @@
     <div class="col-lg-4">
         
         <!-- Performance Chart -->
+        {% if submissions %}
         <div class="chart-container">
             <h5 class="mb-3"><i class="bi bi-graph-up"></i> Baholar Dinamikasi</h5>
             <canvas id="gradesChart" height="200"></canvas>
@@ -292,37 +309,17 @@
             <h5 class="mb-3"><i class="bi bi-pie-chart"></i> Baholar Taqsimoti</h5>
             <canvas id="distributionChart" height="200"></canvas>
         </div>
+        {% endif %}
         
-        <!-- Course Performance -->
+        <!-- Tips -->
         <div class="chart-container">
-            <h5 class="mb-3"><i class="bi bi-bar-chart"></i> Kurslar bo'yicha</h5>
-            <div class="mb-3">
-                <div class="d-flex justify-content-between mb-1">
-                    <small>Python Asoslari</small>
-                    <strong class="text-success">92%</strong>
-                </div>
-                <div class="progress" style="height: 8px;">
-                    <div class="progress-bar bg-success" style="width: 92%"></div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="d-flex justify-content-between mb-1">
-                    <small>Web Development</small>
-                    <strong class="text-info">85%</strong>
-                </div>
-                <div class="progress" style="height: 8px;">
-                    <div class="progress-bar bg-info" style="width: 85%"></div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="d-flex justify-content-between mb-1">
-                    <small>Data Science</small>
-                    <strong class="text-warning">78%</strong>
-                </div>
-                <div class="progress" style="height: 8px;">
-                    <div class="progress-bar bg-warning" style="width: 78%"></div>
-                </div>
-            </div>
+            <h5 class="mb-3"><i class="bi bi-lightbulb"></i> Maslahatlar</h5>
+            <ul class="small mb-0" style="line-height: 1.8;">
+                <li>O'rtacha balingizni oshirish uchun barcha topshiriqlarni bajarish muhim</li>
+                <li>O'qituvchi izohlarini diqqat bilan o'qing</li>
+                <li>Topshiriqlarni muddatidan oldin yuboring</li>
+                <li>Qiyin mavzularda o'qituvchidan yordam so'rang</li>
+            </ul>
         </div>
         
     </div>
@@ -332,75 +329,141 @@
 {% endblock %}
 
 {% block extra_js %}
+<script>
+// Calculate percentages and apply colors using JavaScript
+document.addEventListener('DOMContentLoaded', function() {
+    const submissionCards = document.querySelectorAll('.submission-card');
+    
+    submissionCards.forEach(card => {
+        const score = parseFloat(card.dataset.score);
+        const maxScore = parseFloat(card.dataset.max);
+        const percentage = Math.round((score / maxScore) * 100);
+        
+        // Update percentage display
+        const percentageDisplay = card.querySelector('.percentage-display');
+        if (percentageDisplay) {
+            percentageDisplay.textContent = percentage + '%';
+        }
+        
+        // Apply color classes
+        const scoreDisplay = card.querySelector('.score-display');
+        if (percentage >= 85) {
+            card.classList.add('excellent');
+            scoreDisplay.classList.remove('score-good', 'score-average', 'score-poor');
+            scoreDisplay.classList.add('score-excellent');
+        } else if (percentage >= 70) {
+            card.classList.add('good');
+            scoreDisplay.classList.remove('score-excellent', 'score-average', 'score-poor');
+            scoreDisplay.classList.add('score-good');
+        } else if (percentage >= 50) {
+            card.classList.add('average');
+            scoreDisplay.classList.remove('score-excellent', 'score-good', 'score-poor');
+            scoreDisplay.classList.add('score-average');
+        } else {
+            card.classList.add('poor');
+            scoreDisplay.classList.remove('score-excellent', 'score-good', 'score-average');
+            scoreDisplay.classList.add('score-poor');
+        }
+    });
+});
+</script>
+
+{% if submissions %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Prepare data from Django
+    const gradesData = [
+        {% for submission in submissions|slice:":10" %}
+        {
+            label: '{{ submission.homework.title|truncatewords:2 }}',
+            score: {{ submission.score|default:0 }}
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+    
     // Grades Performance Chart
-    const gradesCtx = document.getElementById('gradesChart').getContext('2d');
-    const gradesChart = new Chart(gradesCtx, {
-        type: 'line',
-        data: {
-            labels: ['Dars 1', 'Dars 2', 'Dars 3', 'Dars 4', 'Dars 5', 'Dars 6'],
-            datasets: [{
-                label: 'Baholarim',
-                data: [75, 82, 88, 85, 92, 87],
-                borderColor: 'rgb(102, 126, 234)',
-                backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                }
+    const gradesCtx = document.getElementById('gradesChart');
+    if (gradesCtx) {
+        const gradesChart = new Chart(gradesCtx.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: gradesData.map(item => item.label),
+                datasets: [{
+                    label: 'Baholarim',
+                    data: gradesData.map(item => item.score),
+                    borderColor: 'rgb(240, 147, 251)',
+                    backgroundColor: 'rgba(240, 147, 251, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
                 }
             }
-        }
+        });
+    }
+    
+    // Calculate distribution
+    let excellent = 0, good = 0, average = 0, poor = 0, fail = 0;
+    gradesData.forEach(item => {
+        if (item.score >= 90) excellent++;
+        else if (item.score >= 80) good++;
+        else if (item.score >= 70) average++;
+        else if (item.score >= 60) poor++;
+        else fail++;
     });
     
     // Grade Distribution Chart
-    const distCtx = document.getElementById('distributionChart').getContext('2d');
-    const distributionChart = new Chart(distCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['A+ (90-100)', 'A (80-89)', 'B (70-79)', 'C (60-69)', 'D (<60)'],
-            datasets: [{
-                data: [35, 30, 20, 10, 5],
-                backgroundColor: [
-                    'rgba(40, 167, 69, 0.8)',
-                    'rgba(23, 162, 184, 0.8)',
-                    'rgba(255, 193, 7, 0.8)',
-                    'rgba(255, 152, 0, 0.8)',
-                    'rgba(220, 53, 69, 0.8)'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom'
+    const distCtx = document.getElementById('distributionChart');
+    if (distCtx) {
+        const distributionChart = new Chart(distCtx.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['A+ (90-100)', 'A (80-89)', 'B (70-79)', 'C (60-69)', 'D (<60)'],
+                datasets: [{
+                    data: [excellent, good, average, poor, fail],
+                    backgroundColor: [
+                        'rgba(40, 167, 69, 0.8)',
+                        'rgba(23, 162, 184, 0.8)',
+                        'rgba(255, 193, 7, 0.8)',
+                        'rgba(255, 152, 0, 0.8)',
+                        'rgba(220, 53, 69, 0.8)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            fontSize: 10
+                        }
+                    }
                 }
             }
-        }
-    });
-    
-    // Filter functionality
+        });
+    }
+</script>
+{% endif %}
+
+<script>
+    // Auto-submit on course change
     document.getElementById('courseFilter').addEventListener('change', function() {
-        // Filter logic here
-        console.log('Course filter:', this.value);
-    });
-    
-    document.getElementById('sortFilter').addEventListener('change', function() {
-        // Sort logic here
-        console.log('Sort by:', this.value);
+        if (this.value) {
+            document.getElementById('filterForm').submit();
+        }
     });
 </script>
 {% endblock %}

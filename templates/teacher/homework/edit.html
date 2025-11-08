@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Topshiriqni Baholash - O'qituvchi{% endblock %}
+
+{% block page_title %}Topshiriqni Baholash{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<a href="{% url 'teacher:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a> / 
+<a href="{% url 'teacher:unscored_homeworks' %}" class="text-decoration-none text-muted">Baholanmagan</a> / 
+<span>Baholash</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .grading-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .submission-info-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .info-item {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 10px 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .content-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    
+    .student-avatar-large {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 0 auto 15px;
+    }
+    
+    .score-input-group {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .score-input {
+        font-size: 2.5rem;
+        text-align: center;
+        font-weight: bold;
+        border: 3px solid #667eea;
+        border-radius: 15px;
+        padding: 20px;
+    }
+    
+    .score-input:focus {
+        border-color: #764ba2;
+        box-shadow: 0 0 0 0.3rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .score-label {
+        text-align: center;
+        font-size: 1.5rem;
+        color: #667eea;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+    
+    .max-score-badge {
+        text-align: center;
+        color: #6c757d;
+        margin-top: 10px;
+    }
+    
+    .feedback-section {
+        margin-top: 30px;
+    }
+    
+    .submission-content {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+    }
+    
+    .quick-score-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .quick-score-btn {
+        min-width: 80px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="grading-container">
+    
+    <!-- Submission Info Header -->
+    <div class="submission-info-card">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-center">
+                <div class="student-avatar-large">
+                    {{ submission.student.user.first_name.0|upper }}{{ submission.student.user.last_name.0|upper }}
+                </div>
+                <h5 class="mb-0">{{ submission.student.user.get_full_name }}</h5>
+                <small class="opacity-75">{{ submission.student.user.email }}</small>
+            </div>
+            <div class="col-md-9">
+                <h4 class="mb-3">
+                    <i class="bi bi-book"></i> {{ submission.homework.title }}
+                </h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="info-item">
+                            <i class="bi bi-people"></i> <strong>Guruh:</strong> {{ submission.homework.group.name }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-item">
+                            <i class="bi bi-calendar"></i> <strong>Yuborilgan:</strong> {{ submission.submitted_at|date:"d.m.Y H:i" }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <div class="info-item">
+                            <i class="bi bi-clock"></i> <strong>Muddat:</strong> {{ submission.homework.deadline|date:"d.m.Y H:i" }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-item">
+                            {% if submission.submitted_at > submission.homework.deadline %}
+                                <i class="bi bi-exclamation-circle"></i> <strong>Kech topshirilgan</strong>
+                            {% else %}
+                                <i class="bi bi-check-circle"></i> <strong>Vaqtida topshirilgan</strong>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Submission Content -->
+    <div class="content-card">
+        <h5 class="mb-3">
+            <i class="bi bi-file-text"></i> Talaba Javobi
+        </h5>
+        
+        <!-- Text Answer -->
+        {% if submission.text %}
+        <div class="submission-content mb-4">
+            <h6 class="text-muted mb-2">Matnli javob:</h6>
+            <p class="mb-0" style="white-space: pre-wrap;">{{ submission.text }}</p>
+        </div>
+        {% endif %}
+        
+        <!-- File -->
+        {% if submission.file %}
+        <div class="text-center py-4">
+            <i class="bi bi-file-earmark-arrow-down" style="font-size: 3rem; color: #667eea;"></i>
+            <div class="mt-3">
+                <a href="{{ submission.file.url }}" target="_blank" class="btn btn-primary btn-lg">
+                    <i class="bi bi-download"></i> Faylni Yuklab Olish
+                </a>
+            </div>
+            <small class="text-muted d-block mt-2">{{ submission.file.name }}</small>
+        </div>
+        {% endif %}
+        
+        {% if not submission.text and not submission.file %}
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle"></i> Talaba hech narsa yubormagan!
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Grading Form -->
+    <div class="content-card">
+        <h5 class="mb-4 text-center">
+            <i class="bi bi-star"></i> Baholash
+        </h5>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- Quick Score Buttons -->
+            <div class="quick-score-buttons">
+                <button type="button" class="btn btn-outline-danger quick-score-btn" onclick="setScore(0)">0</button>
+                <button type="button" class="btn btn-outline-warning quick-score-btn" onclick="setScore(50)">50</button>
+                <button type="button" class="btn btn-outline-info quick-score-btn" onclick="setScore(70)">70</button>
+                <button type="button" class="btn btn-outline-primary quick-score-btn" onclick="setScore(85)">85</button>
+                <button type="button" class="btn btn-outline-success quick-score-btn" onclick="setScore(100)">100</button>
+            </div>
+            
+            <!-- Score Input -->
+            <div class="score-input-group">
+                <div class="score-label">
+                    <i class="bi bi-star-fill"></i> Ball
+                </div>
+                {% render_field form.score class="form-control score-input" type="number" min="0" max=submission.homework.max_score placeholder="0" %}
+                {% if form.score.errors %}
+                    <div class="text-danger text-center mt-2">{{ form.score.errors.0 }}</div>
+                {% endif %}
+                <div class="max-score-badge">
+                    <small>Maksimal: {{ submission.homework.max_score }} ball</small>
+                </div>
+            </div>
+            
+            <!-- Feedback Section -->
+            <div class="feedback-section">
+                <label for="{{ form.feedback.id_for_label }}" class="form-label">
+                    <i class="bi bi-chat-left-text"></i> Izoh (Ixtiyoriy)
+                </label>
+                {% render_field form.feedback class="form-control" rows="5" placeholder="Talabaga fikr-mulohaza yozing..." %}
+                {% if form.feedback.errors %}
+                    <div class="text-danger small mt-1">{{ form.feedback.errors.0 }}</div>
+                {% endif %}
+                <small class="text-muted">
+                    <i class="bi bi-info-circle"></i> Bu izoh talabaga ko'rinadi
+                </small>
+            </div>
+            
+            <!-- Non-field Errors -->
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger mt-3">
+                    {{ form.non_field_errors.0 }}
+                </div>
+            {% endif %}
+            
+            <!-- Submit Buttons -->
+            <div class="row mt-4">
+                <div class="col-md-6 mb-2 mb-md-0">
+                    <a href="{% url 'teacher:unscored_homeworks' %}" class="btn btn-outline-secondary w-100 btn-lg">
+                        <i class="bi bi-x-circle"></i> Bekor Qilish
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-success w-100 btn-lg">
+                        <i class="bi bi-check-circle"></i> Baholashni Saqlash
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Set score function
+    function setScore(score) {
+        document.querySelector('input[name="score"]').value = score;
+    }
+    
+    // Validate score
+    const scoreInput = document.querySelector('input[name="score"]');
+    const maxScore = {{ submission.homework.max_score }};
+    
+    scoreInput.addEventListener('input', function() {
+        if (parseInt(this.value) > maxScore) {
+            this.value = maxScore;
+        }
+        if (parseInt(this.value) < 0) {
+            this.value = 0;
+        }
+    });
+    
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const score = scoreInput.value;
+        if (score === '' || score === null) {
+            e.preventDefault();
+            alert('Iltimos, ball kiriting!');
+            scoreInput.focus();
+        }
+    });
+</script>
+{% endblock %}

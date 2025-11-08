@@ -12,189 +12,430 @@
 
 {% block extra_css %}
 <style>
-    .stat-card {
-        border-radius: 10px;
-        padding: 20px;
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        transition: transform 0.3s;
+        padding: 35px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s;
+        height: 100%;
+        border: 2px solid transparent;
     }
     
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
     }
     
     .stat-card.blue {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
     }
     
     .stat-card.green {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        border-color: #28a745;
     }
     
     .stat-card.orange {
-        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        border-color: #ffc107;
     }
     
     .stat-card.red {
-        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        border-color: #dc3545;
     }
     
-    .stat-card h3 {
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        font-size: 1.8rem;
+    }
+    
+    .stat-card.blue .stat-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .stat-card.green .stat-icon {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+    }
+    
+    .stat-card.orange .stat-icon {
+        background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+        color: white;
+    }
+    
+    .stat-card.red .stat-icon {
+        background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+        color: white;
+    }
+    
+    .stat-number {
         font-size: 2.5rem;
+        font-weight: bold;
         margin: 10px 0;
+        color: #2c3e50;
     }
     
-    .card {
-        border: none;
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .content-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    
+    .content-card h5 {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+    
+    .homework-item {
+        background: #f8f9fa;
         border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        transition: transform 0.3s;
+        padding: 15px;
+        margin-bottom: 12px;
+        border-left: 4px solid #667eea;
+        transition: all 0.3s;
     }
     
-    .card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+    .homework-item:hover {
+        background: white;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .homework-item.overdue {
+        border-left-color: #dc3545;
+    }
+    
+    .grade-item {
+        padding: 12px;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .grade-item:last-child {
+        border-bottom: none;
+    }
+    
+    .progress-circle {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 15px;
     }
 </style>
 {% endblock %}
 
 {% block content %}
 
-<!-- Error handling -->
-{% if student_profile_missing %}
-<div class="alert alert-danger">
-    <i class="bi bi-exclamation-triangle"></i> 
-    <strong>Diqqat!</strong> Sizning talaba profilingiz topilmadi. Iltimos, administrator bilan bog'laning.
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h2 class="mb-2">
+                <i class="bi bi-house-door"></i> Xush Kelibsiz!
+            </h2>
+            <p class="mb-0 opacity-85">
+                {{ student.user.get_full_name|default:student.user.email }}
+            </p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <div class="badge bg-white text-dark px-3 py-2" style="font-size: 1rem;">
+                <i class="bi bi-calendar3"></i> {% now "d F, Y" %}
+            </div>
+        </div>
+    </div>
 </div>
-{% else %}
 
-<!-- Welcome Section -->
-<div class="mb-4">
-    <h2>Xush kelibsiz! 👋</h2>
-    <p class="text-muted">Talaba Dashboard - Bugungi sana: {% now "d F, Y" %}</p>
-</div>
-
-<!-- Statistics Cards -->
+<!-- Main Statistics -->
 <div class="row mb-4">
     
     <!-- Kurslar -->
     <div class="col-lg-3 col-md-6 mb-3">
         <div class="stat-card blue">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <p class="mb-0">Kurslarim</p>
-                    <h3>{{ courses.count|default:0 }}</h3>
-                    <small>Faol kurslar</small>
-                </div>
-                <i class="bi bi-book" style="font-size: 3rem; opacity: 0.3;"></i>
+            <div class="stat-icon">
+                <i class="bi bi-book"></i>
             </div>
+            <div class="stat-number">{{ courses_count }}</div>
+            <div class="stat-label">Faol Kurslar</div>
         </div>
     </div>
     
     <!-- Guruhlar -->
     <div class="col-lg-3 col-md-6 mb-3">
         <div class="stat-card green">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <p class="mb-0">Guruhlarim</p>
-                    <h3>{{ groups.count|default:0 }}</h3>
-                    <small>Faol guruhlar</small>
-                </div>
-                <i class="bi bi-people" style="font-size: 3rem; opacity: 0.3;"></i>
+            <div class="stat-icon">
+                <i class="bi bi-people"></i>
             </div>
+            <div class="stat-number">{{ groups_count }}</div>
+            <div class="stat-label">Guruhlarim</div>
         </div>
     </div>
     
     <!-- Topshiriqlar -->
     <div class="col-lg-3 col-md-6 mb-3">
         <div class="stat-card orange">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <p class="mb-0">Topshiriqlar</p>
-                    <h3>{{ homeworks.count|default:0 }}</h3>
-                    <small>Yangi topshiriqlar</small>
-                </div>
-                <i class="bi bi-file-text" style="font-size: 3rem; opacity: 0.3;"></i>
+            <div class="stat-icon">
+                <i class="bi bi-file-text"></i>
             </div>
+            <div class="stat-number">{{ pending_count }}</div>
+            <div class="stat-label">Kutilayotgan Topshiriqlar</div>
         </div>
     </div>
     
-    <!-- Balans -->
+    <!-- O'rtacha Ball -->
     <div class="col-lg-3 col-md-6 mb-3">
         <div class="stat-card red">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <p class="mb-0">Balans</p>
-                    <h3>{{ student.balance|floatformat:0|default:0 }}</h3>
-                    <small>so'm</small>
-                </div>
-                <i class="bi bi-wallet2" style="font-size: 3rem; opacity: 0.3;"></i>
+            <div class="stat-icon">
+                <i class="bi bi-star"></i>
             </div>
+            <div class="stat-number">{{ average_score|floatformat:1 }}</div>
+            <div class="stat-label">O'rtacha Ball</div>
         </div>
     </div>
     
 </div>
 
-<!-- Main Content -->
-<div class="row">
+<!-- Homework Statistics Row -->
+<div class="row mb-4">
     
-    <!-- Welcome Card -->
     <div class="col-lg-8">
-        <div class="card">
-            <div class="card-body text-center py-5">
-                <i class="bi bi-emoji-smile" style="font-size: 4rem; color: #667eea;"></i>
-                <h3 class="mt-3 mb-3">Talaba Dashboard</h3>
-                <p class="text-muted mb-4">
-                    Bu yerda sizning barcha ma'lumotlaringiz ko'rinadi.<br>
-                    Kurslar, topshiriqlar, baholar va boshqa ma'lumotlar.
-                </p>
-                <div class="alert alert-info">
-                    <i class="bi bi-info-circle"></i> 
-                    <strong>Eslatma:</strong> URLs lar hali to'liq sozlanmagan. 
-                    Tizim rivojlantirilmoqda.
+        <!-- Homework Stats -->
+        <div class="content-card">
+            <h5><i class="bi bi-clipboard-data"></i> Topshiriqlar Statistikasi</h5>
+            
+            <div class="row text-center g-3">
+                <div class="col-md-3 col-6">
+                    <div class="p-3 bg-light rounded">
+                        <div class="h3 mb-1 text-primary">{{ pending_count }}</div>
+                        <small class="text-muted">Kutilmoqda</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="p-3 bg-light rounded">
+                        <div class="h3 mb-1 text-warning">{{ submitted_count }}</div>
+                        <small class="text-muted">Yuborilgan</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="p-3 bg-light rounded">
+                        <div class="h3 mb-1 text-success">{{ graded_count }}</div>
+                        <small class="text-muted">Baholangan</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="p-3 bg-light rounded">
+                        <div class="h3 mb-1 text-danger">{{ overdue_count }}</div>
+                        <small class="text-muted">Kech qolgan</small>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    
-    <!-- Quick Info -->
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header bg-white">
-                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Tezkor Ma'lumot</h5>
-            </div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <small class="text-muted">Email:</small><br>
-                    <strong>{{ user.email }}</strong>
+            
+            <hr>
+            
+            <!-- Upcoming Homeworks -->
+            <h6 class="mb-3"><i class="bi bi-clock"></i> Yaqinda Tugaydigan Topshiriqlar</h6>
+            
+            {% if upcoming_homeworks %}
+                {% for homework in upcoming_homeworks %}
+                <div class="homework-item {% if homework.deadline < now %}overdue{% endif %}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">{{ homework.title }}</h6>
+                            <small class="text-muted">
+                                <i class="bi bi-book"></i> {{ homework.group.course.title }} - {{ homework.group.name }}
+                            </small>
+                        </div>
+                        <div class="text-end">
+                            <div class="badge bg-warning">
+                                <i class="bi bi-calendar"></i> {{ homework.deadline|date:"d.m.Y" }}
+                            </div>
+                            <br>
+                            <small class="text-muted">{{ homework.deadline|timeuntil }}</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <small class="text-muted">Rol:</small><br>
-                    <strong>{{ user.get_type_display }}</strong>
-                </div>
-                <div class="mb-3">
-                    <small class="text-muted">Status:</small><br>
-                    <span class="badge bg-success">Faol</span>
-                </div>
-                <hr>
-                <div class="d-grid">
-                    <a href="{% url 'accounts:profile' %}" class="btn btn-outline-primary">
-                        <i class="bi bi-person"></i> Profilni Ko'rish
+                {% endfor %}
+                
+                <div class="text-center mt-3">
+                    <a href="{% url 'student:homework_list' %}" class="btn btn-outline-primary">
+                        <i class="bi bi-list"></i> Barcha Topshiriqlar
                     </a>
                 </div>
+            {% else %}
+                <div class="text-center py-4 text-muted">
+                    <i class="bi bi-check-circle" style="font-size: 3rem; opacity: 0.3;"></i>
+                    <p class="mt-2">Yaqinda tugaydigan topshiriqlar yo'q</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Attendance Card -->
+        <div class="content-card">
+            <h5><i class="bi bi-calendar-check"></i> Davomat</h5>
+            
+            <!-- Attendance Circle -->
+            <div class="progress-circle mb-3">
+                <svg width="120" height="120">
+                    <circle cx="60" cy="60" r="50" 
+                            stroke="#e9ecef" 
+                            stroke-width="10" 
+                            fill="none"/>
+                    <circle cx="60" cy="60" r="50" 
+                            stroke="#28a745" 
+                            stroke-width="10" 
+                            fill="none"
+                            stroke-dasharray="314"
+                            stroke-dashoffset="{{ 314|add:attendance_rate|floatformat:0|divisibleby:100|yesno:'0,157' }}"
+                            transform="rotate(-90 60 60)"
+                            style="transition: stroke-dashoffset 0.5s;"/>
+                    <text x="60" y="70" 
+                          text-anchor="middle" 
+                          font-size="20" 
+                          font-weight="bold" 
+                          fill="#28a745">{{ attendance_rate }}%</text>
+                </svg>
+            </div>
+            
+            <div class="text-center mb-3">
+                <h4 class="text-success mb-0">{{ attendance_rate }}%</h4>
+                <small class="text-muted">Davomat Ko'rsatkichi</small>
+            </div>
+            
+            <div class="row text-center g-2 mb-3">
+                <div class="col-6">
+                    <div class="p-2 bg-light rounded">
+                        <small class="text-muted d-block">Jami</small>
+                        <strong>{{ total_attendance }}</strong>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-2 bg-light rounded">
+                        <small class="text-muted d-block">Kelgan</small>
+                        <strong class="text-success">{{ present_count }}</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-grid">
+                <a href="{% url 'student:attendance_history' %}" class="btn btn-outline-success">
+                    <i class="bi bi-calendar3"></i> Davomat Tarixi
+                </a>
+            </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div class="content-card">
+            <h5><i class="bi bi-lightning"></i> Tez Harakatlar</h5>
+            
+            <div class="d-grid gap-2">
+                <a href="{% url 'student:homework_list' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-file-text"></i> Topshiriqlar
+                </a>
+                <a href="{% url 'student:grades' %}" class="btn btn-outline-success">
+                    <i class="bi bi-star"></i> Baholarim
+                </a>
+                <a href="{% url 'student:courses' %}" class="btn btn-outline-info">
+                    <i class="bi bi-book"></i> Kurslarim
+                </a>
+                <a href="{% url 'student:profile' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-person"></i> Profilim
+                </a>
             </div>
         </div>
     </div>
     
 </div>
 
-{% endif %}
+<!-- Recent Grades -->
+<div class="row">
+    <div class="col-12">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0"><i class="bi bi-trophy"></i> So'nggi Baholar</h5>
+                <a href="{% url 'student:grades' %}" class="btn btn-sm btn-outline-primary">
+                    Barchasini Ko'rish <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            
+            {% if recent_grades %}
+                {% for submission in recent_grades %}
+                <div class="grade-item">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <strong>{{ submission.homework.title }}</strong>
+                            <br>
+                            <small class="text-muted">
+                                <i class="bi bi-book"></i> {{ submission.homework.group.course.title }}
+                            </small>
+                        </div>
+                        <div class="col-md-3 text-md-center">
+                            <span class="badge bg-primary" style="font-size: 1rem; padding: 8px 15px;">
+                                {{ submission.score }}/{{ submission.homework.max_score }}
+                            </span>
+                        </div>
+                        <div class="col-md-3 text-md-end">
+                            <small class="text-muted">
+                                <i class="bi bi-calendar"></i> {{ submission.submitted_at|date:"d.m.Y" }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-4 text-muted">
+                    <i class="bi bi-inbox" style="font-size: 3rem; opacity: 0.3;"></i>
+                    <p class="mt-2">Hali baholar yo'q</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    console.log('Student Dashboard loaded - Minimal version');
+document.addEventListener('DOMContentLoaded', function() {
+    // Attendance circle animation
+    const rate = {{ attendance_rate }};
+    const circumference = 314;
+    const offset = circumference - (rate / 100 * circumference);
+    
+    const circle = document.querySelector('circle[stroke="#28a745"]');
+    if (circle) {
+        circle.style.strokeDashoffset = offset;
+        
+        // Change color based on rate
+        if (rate >= 90) {
+            circle.style.stroke = '#28a745'; // Green
+        } else if (rate >= 70) {
+            circle.style.stroke = '#ffc107'; // Yellow
+        } else {
+            circle.style.stroke = '#dc3545'; // Red
+        }
+    }
+});
 </script>
 {% endblock %}

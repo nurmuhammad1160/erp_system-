@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load widget_tweaks %}
 
-{% block title %}Davomat Qayd Qilish - ERP Sistema{% endblock %}
+{% block title %}Davomat Qayd Qilish - O'qituvchi{% endblock %}
 
 {% block page_title %}Davomat Qayd Qilish{% endblock %}
 
@@ -18,9 +17,10 @@
     .attendance-header {
         background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
         color: white;
-        padding: 40px;
+        padding: 35px;
         border-radius: 15px;
         margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(67, 233, 123, 0.3);
     }
     
     .form-card {
@@ -28,26 +28,27 @@
         border-radius: 15px;
         padding: 30px;
         box-shadow: 0 2px 15px rgba(0,0,0,0.08);
-        margin-bottom: 20px;
+        margin-bottom: 25px;
     }
     
-    .student-item {
+    .student-row {
         background: #f8f9fa;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 10px;
+        border-radius: 12px;
+        padding: 18px;
+        margin-bottom: 12px;
         transition: all 0.3s;
         border: 2px solid transparent;
     }
     
-    .student-item:hover {
+    .student-row:hover {
         background: white;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-color: #43e97b;
     }
     
     .student-avatar {
-        width: 50px;
-        height: 50px;
+        width: 55px;
+        height: 55px;
         border-radius: 50%;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -55,64 +56,127 @@
         align-items: center;
         justify-content: center;
         font-weight: bold;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+    }
+    
+    .status-radio-group {
+        display: flex;
+        gap: 8px;
     }
     
     .status-btn {
-        padding: 8px 20px;
-        border-radius: 8px;
-        border: 2px solid;
+        flex: 1;
+        padding: 12px 8px;
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        background: white;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s;
+        text-align: center;
+        font-size: 0.9rem;
+        position: relative;
     }
     
     .status-btn:hover {
-        transform: scale(1.05);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     
     .status-btn.present {
-        background: #d4edda;
         border-color: #28a745;
-        color: #155724;
+        color: #28a745;
+    }
+    
+    .status-btn.present:hover,
+    .btn-check:checked + .status-btn.present {
+        background: #28a745;
+        color: white;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
     }
     
     .status-btn.absent {
-        background: #f8d7da;
         border-color: #dc3545;
-        color: #721c24;
+        color: #dc3545;
+    }
+    
+    .status-btn.absent:hover,
+    .btn-check:checked + .status-btn.absent {
+        background: #dc3545;
+        color: white;
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
     }
     
     .status-btn.late {
-        background: #fff3cd;
         border-color: #ffc107;
         color: #856404;
     }
     
-    .status-btn.active {
-        box-shadow: 0 0 0 3px rgba(0,123,255,.25);
-        transform: scale(1.05);
+    .status-btn.late:hover,
+    .btn-check:checked + .status-btn.late {
+        background: #ffc107;
+        color: #000;
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+    }
+    
+    .status-btn.excused {
+        border-color: #17a2b8;
+        color: #17a2b8;
+    }
+    
+    .status-btn.excused:hover,
+    .btn-check:checked + .status-btn.excused {
+        background: #17a2b8;
+        color: white;
+        box-shadow: 0 4px 12px rgba(23, 162, 184, 0.4);
+    }
+    
+    .btn-check {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
     }
     
     .quick-actions {
-        background: #e7f3ff;
-        border-radius: 10px;
-        padding: 15px;
+        background: linear-gradient(135deg, #e7f3ff 0%, #f0f8ff 100%);
+        border-radius: 12px;
+        padding: 20px;
         margin-bottom: 20px;
+        border: 2px solid #cce5ff;
     }
     
     .summary-card {
         background: white;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         text-align: center;
+        margin-bottom: 20px;
     }
     
     .summary-number {
-        font-size: 2rem;
+        font-size: 2.5rem;
         font-weight: bold;
         margin: 10px 0;
+    }
+    
+    .progress-ring {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 15px;
+    }
+    
+    @media (max-width: 768px) {
+        .status-radio-group {
+            flex-direction: column;
+        }
+        
+        .student-avatar {
+            width: 45px;
+            height: 45px;
+            font-size: 1.1rem;
+        }
     }
 </style>
 {% endblock %}
@@ -123,55 +187,81 @@
 <div class="attendance-header">
     <div class="row align-items-center">
         <div class="col-md-8">
-            <h2 class="mb-2"><i class="bi bi-check2-square"></i> Davomat Qayd Qilish</h2>
-            <p class="mb-0 opacity-75">Bugungi darsda talabalarning davomatini belgilang</p>
+            <h2 class="mb-2">
+                <i class="bi bi-calendar-check"></i> Davomat Qayd Qilish
+            </h2>
+            <p class="mb-0 opacity-85">
+                Guruh talabalarining davomatini bir vaqtda belgilang
+            </p>
         </div>
         <div class="col-md-4 text-md-end">
-            <h5 class="mb-0">Bugungi Sana</h5>
-            <h3 class="mb-0">{% now "d M, Y" %}</h3>
+            <div class="badge bg-white text-dark px-3 py-2" style="font-size: 1rem;">
+                <i class="bi bi-calendar3"></i> {% now "d F, Y" %}
+            </div>
         </div>
     </div>
 </div>
 
 <!-- Main Content -->
 <div class="row">
+    
+    <!-- Left Column - Form -->
     <div class="col-lg-8">
         
-        <!-- Selection Form -->
+        <!-- Step 1: Group & Date Selection -->
         <div class="form-card">
-            <h5 class="mb-3"><i class="bi bi-gear"></i> Guruh Tanlash</h5>
+            <h5 class="mb-4">
+                <span class="badge bg-primary me-2">1</span>
+                <i class="bi bi-gear"></i> Guruh va Sanani Tanlang
+            </h5>
             
             <form method="get" id="groupSelectForm">
                 <div class="row">
-                    <div class="col-md-8 mb-3">
-                        <label class="form-label">Guruh</label>
-                        <select class="form-select" name="group_id" id="groupSelect" required>
-                            <option value="">Guruhni tanlang...</option>
-                            {% for group in teacher.groups.all %}
-                                <option value="{{ group.id }}" {% if request.GET.group_id == group.id|stringformat:"s" %}selected{% endif %}>
-                                    {{ group.name }} - {{ group.course.title }} ({{ group.active_students_count }} talaba)
-                                </option>
-                            {% endfor %}
-                        </select>
+                    <div class="col-md-7 mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-people"></i> Guruh
+                        </label>
+                        {{ select_form.group }}
+                        <small class="text-muted d-block mt-1">
+                            O'qituvchingizga biriktirilgan faol guruhlar
+                        </small>
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Sana</label>
-                        <input type="date" class="form-control" name="date" value="{% now 'Y-m-d' %}">
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-calendar3"></i> Sana
+                        </label>
+                        {{ select_form.date }}
+                        <small class="text-muted d-block mt-1">
+                            Davomat sanasini tanlang
+                        </small>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-search"></i> Talabalarni Yuklash
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-arrow-right-circle"></i> Talabalarni Yuklash
                 </button>
             </form>
         </div>
         
-        <!-- Students List -->
+        <!-- Step 2: Students Attendance Form -->
         {% if students %}
         <div class="form-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="mb-0">
+                    <span class="badge bg-primary me-2">2</span>
+                    <i class="bi bi-people"></i> Talabalar ({{ students.count }})
+                </h5>
+                <div class="badge bg-info text-white">
+                    <i class="bi bi-building"></i> {{ group.name }}
+                </div>
+            </div>
             
             <!-- Quick Actions -->
             <div class="quick-actions">
-                <h6 class="mb-2"><i class="bi bi-lightning-charge"></i> Tez Harakatlar:</h6>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">
+                        <i class="bi bi-lightning-charge"></i> Tez Harakatlar
+                    </h6>
+                </div>
                 <div class="d-flex gap-2 flex-wrap">
                     <button type="button" class="btn btn-sm btn-success" onclick="markAll('present')">
                         <i class="bi bi-check-all"></i> Hammasini Keldi
@@ -179,78 +269,119 @@
                     <button type="button" class="btn btn-sm btn-danger" onclick="markAll('absent')">
                         <i class="bi bi-x-lg"></i> Hammasini Kelmadi
                     </button>
+                    <button type="button" class="btn btn-sm btn-warning" onclick="markAll('late')">
+                        <i class="bi bi-clock"></i> Hammasini Kech Qoldi
+                    </button>
                     <button type="button" class="btn btn-sm btn-secondary" onclick="resetAll()">
-                        <i class="bi bi-arrow-counterclockwise"></i> Tozalash
+                        <i class="bi bi-arrow-counterclockwise"></i> Qayta Tiklash
                     </button>
                 </div>
             </div>
             
-            <h5 class="mb-3"><i class="bi bi-people"></i> Talabalar Ro'yxati ({{ students.count }})</h5>
+            <!-- Existing Attendance Warning -->
+            {% if has_existing %}
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle"></i>
+                <strong>Diqqat!</strong> Bu sana uchun davomat ma'lumotlari mavjud. 
+                O'zgartirishlar mavjud ma'lumotlarni yangilaydi.
+            </div>
+            {% endif %}
             
-            <form method="post" action="{% url 'teacher:attendance_create' %}" id="attendanceForm">
+            <!-- Attendance Form -->
+            <form method="post" id="attendanceForm">
                 {% csrf_token %}
-                <input type="hidden" name="group_id" value="{{ request.GET.group_id }}">
-                <input type="hidden" name="date" value="{% now 'Y-m-d' %}">
-                
-                {% for student in students %}
-                <div class="student-item" id="student-{{ student.id }}">
-                    <div class="row align-items-center">
-                        
-                        <!-- Student Info -->
-                        <div class="col-md-5">
-                            <div class="d-flex align-items-center">
-                                <div class="student-avatar me-3">
-                                    {{ student.user.first_name.0|upper }}{{ student.user.last_name.0|upper }}
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">{{ student.user.get_full_name }}</h6>
-                                    <small class="text-muted">{{ student.user.email }}</small>
+                <input type="hidden" name="group_id" value="{{ group.id }}">
+                <input type="hidden" name="date" value="{{ date }}">
+                <div id="studentsList">
+                    {% for student in students %}
+                    <div class="student-row" id="student-{{ student.id }}">
+                        <div class="row align-items-center">
+                            
+                            <!-- Student Info -->
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <div class="d-flex align-items-center">
+                                    <div class="student-avatar me-3">
+                                        {{ student.user.first_name.0|upper }}{{ student.user.last_name.0|upper }}
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">
+                                            {{ student.user.get_full_name }}
+                                        </h6>
+                                        <small class="text-muted">
+                                            {{ student.user.email|truncatechars:25 }}
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Status Buttons -->
-                        <div class="col-md-7">
-                            <div class="btn-group w-100" role="group">
-                                <input type="radio" 
-                                       class="btn-check" 
-                                       name="status_{{ student.id }}" 
-                                       id="present_{{ student.id }}" 
-                                       value="present" 
-                                       checked>
-                                <label class="status-btn present" for="present_{{ student.id }}">
-                                    <i class="bi bi-check-circle"></i> Keldi
-                                </label>
-                                
-                                <input type="radio" 
-                                       class="btn-check" 
-                                       name="status_{{ student.id }}" 
-                                       id="absent_{{ student.id }}" 
-                                       value="absent">
-                                <label class="status-btn absent" for="absent_{{ student.id }}">
-                                    <i class="bi bi-x-circle"></i> Kelmadi
-                                </label>
-                                
-                                <input type="radio" 
-                                       class="btn-check" 
-                                       name="status_{{ student.id }}" 
-                                       id="late_{{ student.id }}" 
-                                       value="late">
-                                <label class="status-btn late" for="late_{{ student.id }}">
-                                    <i class="bi bi-clock"></i> Kech qoldi
-                                </label>
+                            
+                            <!-- Status Selection -->
+                            <div class="col-md-8">
+                                <div class="status-radio-group">
+                                    
+                                    <!-- Present -->
+                                    <input type="radio" 
+                                           class="btn-check" 
+                                           name="status_{{ student.id }}" 
+                                           id="present_{{ student.id }}" 
+                                           value="present"
+                                           {% if not student.existing_attendance or student.existing_attendance.status == 'present' %}checked{% endif %}>
+                                    <label class="status-btn present" for="present_{{ student.id }}">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        <div class="small">Keldi</div>
+                                    </label>
+                                    
+                                    <!-- Absent -->
+                                    <input type="radio" 
+                                           class="btn-check" 
+                                           name="status_{{ student.id }}" 
+                                           id="absent_{{ student.id }}" 
+                                           value="absent"
+                                           {% if student.existing_attendance.status == 'absent' %}checked{% endif %}>
+                                    <label class="status-btn absent" for="absent_{{ student.id }}">
+                                        <i class="bi bi-x-circle-fill"></i>
+                                        <div class="small">Kelmadi</div>
+                                    </label>
+                                    
+                                    <!-- Late -->
+                                    <input type="radio" 
+                                           class="btn-check" 
+                                           name="status_{{ student.id }}" 
+                                           id="late_{{ student.id }}" 
+                                           value="late"
+                                           {% if student.existing_attendance.status == 'late' %}checked{% endif %}>
+                                    <label class="status-btn late" for="late_{{ student.id }}">
+                                        <i class="bi bi-clock-fill"></i>
+                                        <div class="small">Kech</div>
+                                    </label>
+                                    
+                                    <!-- Excused -->
+                                    <input type="radio" 
+                                           class="btn-check" 
+                                           name="status_{{ student.id }}" 
+                                           id="excused_{{ student.id }}" 
+                                           value="excused"
+                                           {% if student.existing_attendance.status == 'excused' %}checked{% endif %}>
+                                    <label class="status-btn excused" for="excused_{{ student.id }}">
+                                        <i class="bi bi-file-earmark-text-fill"></i>
+                                        <div class="small">Sababli</div>
+                                    </label>
+                                    
+                                </div>
                             </div>
+                            
                         </div>
-                        
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
                 
                 <!-- Submit Button -->
                 <div class="d-grid gap-2 mt-4">
-                    <button type="submit" class="btn btn-success btn-lg">
-                        <i class="bi bi-check-circle"></i> Davomatni Saqlash
+                    <button type="submit" class="btn btn-success btn-lg" id="submitBtn">
+                        <i class="bi bi-check-circle-fill"></i> Davomatni Saqlash ({{ students.count }} talaba)
                     </button>
+                    <a href="{% url 'teacher:attendance_list' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> Bekor Qilish
+                    </a>
                 </div>
                 
             </form>
@@ -259,147 +390,244 @@
         
     </div>
     
-    <!-- Right Sidebar - Summary -->
+    <!-- Right Column - Summary & Info -->
     <div class="col-lg-4">
         
         {% if students %}
         <!-- Live Summary -->
-        <div class="summary-card mb-3">
-            <h6 class="mb-3"><i class="bi bi-graph-up"></i> Jonli Xulosa</h6>
+        <div class="summary-card">
+            <h6 class="mb-3">
+                <i class="bi bi-graph-up"></i> Jonli Statistika
+            </h6>
             
-            <div class="mb-3">
-                <small class="text-muted">Keldi</small>
-                <div class="summary-number text-success" id="presentCount">0</div>
+            <!-- Attendance Rate Circle -->
+            <div class="progress-ring mb-3">
+                <svg width="120" height="120">
+                    <circle cx="60" cy="60" r="50" 
+                            stroke="#e9ecef" 
+                            stroke-width="10" 
+                            fill="none"/>
+                    <circle id="progressCircle" 
+                            cx="60" cy="60" r="50" 
+                            stroke="#28a745" 
+                            stroke-width="10" 
+                            fill="none"
+                            stroke-dasharray="314"
+                            stroke-dashoffset="0"
+                            transform="rotate(-90 60 60)"
+                            style="transition: stroke-dashoffset 0.5s;"/>
+                    <text x="60" y="70" 
+                          text-anchor="middle" 
+                          font-size="20" 
+                          font-weight="bold" 
+                          fill="#28a745"
+                          id="progressText">100%</text>
+                </svg>
             </div>
             
-            <div class="mb-3">
-                <small class="text-muted">Kelmadi</small>
-                <div class="summary-number text-danger" id="absentCount">0</div>
-            </div>
-            
-            <div class="mb-3">
-                <small class="text-muted">Kech qoldi</small>
-                <div class="summary-number text-warning" id="lateCount">0</div>
+            <div class="row text-center g-3 mb-3">
+                <div class="col-6">
+                    <div class="p-2 bg-light rounded">
+                        <small class="text-muted d-block">Keldi</small>
+                        <h4 class="text-success mb-0" id="presentCount">{{ students.count }}</h4>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-2 bg-light rounded">
+                        <small class="text-muted d-block">Kelmadi</small>
+                        <h4 class="text-danger mb-0" id="absentCount">0</h4>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-2 bg-light rounded">
+                        <small class="text-muted d-block">Kech</small>
+                        <h4 class="text-warning mb-0" id="lateCount">0</h4>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-2 bg-light rounded">
+                        <small class="text-muted d-block">Sababli</small>
+                        <h4 class="text-info mb-0" id="excusedCount">0</h4>
+                    </div>
+                </div>
             </div>
             
             <hr>
             
-            <div class="mb-2">
-                <small class="text-muted">Davomat Ko'rsatkichi</small>
-                <h4 class="text-primary" id="attendanceRate">100%</h4>
+            <div class="small text-muted">
+                <i class="bi bi-people"></i> Jami: <strong>{{ students.count }}</strong> talaba
             </div>
         </div>
         {% endif %}
         
         <!-- Help Card -->
         <div class="summary-card">
-            <h6 class="mb-3"><i class="bi bi-info-circle"></i> Ma'lumot</h6>
+            <h6 class="mb-3">
+                <i class="bi bi-info-circle text-info"></i> Yordam
+            </h6>
             
-            <div class="text-start">
-                <p class="small mb-2">
-                    <i class="bi bi-check-circle text-success"></i> 
-                    <strong>Keldi:</strong> Darsda qatnashdi
+            <div class="text-start small">
+                <p class="mb-2">
+                    <span class="badge bg-success me-1">Keldi</span>
+                    Darsga o'z vaqtida keldi
                 </p>
-                <p class="small mb-2">
-                    <i class="bi bi-x-circle text-danger"></i> 
-                    <strong>Kelmadi:</strong> Darsda yo'q
+                <p class="mb-2">
+                    <span class="badge bg-danger me-1">Kelmadi</span>
+                    Darsda qatnashmadi
                 </p>
-                <p class="small mb-0">
-                    <i class="bi bi-clock text-warning"></i> 
-                    <strong>Kech qoldi:</strong> Kech keldi
+                <p class="mb-2">
+                    <span class="badge bg-warning text-dark me-1">Kech</span>
+                    Darsga kech keldi
+                </p>
+                <p class="mb-0">
+                    <span class="badge bg-info me-1">Sababli</span>
+                    Ruxsat yoki kasallik
                 </p>
             </div>
             
             <hr>
             
-            <div class="alert alert-info small mb-0">
+            <div class="alert alert-warning small mb-0">
                 <i class="bi bi-lightbulb"></i> 
-                Davomatni saqlashdan oldin tekshirib oling!
+                <strong>Maslahat:</strong> Tez harakatlar tugmalaridan foydalaning!
             </div>
         </div>
         
         <!-- Actions -->
-        <div class="summary-card mt-3">
-            <h6 class="mb-3"><i class="bi bi-list-check"></i> Harakatlar</h6>
-            <div class="d-grid gap-2">
-                <a href="{% url 'teacher:attendance_list' %}" class="btn btn-outline-primary">
-                    <i class="bi bi-list"></i> Davomat Tarixi
-                </a>
-                <a href="{% url 'teacher:dashboard' %}" class="btn btn-outline-secondary">
-                    <i class="bi bi-house"></i> Dashboard
-                </a>
-            </div>
+        <div class="d-grid gap-2">
+            <a href="{% url 'teacher:attendance_list' %}" class="btn btn-outline-primary">
+                <i class="bi bi-list"></i> Davomat Tarixi
+            </a>
+            <a href="{% url 'teacher:dashboard' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-house"></i> Dashboard
+            </a>
         </div>
         
     </div>
+    
 </div>
 
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        
-        // Update summary on page load
-        updateSummary();
-        
-        // Listen to all radio buttons
-        const radios = document.querySelectorAll('input[type="radio"]');
-        radios.forEach(radio => {
-            radio.addEventListener('change', updateSummary);
-        });
-        
-        function updateSummary() {
-            const presentInputs = document.querySelectorAll('input[value="present"]:checked');
-            const absentInputs = document.querySelectorAll('input[value="absent"]:checked');
-            const lateInputs = document.querySelectorAll('input[value="late"]:checked');
-            
-            const presentCount = presentInputs.length;
-            const absentCount = absentInputs.length;
-            const lateCount = lateInputs.length;
-            const total = presentCount + absentCount + lateCount;
-            
-            // Update counts
-            document.getElementById('presentCount').textContent = presentCount;
-            document.getElementById('absentCount').textContent = absentCount;
-            document.getElementById('lateCount').textContent = lateCount;
-            
-            // Calculate and update attendance rate
-            if (total > 0) {
-                const rate = ((presentCount + lateCount) / total * 100).toFixed(1);
-                document.getElementById('attendanceRate').textContent = rate + '%';
-            }
-        }
-        
-        // Form validation
-        const form = document.getElementById('attendanceForm');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                const confirmation = confirm('Davomatni saqlashga ishonchingiz komilmi?');
-                if (!confirmation) {
-                    e.preventDefault();
-                    return false;
-                }
-            });
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Initial summary update
+    updateSummary();
+    
+    // Listen to all status changes
+    const radios = document.querySelectorAll('input[type="radio"][name^="status_"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', updateSummary);
     });
     
-    // Quick action functions
-    function markAll(status) {
-        const radios = document.querySelectorAll(`input[value="${status}"]`);
-        radios.forEach(radio => {
-            radio.checked = true;
-        });
-        // Trigger change event to update summary
-        radios[0]?.dispatchEvent(new Event('change', { bubbles: true }));
+    // Update summary function
+    function updateSummary() {
+        const presentInputs = document.querySelectorAll('input[value="present"]:checked');
+        const absentInputs = document.querySelectorAll('input[value="absent"]:checked');
+        const lateInputs = document.querySelectorAll('input[value="late"]:checked');
+        const excusedInputs = document.querySelectorAll('input[value="excused"]:checked');
+        
+        const presentCount = presentInputs.length;
+        const absentCount = absentInputs.length;
+        const lateCount = lateInputs.length;
+        const excusedCount = excusedInputs.length;
+        const total = presentCount + absentCount + lateCount + excusedCount;
+        
+        // Update counts
+        document.getElementById('presentCount').textContent = presentCount;
+        document.getElementById('absentCount').textContent = absentCount;
+        document.getElementById('lateCount').textContent = lateCount;
+        document.getElementById('excusedCount').textContent = excusedCount;
+        
+        // Calculate attendance rate
+        if (total > 0) {
+            const attendedCount = presentCount + lateCount + excusedCount;
+            const rate = (attendedCount / total * 100).toFixed(1);
+            
+            // Update text
+            document.getElementById('progressText').textContent = rate + '%';
+            
+            // Update circle progress
+            const circumference = 314;
+            const offset = circumference - (rate / 100 * circumference);
+            document.getElementById('progressCircle').style.strokeDashoffset = offset;
+            
+            // Change color based on rate
+            const circle = document.getElementById('progressCircle');
+            if (rate >= 90) {
+                circle.style.stroke = '#28a745'; // Green
+            } else if (rate >= 70) {
+                circle.style.stroke = '#ffc107'; // Yellow
+            } else {
+                circle.style.stroke = '#dc3545'; // Red
+            }
+        }
     }
     
-    function resetAll() {
-        const presentRadios = document.querySelectorAll('input[value="present"]');
-        presentRadios.forEach(radio => {
-            radio.checked = true;
+    // Form submission confirmation
+    const form = document.getElementById('attendanceForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const totalStudents = document.querySelectorAll('input[name^="status_"]').length / 4;
+            const confirmed = confirm(
+                `${totalStudents} ta talabaning davomati saqlanadi. Davom etasizmi?`
+            );
+            
+            if (!confirmed) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Show loading state
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saqlanmoqda...';
         });
-        presentRadios[0]?.dispatchEvent(new Event('change', { bubbles: true }));
     }
+});
+
+// Quick action functions
+function markAll(status) {
+    const radios = document.querySelectorAll(`input[value="${status}"]`);
+    radios.forEach(radio => {
+        radio.checked = true;
+    });
+    // Trigger update
+    if (radios.length > 0) {
+        radios[0].dispatchEvent(new Event('change', { bubbles: true }));
+    }
+}
+
+function resetAll() {
+    const presentRadios = document.querySelectorAll('input[value="present"]');
+    presentRadios.forEach(radio => {
+        radio.checked = true;
+    });
+    if (presentRadios.length > 0) {
+        presentRadios[0].dispatchEvent(new Event('change', { bubbles: true }));
+    }
+}
+
+// Auto-submit form on group/date change
+const groupSelect = document.querySelector('select[name="group"]');
+const dateInput = document.querySelector('input[name="date"]');
+
+if (groupSelect) {
+    groupSelect.addEventListener('change', function() {
+        if (this.value && dateInput.value) {
+            document.getElementById('groupSelectForm').submit();
+        }
+    });
+}
+
+if (dateInput) {
+    dateInput.addEventListener('change', function() {
+        if (groupSelect.value && this.value) {
+            document.getElementById('groupSelectForm').submit();
+        }
+    });
+}
 </script>
 {% endblock %}

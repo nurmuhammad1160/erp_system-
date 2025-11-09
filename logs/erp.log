@@ -3175,3 +3175,118 @@ INFO 2025-10-30 20:49:01 basehttp "GET /accounts/login/ HTTP/1.1" 200 6105
 INFO 2025-10-30 20:49:06 views User login: admin@gmail.com (student)
 INFO 2025-10-30 20:49:06 basehttp "POST /accounts/login/ HTTP/1.1" 302 0
 INFO 2025-10-30 20:49:06 basehttp "GET /student/dashboard/ HTTP/1.1" 200 17078
+INFO 2025-11-03 13:26:30 autoreload Watching for file changes with StatReloader
+WARNING 2025-11-03 13:26:35 log Not Found: /student/
+WARNING 2025-11-03 13:26:35 basehttp "GET /student/ HTTP/1.1" 404 4496
+INFO 2025-11-03 13:26:36 basehttp "GET / HTTP/1.1" 200 14032
+INFO 2025-11-03 13:26:36 basehttp "GET /static/js/main.js HTTP/1.1" 200 2865
+WARNING 2025-11-03 13:26:38 basehttp "GET /static/images/favicon.ico HTTP/1.1" 404 1981
+INFO 2025-11-03 13:26:53 basehttp "GET / HTTP/1.1" 200 14032
+INFO 2025-11-03 13:26:53 basehttp "GET /static/js/main.js HTTP/1.1" 304 0
+INFO 2025-11-03 13:27:02 basehttp "GET / HTTP/1.1" 200 14032
+INFO 2025-11-03 13:27:02 basehttp "GET /static/js/main.js HTTP/1.1" 304 0
+INFO 2025-11-03 13:27:05 basehttp "GET /admin/ HTTP/1.1" 200 22987
+WARNING 2025-11-03 13:27:14 log Not Found: /student/
+WARNING 2025-11-03 13:27:14 basehttp "GET /student/ HTTP/1.1" 404 4496
+WARNING 2025-11-03 13:27:15 log Not Found: /student/
+WARNING 2025-11-03 13:27:15 basehttp "GET /student/ HTTP/1.1" 404 4496
+INFO 2025-11-03 13:27:27 basehttp "GET /student/dashboard HTTP/1.1" 301 0
+INFO 2025-11-03 13:27:27 basehttp "GET /student/dashboard/ HTTP/1.1" 200 16537
+INFO 2025-11-03 13:27:27 basehttp "GET /static/js/main.js HTTP/1.1" 304 0
+WARNING 2025-11-03 13:27:55 log Not Found: /student/
+WARNING 2025-11-03 13:27:55 basehttp "GET /student/ HTTP/1.1" 404 4496
+WARNING 2025-11-03 13:27:58 log Not Found: /teacher
+WARNING 2025-11-03 13:27:58 basehttp "GET /teacher HTTP/1.1" 404 3300
+INFO 2025-11-03 13:28:43 basehttp "GET /teacher/dashboard HTTP/1.1" 301 0
+ERROR 2025-11-03 13:28:43 log Internal Server Error: /teacher/dashboard/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 891, in _resolve_lookup
+    current = current[bit]
+              ~~~~~~~^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\context.py", line 88, in __getitem__
+    raise KeyError(key)
+KeyError: 'teacher'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 897, in _resolve_lookup
+    if isinstance(current, BaseContext) and getattr(
+                                            ~~~~~~~^
+        type(current), bit
+        ^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+AttributeError: type object 'RequestContext' has no attribute 'teacher'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 907, in _resolve_lookup
+    current = current[int(bit)]
+                      ~~~^^^^^
+ValueError: invalid literal for int() with base 10: 'teacher'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\backends\django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\loader_tags.py", line 65, in render
+    result = block.nodelist.render(context)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 977, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 1075, in render
+    output = self.filter_expression.resolve(context)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 743, in resolve
+    arg_vals.append(arg.resolve(context))
+                    ~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 854, in resolve
+    value = self._resolve_lookup(context)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python313\Lib\site-packages\django\template\base.py", line 914, in _resolve_lookup
+    raise VariableDoesNotExist(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )  # missing attribute
+    ^
+django.template.base.VariableDoesNotExist: Failed lookup for key [teacher] in [{'True': True, 'False': False, 'None': None}, {}, {}, {'view': <academics.views.TeacherDashboardView object at 0x00000225422C0980>, 'error': 'Profil yuklanishida xatolik'}]
+ERROR 2025-11-03 13:28:43 basehttp "GET /teacher/dashboard/ HTTP/1.1" 500 177535

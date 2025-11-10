@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Baholanmagan Topshiriqlar - O'qituvchi{% endblock %}
+
+{% block page_title %}Baholanmagan Topshiriqlar{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<a href="{% url 'teacher:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a> / 
+<span>Baholanmagan</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .submission-card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 15px;
+        transition: all 0.3s;
+        border-left: 4px solid #ffc107;
+    }
+    
+    .submission-card:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        transform: translateX(5px);
+    }
+    
+    .submission-header {
+        padding: 20px;
+        background: #fff8e1;
+    }
+    
+    .submission-body {
+        padding: 20px;
+        background: white;
+    }
+    
+    .student-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .student-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    
+    .time-badge {
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        background: #fff;
+        color: #ffc107;
+        border: 1px solid #ffc107;
+    }
+    
+    .priority-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: #6c757d;
+    }
+    
+    .empty-state i {
+        font-size: 5rem;
+        opacity: 0.3;
+        margin-bottom: 20px;
+    }
+    
+    .filter-bar {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">
+            <i class="bi bi-inbox text-warning"></i> Baholanmagan Topshiriqlar
+        </h2>
+        <p class="text-muted mb-0">
+            <i class="bi bi-exclamation-circle"></i> Jami {{ submissions.count }} ta topshiriq baholanmagan
+        </p>
+    </div>
+    <div>
+        <a href="{% url 'teacher:scored_homeworks' %}" class="btn btn-outline-success">
+            <i class="bi bi-check-circle"></i> Baholanganlar
+        </a>
+    </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="filter-bar">
+    <form method="get" class="row g-3 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label small">Qidiruv</label>
+            <input type="text" name="search" class="form-control" placeholder="Talaba yoki topshiriq nomi..." value="{{ request.GET.search }}">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small">Guruh</label>
+            <select name="group" class="form-select">
+                <option value="">Barcha guruhlar</option>
+                {% for group in request.user.teacher_profile.groups.all %}
+                <option value="{{ group.id }}">{{ group.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small">Saralash</label>
+            <select name="sort" class="form-select">
+                <option value="submitted_at">Eski birinchi</option>
+                <option value="-submitted_at">Yangi birinchi</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-search"></i> Qidirish
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Submissions List -->
+{% if submissions %}
+    {% for submission in submissions %}
+    <div class="submission-card">
+        <div class="submission-header position-relative">
+            <!-- Priority Badge -->
+            <span class="priority-badge">
+                <span class="time-badge">
+                    <i class="bi bi-clock"></i> {{ submission.submitted_at|timesince }} oldin
+                </span>
+            </span>
+            
+            <!-- Student Info -->
+            <div class="student-info">
+                <div class="student-avatar">
+                    {{ submission.student.user.first_name.0|upper }}{{ submission.student.user.last_name.0|upper }}
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="mb-1">{{ submission.student.user.get_full_name }}</h5>
+                    <small class="text-muted">
+                        <i class="bi bi-envelope"></i> {{ submission.student.user.email }}
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="submission-body">
+            <!-- Homework Info -->
+            <div class="mb-3">
+                <h6 class="text-primary mb-1">
+                    <i class="bi bi-book"></i> {{ submission.homework.title }}
+                </h6>
+                <small class="text-muted">
+                    <i class="bi bi-people"></i> {{ submission.homework.group.name }} | 
+                    <i class="bi bi-star"></i> Maksimal: {{ submission.homework.max_score }} ball
+                </small>
+            </div>
+            
+            <!-- Submission Text -->
+            {% if submission.text %}
+            <div class="mb-3 p-3 bg-light rounded">
+                <small class="text-muted d-block mb-1"><strong>Talaba javobi:</strong></small>
+                <p class="mb-0">{{ submission.text|truncatewords:30 }}</p>
+            </div>
+            {% endif %}
+            
+            <!-- File -->
+            {% if submission.file %}
+            <div class="mb-3">
+                <a href="{{ submission.file.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-file-earmark-arrow-down"></i> Faylni Yuklab Olish
+                </a>
+            </div>
+            {% endif %}
+            
+            <!-- Deadline Info -->
+            <div class="mb-3">
+                <small class="text-muted">
+                    <i class="bi bi-calendar"></i> Muddat: {{ submission.homework.deadline|date:"d.m.Y H:i" }}
+                    {% if submission.submitted_at > submission.homework.deadline %}
+                        <span class="badge bg-danger ms-2">Kech topshirilgan</span>
+                    {% else %}
+                        <span class="badge bg-success ms-2">Vaqtida</span>
+                    {% endif %}
+                </small>
+            </div>
+            
+            <!-- Action -->
+            <div class="d-grid">
+                <a href="{% url 'teacher:edit_submission' submission.id %}" class="btn btn-warning">
+                    <i class="bi bi-star"></i> Baholash
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Oldingi</a>
+                </li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                </li>
+                
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Keyingi</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+    
+{% else %}
+    <!-- Empty State -->
+    <div class="empty-state">
+        <i class="bi bi-check-circle text-success"></i>
+        <h3>Ajoyib! 🎉</h3>
+        <h5>Barcha topshiriqlar baholangan</h5>
+        <p class="text-muted">Hozircha baholanmagan topshiriqlar yo'q.</p>
+        <a href="{% url 'teacher:dashboard' %}" class="btn btn-primary mt-3">
+            <i class="bi bi-arrow-left"></i> Dashboard ga Qaytish
+        </a>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto-submit on filter change
+    document.querySelectorAll('select[name="group"], select[name="sort"]').forEach(select => {
+        select.addEventListener('change', function() {
+            this.form.submit();
+        });
+    });
+</script>
+{% endblock %}

@@ -7,7 +7,7 @@ import logging
 from django.views.generic import CreateView, TemplateView, DetailView, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login, logout
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -45,39 +45,63 @@ class HomeView(TemplateView):
 
 class RegisterView(SuccessMessageMixin, CreateView):
     """
-    Yangi foydalanuvchini ro'yxatdan o'tkazish.
+    Yangi foydalanuvchini ro'yxatdan o'tkazish - FIXED
+    Default: Student sifatida
     """
     model = User
     form_class = UserRegistrationForm
     template_name = 'accounts/register.html'
-    success_url = reverse_lazy('accounts:login')
-    success_message = "Ro'yxatdan o'tish muvaffaqiyatli! Tizimga kirishingiz mumkin."
+    success_url = reverse_lazy('student:dashboard')  # Student dashboard'ga yo'naltirish
+    success_message = "✅ Ro'yxatdan o'tish muvaffaqiyatli! Xush kelibsiz!"
     
     def dispatch(self, request, *args, **kwargs):
         """Login qilgan foydalanuvchi qayta register qila olmaydi."""
         if request.user.is_authenticated:
+            messages.info(request, "Siz allaqachon tizimga kirgan ekansiz.")
             return redirect(get_dashboard_url(request.user))
         return super().dispatch(request, *args, **kwargs)
     
     def form_valid(self, form):
+        """Form to'g'ri bo'lganda - user yaratish va login qilish"""
         response = super().form_valid(form)
         user = self.object
+        
+        # Logging
         logger.info(
-            f"Yangi user registratsiya: {user.email} ({user.type})",
+            f"Yangi user registratsiya: {user.email} (student)",
             extra={'user_id': user.id, 'email': user.email}
         )
+        
+        # AUTO LOGIN - ro'yxatdan o'tgandan keyin avtomatik login
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+        
+        # Success message
+        messages.success(
+            self.request,
+            f"🎉 Xush kelibsiz, {user.get_full_name()}! Tizimga muvaffaqiyatli kirdingiz."
+        )
+        
         return response
     
     def form_invalid(self, form):
+        """Form xato bo'lganda - xatoliklarni ko'rsatish"""
         logger.warning(
             f"Registration xatosi: {form.errors}",
             extra={'errors': str(form.errors)}
         )
-        messages.error(
-            self.request,
-            "Ro'yxatdan o'tishda xatolik. Iltimos, tekshiring."
-        )
+        
+        # Har bir xatolikni messages'ga qo'shish
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f"{error}")
+        
         return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        """Context qo'shimcha ma'lumotlar"""
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = "Ro'yxatdan O'tish"
+        return context
 
 
 # ============================================================================

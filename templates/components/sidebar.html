@@ -27,12 +27,13 @@
             
             <!-- Django Admin (faqat admin/staff uchun) -->
             {% if user.is_staff or is_admin %}
-                <li>
-                    <a href="{% url 'admin:index' %}">
-                        <i class="bi bi-gear"></i> Django Admin Panel
-                    </a>
-                </li>
-            {% endif %}
+            <li>
+                <a href="{% url 'admin_panel:dashboard' %}">
+                    <i class="bi bi-speedometer2"></i> Admin Panel
+                </a>
+            </li>
+         
+        {% endif %}
             
             <!-- Common Links -->
             <li class="mt-4 border-top pt-3">

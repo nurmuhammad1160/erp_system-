@@ -5886,3 +5886,4 @@ django.template.base.VariableDoesNotExist: Failed lookup for key [user] in None
 ERROR 2025-11-09 15:31:40 basehttp "GET /student/profile/ HTTP/1.1" 500 213906
 INFO 2025-11-09 15:32:08 basehttp "GET /student/attendance/ HTTP/1.1" 200 17698
 INFO 2025-11-09 16:31:43 autoreload Watching for file changes with StatReloader
+INFO 2025-11-10 15:54:11 autoreload Watching for file changes with StatReloader

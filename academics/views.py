@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 class TeacherDashboardView(TeacherRequiredMixin, TemplateView):
     """
-    O'qituvchi dashboard - Barcha ma'lumotlarni ko'rish
+    O'qituvchi dashboard - FIXED VERSION
     """
     template_name = 'teacher/dashboard.html'
     
@@ -39,27 +39,51 @@ class TeacherDashboardView(TeacherRequiredMixin, TemplateView):
         user = self.request.user
         
         try:
+            # Get teacher profile
             teacher = user.teacher_profile
             
-            # O'qituvchining guruhlari
-            groups = teacher.groups.all()
+            # FIXED: O'qituvchining guruhlari - reverse relation
+            # OLD (XATO): groups = teacher.groups.all()
+            # NEW (TO'G'RI): 
+            groups = Group.objects.filter(teacher=teacher).select_related('course')
             
-            # Jami studentlar
-            total_students = StudentProfile.objects.filter(
-                groups__in=groups
-            ).distinct().count()
+            # FIXED: Jami studentlar - correct query
+            # OLD: StudentProfile.objects.filter(groups__in=groups).distinct().count()
+            # NEW:
+            total_students = 0
+            for group in groups:
+                total_students += group.students.count()
             
-            # Baholanmagan submissions
+            # Yoki optimized version:
+            # from django.db.models import Count
+            # total_students = Group.objects.filter(teacher=teacher).aggregate(
+            #     total=Count('students', distinct=True)
+            # )['total'] or 0
+            
+            # FIXED: Baholanmagan submissions
+            # OLD: homework__group__teacher=teacher
+            # NEW: homework__teacher=teacher (agar Homework modelida teacher field bo'lsa)
             unchecked_count = HomeworkSubmission.objects.filter(
-                homework__group__teacher=teacher,
+                homework__teacher=teacher,
                 score__isnull=True
             ).count()
+            
+            # Recent unchecked submissions (for display)
+            recent_unchecked = HomeworkSubmission.objects.filter(
+                homework__teacher=teacher,
+                score__isnull=True
+            ).select_related(
+                'student__user',
+                'homework',
+                'homework__group'
+            ).order_by('-submitted_at')[:5]
             
             context.update({
                 'teacher': teacher,
                 'groups': groups,
                 'total_students': total_students,
                 'unchecked_submissions': unchecked_count,
+                'recent_unchecked': recent_unchecked,
             })
             
             logger.info(
@@ -67,12 +91,41 @@ class TeacherDashboardView(TeacherRequiredMixin, TemplateView):
                 extra={'user_id': user.id, 'groups_count': groups.count()}
             )
             
+        except TeacherProfile.DoesNotExist:
+            # Agar teacher profil yo'q bo'lsa, yaratish
+            logger.warning(f"Teacher profile not found for user: {user.email}")
+            teacher = TeacherProfile.objects.create(user=user)
+            
+            context.update({
+                'teacher': teacher,
+                'groups': [],
+                'total_students': 0,
+                'unchecked_submissions': 0,
+                'recent_unchecked': [],
+            })
+            
+            messages.info(
+                self.request,
+                "Sizning profilingiz yaratildi. Admin tomonidan guruhlar tayinlanishini kuting."
+            )
+            
         except Exception as e:
             logger.error(
                 f"Teacher dashboard xatosi: {str(e)}",
-                extra={'user_id': user.id}
+                extra={'user_id': user.id, 'error': str(e)}
             )
+            
             context['error'] = "Profil yuklanishida xatolik"
+            context['teacher'] = None
+            context['groups'] = []
+            context['total_students'] = 0
+            context['unchecked_submissions'] = 0
+            context['recent_unchecked'] = []
+            
+            messages.error(
+                self.request,
+                "Dashboard yuklanishida xatolik yuz berdi."
+            )
         
         return context
 

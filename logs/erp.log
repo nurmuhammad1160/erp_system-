@@ -8325,3 +8325,97 @@ Traceback (most recent call last):
 django.template.exceptions.TemplateDoesNotExist: teacher/materials_list.html
 ERROR 2025-11-11 12:14:50 basehttp "GET /teacher/materials/ HTTP/1.1" 500 88852
 INFO 2025-11-11 12:14:56 basehttp "GET /teacher/grades/ HTTP/1.1" 200 12160
+INFO 2025-11-15 15:15:15 autoreload Watching for file changes with StatReloader
+INFO 2025-11-15 15:15:43 basehttp "GET / HTTP/1.1" 200 6092
+INFO 2025-11-15 15:15:43 basehttp "GET /static/js/main.js HTTP/1.1" 200 2784
+INFO 2025-11-15 15:15:43 basehttp "GET /static/css/style.css HTTP/1.1" 200 998
+WARNING 2025-11-15 15:15:43 basehttp "GET /static/images/favicon.ico HTTP/1.1" 404 1981
+INFO 2025-11-15 15:15:46 basehttp "GET /accounts/register/ HTTP/1.1" 200 11153
+WARNING 2025-11-15 15:15:56 views Registration xatosi: <ul class="errorlist"><li>phone<ul class="errorlist" id="id_phone_error"><li>Telefon raqam +998 bilan boshlanishi kerak.</li></ul></li><li>password1<ul class="errorlist" id="id_password1_error"><li>Ushbu maydon to&#x27;ldirilishi shart.</li></ul></li><li>password2<ul class="errorlist" id="id_password2_error"><li>Ushbu maydon to&#x27;ldirilishi shart.</li></ul></li></ul>
+INFO 2025-11-15 15:15:56 basehttp "POST /accounts/register/ HTTP/1.1" 200 12921
+WARNING 2025-11-15 15:16:17 views Registration xatosi: <ul class="errorlist"><li>phone<ul class="errorlist" id="id_phone_error"><li>Telefon raqam +998 bilan boshlanishi kerak.</li></ul></li><li>password2<ul class="errorlist" id="id_password2_error"><li>Parollar bir-biriga mos kelmadi.</li></ul></li></ul>
+INFO 2025-11-15 15:16:17 basehttp "POST /accounts/register/ HTTP/1.1" 200 12347
+INFO 2025-11-15 15:16:49 views Yangi user registratsiya: herodot.sk@mail.ru (student)
+INFO 2025-11-15 15:16:49 basehttp "POST /accounts/register/ HTTP/1.1" 302 0
+INFO 2025-11-15 15:16:49 basehttp "GET /student/dashboard/ HTTP/1.1" 200 23569
+INFO 2025-11-15 15:16:49 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-11-15 15:16:49 basehttp "GET /static/js/main.js HTTP/1.1" 304 0
+INFO 2025-11-15 15:19:54 basehttp "GET /accounts/profile/ HTTP/1.1" 200 0
+INFO 2025-11-15 15:20:39 basehttp "GET /accounts/profile/ HTTP/1.1" 200 0
+INFO 2025-11-15 15:34:29 autoreload /home/nz/Documents/django-projects/erp_system-/courses/views.py changed, reloading.
+INFO 2025-11-15 15:34:30 autoreload Watching for file changes with StatReloader
+INFO 2025-11-15 15:34:31 autoreload /home/nz/Documents/django-projects/erp_system-/courses/views.py changed, reloading.
+INFO 2025-11-15 15:34:32 autoreload Watching for file changes with StatReloader
+INFO 2025-11-15 15:34:34 autoreload /home/nz/Documents/django-projects/erp_system-/courses/views.py changed, reloading.
+INFO 2025-11-15 15:34:34 autoreload Watching for file changes with StatReloader
+INFO 2025-11-15 15:35:46 autoreload /home/nz/Documents/django-projects/erp_system-/courses/views.py changed, reloading.
+INFO 2025-11-15 15:35:47 autoreload Watching for file changes with StatReloader
+INFO 2025-11-15 15:35:48 autoreload /home/nz/Documents/django-projects/erp_system-/courses/views.py changed, reloading.
+INFO 2025-11-15 15:35:49 autoreload Watching for file changes with StatReloader
+INFO 2025-11-15 15:43:45 autoreload /home/nz/Documents/django-projects/erp_system-/courses/views.py changed, reloading.
+INFO 2025-11-15 15:43:45 autoreload Watching for file changes with StatReloader
+INFO 2025-11-15 15:43:47 autoreload /home/nz/Documents/django-projects/erp_system-/courses/views.py changed, reloading.
+INFO 2025-11-15 15:43:47 autoreload Watching for file changes with StatReloader
+INFO 2025-11-15 15:44:29 autoreload /home/nz/Documents/django-projects/erp_system-/courses/views.py changed, reloading.
+INFO 2025-11-15 15:44:30 autoreload Watching for file changes with StatReloader
+INFO 2025-11-16 12:39:00 autoreload Watching for file changes with StatReloader
+INFO 2025-11-16 12:39:03 basehttp "GET / HTTP/1.1" 200 6092
+INFO 2025-11-16 12:39:03 basehttp "GET /static/css/style.css HTTP/1.1" 304 0
+INFO 2025-11-16 12:39:03 basehttp "GET /static/js/main.js HTTP/1.1" 304 0
+WARNING 2025-11-16 12:39:03 basehttp "GET /static/images/favicon.ico HTTP/1.1" 404 1981
+INFO 2025-11-16 12:39:07 basehttp "GET /accounts/login/ HTTP/1.1" 200 6105
+INFO 2025-11-16 12:39:28 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2025-11-16 12:39:28 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4171
+INFO 2025-11-16 12:39:28 basehttp "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+INFO 2025-11-16 12:39:28 basehttp "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+INFO 2025-11-16 12:39:28 basehttp "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+INFO 2025-11-16 12:39:28 basehttp "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2025-11-16 12:39:28 basehttp "GET /static/admin/css/login.css HTTP/1.1" 200 951
+INFO 2025-11-16 12:39:28 basehttp "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+INFO 2025-11-16 12:39:28 basehttp "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+WARNING 2025-11-16 12:39:29 log Not Found: /favicon.ico
+WARNING 2025-11-16 12:39:29 basehttp "GET /favicon.ico HTTP/1.1" 404 3467
+INFO 2025-11-16 12:39:39 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4406
+INFO 2025-11-16 12:40:51 autoreload Watching for file changes with StatReloader
+INFO 2025-11-16 12:40:52 basehttp "GET / HTTP/1.1" 200 6092
+INFO 2025-11-16 12:40:58 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2025-11-16 12:40:58 basehttp "GET /admin/ HTTP/1.1" 200 19456
+INFO 2025-11-16 12:40:58 basehttp "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2025-11-16 12:40:58 basehttp "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2025-11-16 12:40:58 basehttp "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2025-11-16 12:41:06 basehttp "GET /admin/accounts/user/ HTTP/1.1" 200 22994
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+INFO 2025-11-16 12:41:06 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+INFO 2025-11-16 12:41:06 basehttp "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+INFO 2025-11-16 12:41:12 basehttp "GET / HTTP/1.1" 200 14068
+INFO 2025-11-16 12:41:15 basehttp "GET /accounts/profile/ HTTP/1.1" 200 0
+WARNING 2025-11-16 12:41:25 log Not Found: /courses/create/
+WARNING 2025-11-16 12:41:25 basehttp "GET /courses/create/ HTTP/1.1" 404 3479
+WARNING 2025-11-16 12:42:32 log Not Found: /course/create
+WARNING 2025-11-16 12:42:32 basehttp "GET /course/create HTTP/1.1" 404 3473
+WARNING 2025-11-16 12:42:44 log Not Found: /admin/course/create
+WARNING 2025-11-16 12:42:44 basehttp "GET /admin/course/create HTTP/1.1" 404 9658
+INFO 2025-11-16 12:43:04 basehttp "GET /admin/courses HTTP/1.1" 301 0
+INFO 2025-11-16 12:43:04 basehttp "GET /admin/courses/ HTTP/1.1" 200 6738
+INFO 2025-11-16 12:43:08 basehttp "GET /admin/courses/course/ HTTP/1.1" 200 19083
+INFO 2025-11-16 12:43:08 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-11-16 12:43:29 basehttp "GET /admin/courses/course/add/ HTTP/1.1" 200 24547
+INFO 2025-11-16 12:43:29 basehttp "GET /static/admin/css/forms.css HTTP/1.1" 200 8525
+INFO 2025-11-16 12:43:29 basehttp "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+INFO 2025-11-16 12:43:29 basehttp "GET /admin/jsi18n/ HTTP/1.1" 200 6253
+INFO 2025-11-16 12:43:29 basehttp "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+INFO 2025-11-16 12:43:29 basehttp "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+INFO 2025-11-16 12:43:29 basehttp "GET /static/admin/css/widgets.css HTTP/1.1" 200 11991

@@ -20,6 +20,9 @@ from accounts.models import User, TeacherProfile, StudentProfile
 from courses.models import Course, Group
 from academics.models import Homework, HomeworkSubmission, Attendance
 
+from courses.forms import CourseForm
+from courses.forms import GroupForm
+
 logger = logging.getLogger(__name__)
 
 User = get_user_model()
@@ -351,26 +354,86 @@ class AdminUserBulkActionView(AdminRequiredMixin, View):
 # PLACEHOLDER VIEWS (Same as before)
 # ============================================================================
 
-class AdminCourseListView(AdminRequiredMixin, TemplateView):
+class AdminCourseListView(AdminRequiredMixin, ListView):
+    model = Course
     template_name = 'admin/courses/list.html'
+    context_object_name = 'courses'
+    paginate_by = 20
 
-class AdminCourseCreateView(AdminRequiredMixin, TemplateView):
+    def get_queryset(self):
+        return Course.objects.filter(is_active=True)
+
+
+class AdminCourseCreateView(AdminRequiredMixin, CreateView):
+    model = Course
     template_name = 'admin/courses/create.html'
+    form_class = CourseForm  
+    
+    def form_valid(self, form):
+       
+        form.instance.created_by = self.request.user.adminprofile
+        messages.success(self.request, "Kurs muvaffaqiyatli yaratildi!")
+        return super().form_valid(form)
 
-class AdminCourseDetailView(AdminRequiredMixin, TemplateView):
+    def get_success_url(self):
+        return reverse('admin_course_list')
+
+
+class AdminCourseDetailView(AdminRequiredMixin, DetailView):
+    model = Course
     template_name = 'admin/courses/detail.html'
+    context_object_name = 'course'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
 
-class AdminCourseEditView(AdminRequiredMixin, TemplateView):
+
+class AdminCourseEditView(AdminRequiredMixin, UpdateView):
+    model = Course
     template_name = 'admin/courses/edit.html'
+    form_class = CourseForm
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
 
-class AdminCourseDeleteView(AdminRequiredMixin, TemplateView):
+    def form_valid(self, form):
+        messages.success(self.request, "Kurs muvaffaqiyatli tahrirlandi!")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('admin_course_detail', kwargs={'slug': self.object.slug})
+
+
+class AdminCourseDeleteView(AdminRequiredMixin, DeleteView):
+    model = Course
     template_name = 'admin/courses/delete_confirm.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
 
-class AdminGroupListView(AdminRequiredMixin, TemplateView):
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Kurs o‘chirildi.")
+        return super().delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('admin_course_list')
+
+
+class AdminGroupListView(AdminRequiredMixin, ListView):
+    model = Group
     template_name = 'admin/groups/list.html'
+    context_object_name = 'groups'
+    
 
-class AdminGroupCreateView(AdminRequiredMixin, TemplateView):
+class AdminGroupCreateView(AdminRequiredMixin, CreateView):
+    model = Group
     template_name = 'admin/groups/create.html'
+    form_class = GroupForm
+
+    def form_valid(self, form):
+        messages.success(self.request, "Guruh yaratildi!")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('admin_group_list')
+
 
 class AdminGroupDetailView(AdminRequiredMixin, TemplateView):
     template_name = 'admin/groups/detail.html'

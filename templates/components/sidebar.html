@@ -27,16 +27,32 @@
             
             <!-- Django Admin (faqat admin/staff uchun) -->
             {% if user.is_staff or is_admin %}
-                <li>
-                    <a href="{% url 'admin:index' %}">
-                        <i class="bi bi-gear"></i> Django Admin Panel
-                    </a>
-                </li>
-            {% endif %}
+            <li>
+                <a href="{% url 'admin_panel:dashboard' %}">
+                    <i class="bi bi-speedometer2"></i> Admin Panel
+                </a>
+            </li>
+         
+        {% endif %}
             
             <!-- Common Links -->
             <li class="mt-4 border-top pt-3">
-                <a href="{% url 'accounts:profile' %}">
+                 {% if  request.user.type == "student" %}
+                <a href="{% url 'student:profile' %}">
+                
+                 {% elif request.user.type == "teacher" %}   
+                  <a href="{% url 'teacher:profile' %}">
+
+                {% elif request.user.type == "support_teacher" %}
+                     <a href="{% url 'support_teacher:profile' %}"> 
+              
+                        {% elif request.user.type == "admin" %}
+                     <a href="{% url 'admin:profile' %}"> 
+              
+                        {% elif request.user.type == "manager" %}
+                     <a href="{% url 'manager:profile' %}"> 
+                 
+                        {% endif %}
                     <i class="bi bi-person-circle"></i> Profil
                 </a>
             </li>
@@ -60,7 +76,32 @@
                 </a>
             </li>
         {% endif %}
-        
+        <!-- ===================STUDENT QUICK LINKS FOR SIDEBAR!=========== -->
+              {% if  request.user.type == "student" %}
+               <li>
+                    <a href="{% url 'student:homework_list' %}" >
+                    <i class="bi bi-file-text"></i> Topshiriqlar</a>
+               </li>
+
+                <li>
+                <a href="{% url 'student:grades' %}">
+                    <i class="bi bi-star"></i> Baholarim </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'student:courses' %}">
+                    <i class="bi bi-book"></i> Kurslarim </a>
+                </li>
+                
+                <li>
+                    <a href="{% url 'student:profile' %}">
+                    <i class="bi bi-person"></i> Profilim
+                </a>
+                </li>
+               {% endif %} 
+ <!-- ===================STUDENT QUICK LINKS FOR SIDEBAR!=END=========== -->
+               
+           
     </ul>
     
     <!-- Sidebar Footer

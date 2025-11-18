@@ -197,7 +197,7 @@ class GroupUpdateForm(GroupForm):
     """
     Guruhni tahrirlash formasі
     """
-    pass
+
 
 
 class GroupAddStudentsForm(forms.Form):

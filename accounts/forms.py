@@ -12,8 +12,17 @@ User = get_user_model()
 
 class UserRegistrationForm(forms.ModelForm):
     """
-    Yangi foydalanuvchini ro'yxatdan o'tkazish
+    Yangi foydalanuvchini ro'yxatdan o'tkazish - FIXED VERSION
+    
+    Features:
+    - Default: Student sifatida ro'yxatdan o'tadi
+    - Type field yo'q (avtomatik student)
+    - Auto StudentProfile yaratish
+    - Email lowercase
+    - Password strength validation
+    - Phone format validation
     """
+    
     password1 = forms.CharField(
         label="Parol",
         widget=forms.PasswordInput(attrs={
@@ -34,78 +43,123 @@ class UserRegistrationForm(forms.ModelForm):
     
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'phone', 'type']
+        # TYPE field'ni olib tashladik - default student bo'ladi
+        fields = ['email', 'first_name', 'last_name', 'phone']
         widgets = {
             'email': forms.EmailInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Email (masalan: user@example.com)',
+                'placeholder': 'email@example.com',
                 'required': True
             }),
             'first_name': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Ism',
+                'placeholder': 'Ismingiz',
                 'required': True
             }),
             'last_name': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Familiya',
+                'placeholder': 'Familiyangiz',
                 'required': True
             }),
             'phone': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Telefon (+998...)',
-            }),
-            'type': forms.Select(attrs={
-                'class': 'form-control',
-                'required': True
+                'placeholder': '+998 90 123 45 67',
             }),
         }
     
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Registration qilayotganda SUPERUSER type ko'rinmasin
-        choices = list(self.fields['type'].choices)
-        choices = [c for c in choices if c[0] != 'super_user']
-        self.fields['type'].choices = choices
-    
     def clean_email(self):
-        """Email unikalligi tekshirish"""
+        """
+        Email unikalligi va formatini tekshirish
+        """
         email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
-            raise ValidationError("Bu email allaqachon ro'yxatdan o'tgan.")
+        if email:
+            # Email lowercase qilib saqlash
+            email = email.lower().strip()
+            
+            # Email unikalligi tekshirish (case-insensitive)
+            if User.objects.filter(email__iexact=email).exists():
+                raise ValidationError("Bu email allaqachon ro'yxatdan o'tgan.")
+        
         return email
     
+    def clean_phone(self):
+        """
+        Telefon formatini tekshirish
+        """
+        phone = self.cleaned_data.get('phone')
+        if phone:
+            # Bo'sh joylarni olib tashlash
+            phone = phone.strip()
+            
+            # Telefon formatini tekshirish
+            if not phone.startswith('+998') and not phone.startswith('998'):
+                raise ValidationError("Telefon raqam +998 bilan boshlanishi kerak.")
+        
+        return phone
+    
     def clean_password1(self):
-        """Parol kuchini tekshirish"""
+        """
+        Parol kuchini tekshirish
+        """
         password1 = self.cleaned_data.get('password1')
         
         if password1:
+            # Minimum length check
+            if len(password1) < 8:
+                raise ValidationError("Parol kamida 8 belgidan iborat bo'lishi kerak.")
+            
+            # Django's built-in password validators
             try:
                 validate_password(password1)
             except ValidationError as e:
-                raise ValidationError(str(e))
+                # Convert error messages list to string
+                raise ValidationError('. '.join(e.messages))
         
         return password1
     
     def clean(self):
-        """Parollarning mos-kelishini tekshirish"""
+        """
+        Parollarning mos-kelishini tekshirish
+        """
         cleaned_data = super().clean()
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
         
         if password1 and password2:
             if password1 != password2:
-                raise ValidationError("Parollar bir-biriga mos kelmadi.")
+                raise ValidationError({
+                    'password2': "Parollar bir-biriga mos kelmadi."
+                })
         
         return cleaned_data
     
     def save(self, commit=True):
-        """Parolni xesh qilib saqlash"""
+        """
+        User'ni saqlash va StudentProfile yaratish
+        
+        Features:
+        - Password'ni hash qilish
+        - Type'ni 'student' qilish
+        - Email'ni lowercase qilish
+        - StudentProfile avtomatik yaratish
+        """
         user = super().save(commit=False)
+        
+        # Password hash
         user.set_password(self.cleaned_data['password1'])
+        
+        # DEFAULT: Student type
+        user.type = 'student'
+        
+        # Email lowercase
+        user.email = user.email.lower()
         
         if commit:
             user.save()
+            
+            # Student profile yaratish
+            from accounts.models import StudentProfile
+            StudentProfile.objects.get_or_create(user=user)
         
         return user
 

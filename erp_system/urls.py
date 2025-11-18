@@ -29,9 +29,10 @@ urlpatterns = [
     
     # Teacher panel
     path('teacher/', include(('academics.urls_teacher', 'teacher'), namespace='teacher')),
+
     
     # Admin panel
-    # path('admin-panel/', include(('courses.urls_admin', 'admin_panel'), namespace='admin_panel')),
+    path('admin-panel/', include(('courses.urls_admin', 'admin_panel'), namespace='admin_panel')),
     
     # Finance - To'lovlar va xarajatlar
     path('finance/', include(('finance.urls', 'finance'), namespace='finance')),

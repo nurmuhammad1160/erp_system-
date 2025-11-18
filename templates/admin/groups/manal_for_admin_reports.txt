@@ -1,0 +1,103 @@
+Admin Reporting System — Developer Guide
+
+Purpose:
+--------
+The Admin Reports Page gives administrators:
+- Insights about users, courses, groups, and enrollments
+- Weekly and monthly statistics
+- Popularity-based charts
+- Export tools (CSV, Excel, PDF)
+It helps quickly understand platform activity and growth.
+
+URL Endpoints:
+--------------
+/admin/reports/           -> Reports dashboard
+/admin/reports/export/<str:export_type>/ -> Export data in CSV, Excel, PDF
+
+View Overview:
+--------------
+Class: AdminReportsView(AdminRequiredMixin, TemplateView)
+Template: admin/reports/overview.html
+
+The view:
+- Runs multiple queries
+- Aggregates data
+- Sends analytics into context for the template
+
+Analytics Provided:
+-------------------
+1. User Analytics
+   - Total users
+   - Active users
+   - Staff users
+   - New users in last 7 days
+
+2. Course Analytics
+   - Total courses
+   - Published courses
+   - Top courses by enrollment
+   - Courses with zero students
+
+3. Group Analytics
+   - Total groups
+   - Groups with no students
+
+4. Enrollment Analytics
+   - Total enrollments
+   - Enrollments in last 30 days
+
+5. Chart Data (optional)
+   - Daily signup activity for graphs
+
+Data Models:
+------------
+- User (Django default)
+- Course
+- Group
+- Enrollment
+
+Template Usage:
+---------------
+- Access context variables to display statistics:
+  {{ total_users }}, {{ active_users }}, {{ staff_users }}
+- Loop through top courses:
+  {% for c in top_courses %}
+    {{ c.title }} — {{ c.students }} students
+  {% endfor %}
+
+Export System:
+--------------
+- Class: AdminExportView(AdminRequiredMixin, View)
+- Supported formats: CSV, Excel, PDF
+- Trigger via:
+  <a href="{% url 'admin:export' 'csv' %}">Export CSV</a>
+
+Charts:
+-------
+- Use Chart.js for visual graphs
+- Example:
+  <canvas id="reportChart"></canvas>
+- Provide labels and data from context:
+  labels: {{ daily_signup_data|pluck:"day"|safe }}
+  data: {{ daily_signup_data|pluck:"count"|safe }}
+
+Extending Reports:
+-----------------
+- Add new metrics by adding to view context:
+  context["new_stat"] = ...
+- Display new metric in template:
+  {{ new_stat }}
+
+Debugging Tips:
+---------------
+- Blank dashboard: check context keys, database data, admin login
+- Chart errors: check browser console, Chart.js loaded
+- Empty CSV: print data before returning response
+
+Summary:
+--------
+- Lives at /admin/reports/
+- Shows key statistics
+- Includes export support
+- Admin-only access
+- Easily extensible for new metrics or charts

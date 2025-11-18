@@ -91,8 +91,28 @@
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                        <a class="dropdown-item" href="{% url 'accounts:profile' %}">
-                            <i class="bi bi-person me-2"></i> Profil
+
+    
+                      <!-- ================USER=TYPE=CHEKING================================ -->
+                       {% if  request.user.type == "student" %}
+                        <a class="dropdown-item" href="{% url 'student:profile' %}">
+
+                       {% elif request.user.type == "teacher" %}
+                        <a class="dropdown-item" href="{% url 'teacher:profile' %}">
+
+                        {% elif request.user.type == "support_teacher" %}
+                        <a class="dropdown-item" href="{% url 'support_teacher:profile' %}">
+                       
+                        {% elif request.user.type == "admin" %}
+                        <a class="dropdown-item" href="{% url 'admin:profile' %}">
+                       
+                        {% elif request.user.type == "manager" %}
+                        <a class="dropdown-item" href="{% url 'manager:profile' %}">
+                       
+                
+
+                        {% endif %} 
+                        <i class="bi bi-person me-2"></i> Profile {{request.user.type}}
                         </a>
                     </li>
                     <li><hr class="dropdown-divider"></li>

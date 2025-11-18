@@ -1,0 +1,406 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ group.name }} - Guruh Detallar{% endblock %}
+
+{% block page_title %}{{ group.name }}{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<a href="{% url 'teacher:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a> / 
+<a href="{% url 'teacher:groups' %}" class="text-decoration-none text-muted">Guruhlar</a> / 
+<span>{{ group.name }}</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .group-info-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .info-badge {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 8px 15px;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-right: 15px;
+        margin-bottom: 10px;
+    }
+    
+    .nav-tabs .nav-link {
+        border: none;
+        color: #6c757d;
+        padding: 12px 25px;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+    
+    .nav-tabs .nav-link:hover {
+        color: #667eea;
+        background: #f8f9fa;
+    }
+    
+    .nav-tabs .nav-link.active {
+        color: #667eea;
+        background: white;
+        border-bottom: 3px solid #667eea;
+    }
+    
+    .tab-content {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    
+    .student-item {
+        padding: 15px;
+        border-bottom: 1px solid #dee2e6;
+        transition: all 0.3s;
+    }
+    
+    .student-item:last-child {
+        border-bottom: none;
+    }
+    
+    .student-item:hover {
+        background: #f8f9fa;
+        padding-left: 20px;
+    }
+    
+    .student-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    
+    .homework-card {
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: all 0.3s;
+    }
+    
+    .homework-card:hover {
+        border-color: #667eea;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+    }
+    
+    .deadline-badge {
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .attendance-table tr:hover {
+        background: #f8f9fa;
+    }
+    
+    .empty-message {
+        text-align: center;
+        padding: 40px;
+        color: #6c757d;
+    }
+    
+    .empty-message i {
+        font-size: 4rem;
+        opacity: 0.3;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Group Info Header -->
+<div class="group-info-card">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h2 class="mb-3">
+                <i class="bi bi-people-fill"></i> {{ group.name }}
+            </h2>
+            
+            <!-- Info Badges -->
+            <div class="mb-3">
+                <span class="info-badge">
+                    <i class="bi bi-book"></i>
+                    {{ group.course.title }}
+                </span>
+                <span class="info-badge">
+                    <i class="bi bi-person"></i>
+                    {{ students_count }} talaba
+                </span>
+                <span class="info-badge">
+                    <i class="bi bi-calendar"></i>
+                    {{ group.start_date|date:"d.m.Y" }}
+                </span>
+                <span class="info-badge">
+                    <i class="bi bi-circle-fill" style="font-size: 0.6rem;"></i>
+                    {{ group.get_status_display }}
+                </span>
+            </div>
+            
+            <!-- Description -->
+            {% if group.description %}
+            <p class="mb-0 opacity-75">
+                {{ group.description }}
+            </p>
+            {% endif %}
+        </div>
+        
+        <div class="col-md-4 text-md-end">
+            <a href="{% url 'teacher:groups' %}" class="btn btn-light btn-lg">
+                <i class="bi bi-arrow-left"></i> Orqaga
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs mb-3" id="groupTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button">
+            <i class="bi bi-people"></i> Talabalar ({{ students_count }})
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="homework-tab" data-bs-toggle="tab" data-bs-target="#homework" type="button">
+            <i class="bi bi-book"></i> Topshiriqlar ({{ homeworks.count }})
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="attendance-tab" data-bs-toggle="tab" data-bs-target="#attendance" type="button">
+            <i class="bi bi-calendar-check"></i> Davomat
+        </button>
+    </li>
+</ul>
+
+<!-- Tab Content -->
+<div class="tab-content" id="groupTabContent">
+    
+    <!-- Students Tab -->
+    <div class="tab-pane fade show active" id="students" role="tabpanel">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">
+                <i class="bi bi-people"></i> Guruh Talabalari
+            </h5>
+            <div>
+                <input type="text" class="form-control" id="studentSearch" placeholder="Qidirish..." style="width: 250px;">
+            </div>
+        </div>
+        
+        {% if students %}
+            <div id="studentsList">
+                {% for student in students %}
+                <div class="student-item d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="student-avatar me-3">
+                            {{ student.user.first_name.0|upper }}{{ student.user.last_name.0|upper }}
+                        </div>
+                        <div>
+                            <h6 class="mb-0">{{ student.user.get_full_name }}</h6>
+                            <small class="text-muted">
+                                <i class="bi bi-envelope"></i> {{ student.user.email }}
+                                {% if student.user.phone %}
+                                    | <i class="bi bi-telephone"></i> {{ student.user.phone }}
+                                {% endif %}
+                            </small>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="badge {% if student.status == 'active' %}bg-success{% elif student.status == 'finished' %}bg-secondary{% else %}bg-danger{% endif %}">
+                            {{ student.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-message">
+                <i class="bi bi-people"></i>
+                <h5>Guruhda talabalar yo'q</h5>
+                <p>Bu guruhga hali talabalar qo'shilmagan.</p>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Homework Tab -->
+    <div class="tab-pane fade" id="homework" role="tabpanel">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="mb-0">
+                <i class="bi bi-book"></i> Guruh Topshiriqlari
+            </h5>
+            <a href="{% url 'teacher:homework_create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Yangi Topshiriq
+            </a>
+        </div>
+        
+        {% if homeworks %}
+            {% for homework in homeworks %}
+            <div class="homework-card">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div class="flex-grow-1">
+                        <h6 class="mb-2">{{ homework.title }}</h6>
+                        <p class="text-muted small mb-2">
+                            {{ homework.description|truncatewords:20 }}
+                        </p>
+                    </div>
+                    <span class="deadline-badge 
+                        {% if homework.deadline < today %}bg-danger
+                        {% elif homework.deadline|timeuntil < '1 day' %}bg-warning
+                        {% else %}bg-success{% endif %} text-white">
+                        <i class="bi bi-calendar"></i> {{ homework.deadline|date:"d.m.Y" }}
+                    </span>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <small class="text-muted">
+                            <i class="bi bi-file-earmark"></i> {{ homework.max_score }} ball
+                        </small>
+                    </div>
+                    <a href="{% url 'teacher:unscored_homeworks' %}" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-eye"></i> Ko'rish
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-message">
+                <i class="bi bi-book"></i>
+                <h5>Topshiriqlar yo'q</h5>
+                <p>Bu guruh uchun hali topshiriqlar yaratilmagan.</p>
+                <a href="{% url 'teacher:homework_create' %}" class="btn btn-primary mt-2">
+                    <i class="bi bi-plus-lg"></i> Birinchi Topshiriq Yaratish
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Attendance Tab -->
+    <div class="tab-pane fade" id="attendance" role="tabpanel">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="mb-0">
+                <i class="bi bi-calendar-check"></i> Davomat Tarixi
+            </h5>
+            <a href="{% url 'teacher:attendance_create' %}" class="btn btn-success">
+                <i class="bi bi-plus-lg"></i> Davomat Qo'shish
+            </a>
+        </div>
+        
+        {% if recent_attendances %}
+            <div class="table-responsive">
+                <table class="table table-hover attendance-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Talaba</th>
+                            <th>Sana</th>
+                            <th>Holat</th>
+                            <th>Izoh</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attendance in recent_attendances %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="student-avatar me-2" style="width: 35px; height: 35px; font-size: 0.9rem;">
+                                        {{ attendance.student.user.first_name.0|upper }}{{ attendance.student.user.last_name.0|upper }}
+                                    </div>
+                                    {{ attendance.student.user.get_full_name }}
+                                </div>
+                            </td>
+                            <td>
+                                <small>{{ attendance.date|date:"d.m.Y, l" }}</small>
+                            </td>
+                            <td>
+                                <span class="badge {% if attendance.status == 'present' %}bg-success{% elif attendance.status == 'absent' %}bg-danger{% else %}bg-warning{% endif %}">
+                                    {{ attendance.get_status_display }}
+                                </span>
+                            </td>
+                            <td>
+                                <small class="text-muted">{{ attendance.notes|default:"-" }}</small>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="text-center mt-3">
+                <a href="{% url 'teacher:attendance_list' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-right"></i> Barcha davomatni ko'rish
+                </a>
+            </div>
+        {% else %}
+            <div class="empty-message">
+                <i class="bi bi-calendar-check"></i>
+                <h5>Davomat yo'q</h5>
+                <p>Bu guruh uchun hali davomat qayd qilinmagan.</p>
+                <a href="{% url 'teacher:attendance_create' %}" class="btn btn-success mt-2">
+                    <i class="bi bi-plus-lg"></i> Birinchi Davomatni Qayd Qilish
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Student Search
+    document.getElementById('studentSearch').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const students = document.querySelectorAll('.student-item');
+        
+        students.forEach(student => {
+            const text = student.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                student.style.display = '';
+            } else {
+                student.style.display = 'none';
+            }
+        });
+    });
+    
+    // Remember active tab
+    const triggerTabList = document.querySelectorAll('#groupTabs button');
+    triggerTabList.forEach(triggerEl => {
+        const tabTrigger = new bootstrap.Tab(triggerEl);
+        
+        triggerEl.addEventListener('click', event => {
+            event.preventDefault();
+            tabTrigger.show();
+            localStorage.setItem('activeTab', triggerEl.id);
+        });
+    });
+    
+    // Restore active tab
+    const activeTab = localStorage.getItem('activeTab');
+    if (activeTab) {
+        const tab = document.getElementById(activeTab);
+        if (tab) {
+            const tabTrigger = new bootstrap.Tab(tab);
+            tabTrigger.show();
+        }
+    }
+</script>
+{% endblock %}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :root{
     --primary: #004080;
     --muted: #556677;
@@ -102,3 +103,62 @@ footer{background:var(--primary);color:#fff;padding:14px 20px;text-align:center;
 /* Grades bars */
 .grade-bar-wrap{height:10px;background:#eef6ff;border-radius:8px;overflow:hidden}
 .grade-bar{height:100%;background:linear-gradient(90deg,#2b95ff,#1a6eff);width:0}
+=======
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Smooth transitions */
+* {
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Custom utilities */
+.text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.shadow-custom {
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+}
+
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Loading spinner */
+.spinner-border-custom {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3em;
+}
+
+/* Custom badge */
+.badge-custom {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+>>>>>>> main

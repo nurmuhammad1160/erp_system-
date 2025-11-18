@@ -1,0 +1,86 @@
+<!-- templates/teacher/grades_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Baholar - O'qituvchi{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="bi bi-star"></i> Baholar
+                    </h4>
+                    <div>
+                        <span class="badge bg-primary">Jami: {{ total_graded }}</span>
+                        <span class="badge bg-success">O'rtacha: {{ average_score }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if submissions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>O'quvchi</th>
+                                    <th>Topshiriq</th>
+                                    <th>Kurs</th>
+                                    <th>Ball</th>
+                                    <th>Sana</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for submission in submissions %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ submission.student.user.get_full_name }}</td>
+                                    <td>{{ submission.homework.title }}</td>
+                                    <td>{{ submission.homework.group.course.name }}</td>
+                                    <td>
+                                        <span class="badge bg-{% if submission.score >= 70 %}success{% elif submission.score >= 50 %}warning{% else %}danger{% endif %}">
+                                            {{ submission.score }}/100
+                                        </span>
+                                    </td>
+                                    <td>{{ submission.submitted_at|date:"d.m.Y H:i" }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    {% if is_paginated %}
+                    <nav>
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Oldingi</a>
+                            </li>
+                            {% endif %}
+                            
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_obj.number }}</span>
+                            </li>
+                            
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Keyingi</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
+                    
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> Hozircha baholar yo'q.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

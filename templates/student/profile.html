@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends 'student/base_student.html' %}
 {% block title %}{{ title|default:'Profile' }}{% endblock %}
 {% load static %}
@@ -57,3 +58,329 @@
 
   
 {% endblock %}
+=======
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profilim - Student{% endblock %}
+
+{% block page_title %}Mening Profilim{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<a href="{% url 'student:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a> / 
+<span>Profil</span>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: #667eea;
+        margin: 0 auto 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .info-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+    
+    .info-row {
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .info-row:last-child {
+        border-bottom: none;
+    }
+    
+    .stat-mini {
+        text-align: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        transition: all 0.3s;
+    }
+    
+    .stat-mini:hover {
+        background: #e9ecef;
+        transform: translateY(-3px);
+    }
+    
+    .group-item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        border-left: 4px solid #667eea;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Profile Header -->
+<div class="profile-header">
+    <div class="row align-items-center">
+        <div class="col-md-3 text-center">
+            <div class="profile-avatar">
+                <i class="bi bi-person-fill"></i>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h2 class="mb-2">{{ user.get_full_name|default:user.email }}</h2>
+            <p class="mb-2 opacity-85">
+                <i class="bi bi-envelope"></i> {{ user.email }}
+            </p>
+            <div class="badge bg-white text-dark px-3 py-2">
+                <i class="bi bi-star"></i> {{ user.get_type_display }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    
+    <!-- Left Column - Info -->
+    <div class="col-lg-8">
+        
+        <!-- Personal Information -->
+        <div class="info-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">
+                    <i class="bi bi-person-circle"></i> Shaxsiy Ma'lumotlar
+                </h5>
+                <a href="#" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i> Tahrirlash
+                </a>
+            </div>
+            
+            <div class="info-row">
+                <div class="row">
+                    <div class="col-md-4">
+                        <small class="text-muted">To'liq Ism:</small>
+                    </div>
+                    <div class="col-md-8">
+                        <strong>{{ user.get_full_name|default:"Kiritilmagan" }}</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-row">
+                <div class="row">
+                    <div class="col-md-4">
+                        <small class="text-muted">Email:</small>
+                    </div>
+                    <div class="col-md-8">
+                        <strong>{{ user.email }}</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-row">
+                <div class="row">
+                    <div class="col-md-4">
+                        <small class="text-muted">Telefon:</small>
+                    </div>
+                    <div class="col-md-8">
+                        <strong>{{ student.phone|default:"Kiritilmagan" }}</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-row">
+                <div class="row">
+                    <div class="col-md-4">
+                        <small class="text-muted">Manzil:</small>
+                    </div>
+                    <div class="col-md-8">
+                        <strong>{{ student.address|default:"Kiritilmagan" }}</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-row">
+                <div class="row">
+                    <div class="col-md-4">
+                        <small class="text-muted">Ro'yxatdan o'tgan:</small>
+                    </div>
+                    <div class="col-md-8">
+                        <strong>{{ user.date_joined|date:"d F, Y" }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Academic Statistics -->
+        <div class="info-card">
+            <h5 class="mb-3">
+                <i class="bi bi-graph-up"></i> Akademik Statistika
+            </h5>
+            
+            <div class="row g-3">
+                <div class="col-md-3 col-6">
+                    <div class="stat-mini">
+                        <i class="bi bi-file-text text-primary" style="font-size: 2rem;"></i>
+                        <h4 class="mt-2 mb-0">{{ total_submissions|default:0 }}</h4>
+                        <small class="text-muted">Topshiriqlar</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-mini">
+                        <i class="bi bi-check-circle text-success" style="font-size: 2rem;"></i>
+                        <h4 class="mt-2 mb-0">{{ graded_submissions|default:0 }}</h4>
+                        <small class="text-muted">Baholangan</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-mini">
+                        <i class="bi bi-star text-warning" style="font-size: 2rem;"></i>
+                        <h4 class="mt-2 mb-0">{{ average_score|floatformat:1|default:"0.0" }}</h4>
+                        <small class="text-muted">O'rtacha Ball</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-mini">
+                        <i class="bi bi-calendar-check text-info" style="font-size: 2rem;"></i>
+                        <h4 class="mt-2 mb-0">{{ attendance_rate|floatformat:0|default:"0" }}%</h4>
+                        <small class="text-muted">Davomat</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Groups -->
+        <div class="info-card">
+            <h5 class="mb-3">
+                <i class="bi bi-people"></i> Mening Guruhlarim
+            </h5>
+            
+            {% if groups %}
+                {% for group in groups %}
+                <div class="group-item">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h6 class="mb-1">{{ group.name }}</h6>
+                            <small class="text-muted">
+                                <i class="bi bi-book"></i> {{ group.course.title }}
+                            </small>
+                            <br>
+                            <small class="text-muted">
+                                <i class="bi bi-person"></i> {{ group.teacher.user.get_full_name|default:group.teacher.user.email }}
+                            </small>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                            <span class="badge bg-primary">
+                                {{ group.students.count }} talaba
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="text-center py-4 text-muted">
+                    <i class="bi bi-inbox" style="font-size: 3rem; opacity: 0.3;"></i>
+                    <p class="mt-2">Hali guruhga biriktirilmagan</p>
+                </div>
+            {% endif %}
+        </div>
+        
+    </div>
+    
+    <!-- Right Column - Quick Actions -->
+    <div class="col-lg-4">
+        
+        <!-- Quick Actions -->
+        <div class="info-card">
+            <h5 class="mb-3">
+                <i class="bi bi-lightning"></i> Tez Harakatlar
+            </h5>
+            <div class="d-grid gap-2">
+                <a href="{% url 'student:dashboard' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-house"></i> Dashboard
+                </a>
+                <a href="{% url 'student:homework_list' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-file-text"></i> Topshiriqlar
+                </a>
+                <a href="{% url 'student:grades' %}" class="btn btn-outline-success">
+                    <i class="bi bi-star"></i> Baholar
+                </a>
+                <a href="{% url 'student:attendance_history' %}" class="btn btn-outline-info">
+                    <i class="bi bi-calendar-check"></i> Davomat
+                </a>
+                <a href="{% url 'student:courses' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-book"></i> Kurslar
+                </a>
+            </div>
+        </div>
+        
+        <!-- Account Settings -->
+        <div class="info-card">
+            <h5 class="mb-3">
+                <i class="bi bi-gear"></i> Sozlamalar
+            </h5>
+            <div class="d-grid gap-2">
+                <a href="#" class="btn btn-outline-warning">
+                    <i class="bi bi-key"></i> Parolni O'zgartirish
+                </a>
+                <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-right"></i> Chiqish
+                </a>
+            </div>
+        </div>
+        
+        <!-- Account Info -->
+        <div class="info-card">
+            <h5 class="mb-3">
+                <i class="bi bi-shield-check"></i> Hisob Ma'lumoti
+            </h5>
+            <div class="info-row">
+                <small class="text-muted d-block">Status:</small>
+                <span class="badge bg-success mt-1">
+                    <i class="bi bi-check-circle"></i> Faol
+                </span>
+            </div>
+            <div class="info-row">
+                <small class="text-muted d-block">Oxirgi kirish:</small>
+                <strong>{{ user.last_login|date:"d.m.Y H:i"|default:"Hali kirilmagan" }}</strong>
+            </div>
+            <div class="info-row">
+                <small class="text-muted d-block">Ro'yxatdan o'tgan:</small>
+                <strong>{{ user.date_joined|date:"d.m.Y" }}</strong>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+console.log('Profile page loaded');
+// Add any profile-specific JavaScript here
+</script>
+{% endblock %}
+>>>>>>> main

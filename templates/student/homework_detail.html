@@ -1,0 +1,413 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ homework.title }} - Topshiriq{% endblock %}
+
+{% block page_title %}Topshiriq Detallar{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<a href="{% url 'student:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a> / 
+<a href="{% url 'student:homework_list' %}" class="text-decoration-none text-muted">Topshiriqlar</a> / 
+<span>{{ homework.title|truncatewords:3 }}</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .homework-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .info-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    
+    .submission-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        border-left: 4px solid #28a745;
+    }
+    
+    .deadline-box {
+        background: #fff3cd;
+        border: 2px solid #ffc107;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+    }
+    
+    .deadline-box.overdue {
+        background: #f8d7da;
+        border-color: #dc3545;
+    }
+    
+    .deadline-box.ok {
+        background: #d4edda;
+        border-color: #28a745;
+    }
+    
+    .upload-area {
+        border: 2px dashed #667eea;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        background: #f8f9fa;
+        transition: all 0.3s;
+    }
+    
+    .upload-area:hover {
+        background: white;
+        border-color: #764ba2;
+    }
+    
+    .file-item {
+        background: #f8f9fa;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="homework-header">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <div class="mb-2">
+                <span class="badge bg-white text-dark">
+                    <i class="bi bi-book"></i> {{ homework.group.course.title }}
+                </span>
+                <span class="badge bg-white text-dark">
+                    <i class="bi bi-people"></i> {{ homework.group.name }}
+                </span>
+            </div>
+            <h2 class="mb-2">{{ homework.title }}</h2>
+            <p class="mb-0 opacity-85">
+                <i class="bi bi-person"></i> {{ homework.teacher.user.get_full_name }}
+            </p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            {% if submission and submission.score is not None %}
+                <div class="badge bg-success" style="font-size: 1.5rem; padding: 15px 25px;">
+                    <i class="bi bi-star"></i> {{ submission.score }}/{{ homework.max_score }}
+                </div>
+            {% elif submission %}
+                <div class="badge bg-info" style="font-size: 1.2rem; padding: 12px 20px;">
+                    <i class="bi bi-check"></i> Yuborilgan
+                </div>
+            {% elif is_overdue %}
+                <div class="badge bg-danger" style="font-size: 1.2rem; padding: 12px 20px;">
+                    <i class="bi bi-x-circle"></i> Muddati o'tgan
+                </div>
+            {% else %}
+                <div class="badge bg-warning text-dark" style="font-size: 1.2rem; padding: 12px 20px;">
+                    <i class="bi bi-clock"></i> Kutilmoqda
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    
+    <!-- Left Column -->
+    <div class="col-lg-8">
+        
+        <!-- Homework Info -->
+        <div class="info-card">
+            <h5 class="mb-3"><i class="bi bi-info-circle"></i> Topshiriq Haqida</h5>
+            
+            <div class="mb-3">
+                <strong>Tavsif:</strong>
+                <p class="mt-2">{{ homework.description|linebreaks|default:"Tavsif kiritilmagan" }}</p>
+            </div>
+            
+            <hr>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted d-block">Maksimal Ball:</small>
+                    <strong class="h4">{{ homework.max_score }}</strong>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <small class="text-muted d-block">Yaratilgan:</small>
+                    <strong>{{ homework.created_at|date:"d.m.Y H:i" }}</strong>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Submission Form or Status -->
+        {% if submission and submission.score is not None %}
+            <!-- Already Graded -->
+            <div class="submission-card" style="border-left-color: #28a745;">
+                <h5 class="mb-3">
+                    <i class="bi bi-check-circle text-success"></i> Topshiriq Baholangan
+                </h5>
+                
+                <div class="alert alert-success">
+                    <h4 class="mb-0">
+                        <i class="bi bi-star"></i> Sizning balingiz: 
+                        <strong>{{ submission.score }}/{{ homework.max_score }}</strong>
+                    </h4>
+                </div>
+                
+                {% if submission.feedback %}
+                <div class="mb-3">
+                    <strong>O'qituvchi izohi:</strong>
+                    <p class="mt-2">{{ submission.feedback }}</p>
+                </div>
+                {% endif %}
+                
+                <div class="mb-3">
+                    <small class="text-muted">Yuborilgan:</small>
+                    <strong>{{ submission.submitted_at|date:"d.m.Y H:i" }}</strong>
+                </div>
+                
+                {% if submission.file %}
+                <div class="file-item">
+                    <i class="bi bi-file-earmark"></i>
+                    <a href="{{ submission.file.url }}" target="_blank">
+                        Yuklangan fayl
+                    </a>
+                </div>
+                {% endif %}
+                
+                {% if submission.text %}
+                <div class="mt-3">
+                    <strong>Matn:</strong>
+                    <p class="mt-2">{{ submission.text|linebreaks }}</p>
+                </div>
+                {% endif %}
+            </div>
+            
+        {% elif can_submit %}
+            <!-- Can Submit -->
+            <div class="info-card">
+                <h5 class="mb-3">
+                    <i class="bi bi-upload"></i> Topshiriqni Yuborish
+                </h5>
+                
+                {% if is_overdue %}
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    <strong>Diqqat!</strong> Topshiriq muddati o'tgan. Lekin yuborishingiz mumkin.
+                </div>
+                {% endif %}
+                
+                <form method="post" enctype="multipart/form-data" id="submissionForm">
+                    {% csrf_token %}
+                    
+                    <!-- File Upload -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-file-earmark"></i> Fayl Yuklash
+                        </label>
+                        <div class="upload-area" id="uploadArea">
+                            <i class="bi bi-cloud-upload" style="font-size: 3rem; color: #667eea;"></i>
+                            <p class="mt-2 mb-2">Faylni bu yerga tashlang yoki tanlang</p>
+                            <input type="file" name="file" class="form-control" id="fileInput">
+                        </div>
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle"></i> 
+                            Maksimal: 10MB. Ruxsat etilgan: PDF, DOC, DOCX, ZIP
+                        </small>
+                    </div>
+                    
+                    <!-- Text Input -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-chat-text"></i> Matn (Ixtiyoriy)
+                        </label>
+                        <textarea name="text" class="form-control" rows="6" 
+                                  placeholder="Qo'shimcha izoh yoki javob matnini kiriting...">{% if submission %}{{ submission.text }}{% endif %}</textarea>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            {% if submission %}
+                                <i class="bi bi-arrow-repeat"></i> Qayta Yuborish
+                            {% else %}
+                                <i class="bi bi-send"></i> Topshiriqni Yuborish
+                            {% endif %}
+                        </button>
+                        <a href="{% url 'student:homework_list' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Orqaga
+                        </a>
+                    </div>
+                </form>
+            </div>
+            
+        {% else %}
+            <!-- Submitted, waiting for grade -->
+            <div class="submission-card" style="border-left-color: #17a2b8;">
+                <h5 class="mb-3">
+                    <i class="bi bi-clock-history text-info"></i> Topshiriq Yuborilgan
+                </h5>
+                
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    Topshiriq muvaffaqiyatli yuborildi. O'qituvchi baholashini kutmoqda...
+                </div>
+                
+                <div class="mb-3">
+                    <small class="text-muted">Yuborilgan vaqt:</small>
+                    <strong>{{ submission.submitted_at|date:"d.m.Y H:i" }}</strong>
+                </div>
+                
+                {% if submission.file %}
+                <div class="file-item">
+                    <i class="bi bi-file-earmark"></i>
+                    <a href="{{ submission.file.url }}" target="_blank">
+                        Yuklangan fayl
+                    </a>
+                </div>
+                {% endif %}
+                
+                {% if submission.text %}
+                <div class="mt-3">
+                    <strong>Matn:</strong>
+                    <p class="mt-2">{{ submission.text|linebreaks }}</p>
+                </div>
+                {% endif %}
+                
+                <hr>
+                
+                <div class="text-center">
+                    <a href="{% url 'student:homework_list' %}" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Topshiriqlar Ro'yxatiga
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        
+    </div>
+    
+    <!-- Right Column -->
+    <div class="col-lg-4">
+        
+        <!-- Deadline -->
+        <div class="deadline-box {% if is_overdue %}overdue{% elif homework.deadline|timeuntil|slice:':1' == '0' %}deadline-box{% else %}ok{% endif %} mb-4">
+            <h6 class="mb-2">
+                <i class="bi bi-calendar3"></i> Topshirish Muddati
+            </h6>
+            <h4 class="mb-2">{{ homework.deadline|date:"d F, Y" }}</h4>
+            <div class="mb-2">{{ homework.deadline|date:"H:i" }}</div>
+            {% if is_overdue %}
+                <div class="badge bg-danger">
+                    <i class="bi bi-x-circle"></i> Muddati o'tgan
+                </div>
+            {% else %}
+                <div class="badge bg-success">
+                    <i class="bi bi-clock"></i> {{ homework.deadline|timeuntil }} qoldi
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Course Info -->
+        <div class="info-card">
+            <h6 class="mb-3">
+                <i class="bi bi-info-square"></i> Ma'lumotlar
+            </h6>
+            
+            <div class="mb-3">
+                <small class="text-muted d-block">Kurs:</small>
+                <strong>{{ homework.group.course.title }}</strong>
+            </div>
+            
+            <div class="mb-3">
+                <small class="text-muted d-block">Guruh:</small>
+                <strong>{{ homework.group.name }}</strong>
+            </div>
+            
+            <div class="mb-3">
+                <small class="text-muted d-block">O'qituvchi:</small>
+                <strong>{{ homework.teacher.user.get_full_name }}</strong>
+            </div>
+            
+            <hr>
+            
+            <div class="d-grid gap-2">
+                <a href="{% url 'student:homework_list' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-list"></i> Barcha Topshiriqlar
+                </a>
+                <a href="{% url 'student:dashboard' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-house"></i> Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <!-- Tips -->
+        <div class="info-card">
+            <h6 class="mb-3">
+                <i class="bi bi-lightbulb"></i> Maslahatlar
+            </h6>
+            <ul class="small mb-0" style="line-height: 1.8;">
+                <li>Faylni yuklashdan oldin tekshiring</li>
+                <li>Matn yozishda aniq va qisqa bo'ling</li>
+                <li>Muddatdan oldin yuboring</li>
+                <li>Fayl hajmi 10MB dan oshmasin</li>
+            </ul>
+        </div>
+        
+    </div>
+    
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Form submission confirmation
+    const form = document.getElementById('submissionForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('fileInput');
+            const textInput = document.querySelector('textarea[name="text"]');
+            
+            if (!fileInput.files.length && !textInput.value.trim()) {
+                e.preventDefault();
+                alert('Iltimos fayl yoki matn kiriting!');
+                return false;
+            }
+            
+            const confirmed = confirm('Topshiriqni yuborishga ishonchingiz komilmi?');
+            if (!confirmed) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    }
+    
+    // File input display
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) {
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                const fileName = this.files[0].name;
+                const uploadArea = document.getElementById('uploadArea');
+                uploadArea.innerHTML = `
+                    <i class="bi bi-file-earmark-check" style="font-size: 3rem; color: #28a745;"></i>
+                    <p class="mt-2 mb-2">Tanlangan: <strong>${fileName}</strong></p>
+                    <input type="file" name="file" class="form-control" id="fileInput">
+                `;
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

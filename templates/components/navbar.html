@@ -1,0 +1,149 @@
+{% load static %}
+
+<!-- Top Navbar -->
+<nav class="top-navbar d-flex justify-content-between align-items-center">
+    
+    <!-- Left side: Sidebar toggle va Breadcrumb -->
+    <div class="d-flex align-items-center">
+        
+        <!-- Sidebar Toggle Button -->
+        {% if user.is_authenticated %}
+            <button type="button" id="sidebarCollapse" class="btn btn-link text-dark me-3">
+                <i class="bi bi-list" style="font-size: 1.5rem;"></i>
+            </button>
+        {% endif %}
+        
+        <!-- Page Title / Breadcrumb -->
+        <div>
+            <h5 class="mb-0">{% block page_title %}Dashboard{% endblock %}</h5>
+            <small class="text-muted">
+                {% block breadcrumb %}
+                    <a href="{% url 'home' %}" class="text-decoration-none">Bosh sahifa</a>
+                {% endblock %}
+            </small>
+        </div>
+    </div>
+    
+    <!-- Right side: Notifications, Profile -->
+    <div class="d-flex align-items-center">
+        
+        {% if user.is_authenticated %}
+            
+            <!-- Notifications Dropdown -->
+            <div class="dropdown me-3">
+                <button class="btn btn-link text-dark position-relative" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-bell" style="font-size: 1.3rem;"></i>
+                    {% if notification_count > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ notification_count }}
+                        </span>
+                    {% endif %}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown" style="width: 300px; max-height: 400px; overflow-y: auto;">
+                    <li class="dropdown-header">
+                        <strong>Bildirishnomalar</strong>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    
+                    {% if notification_count > 0 %}
+                        <!-- Sample notification -->
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <div class="d-flex">
+                                    <i class="bi bi-info-circle text-primary me-2"></i>
+                                    <div>
+                                        <strong>Yangi topshiriq</strong>
+                                        <p class="mb-0 small text-muted">Python kursi uchun yangi topshiriq</p>
+                                        <small class="text-muted">2 soat oldin</small>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-center text-primary" href="#">
+                                Barchasini ko'rish
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <span class="dropdown-item text-muted text-center">
+                                Yangi bildirishnomalar yo'q
+                            </span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            <!-- Profile Dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-link text-dark d-flex align-items-center text-decoration-none" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="rounded-circle me-2 bg-primary text-white d-flex align-items-center justify-content-center" style="width: 35px; height: 35px; font-weight: bold;">
+                        {{ user.first_name.0|default:"U"|upper }}{{ user.last_name.0|default:""|upper }}
+                    </div>
+                    <span class="d-none d-md-inline">{{ user.get_full_name|default:user.email }}</span>
+                    <i class="bi bi-chevron-down ms-2"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li class="dropdown-header">
+                        <strong>{{ user.email }}</strong><br>
+                        <small class="text-muted">{{ user.get_type_display }}</small>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+
+    
+                      <!-- ================USER=TYPE=CHEKING================================ -->
+                       {% if  request.user.type == "student" %}
+                        <a class="dropdown-item" href="{% url 'student:profile' %}">
+
+                       {% elif request.user.type == "teacher" %}
+                        <a class="dropdown-item" href="{% url 'teacher:profile' %}">
+
+                        {% elif request.user.type == "support_teacher" %}
+                        <a class="dropdown-item" href="{% url 'support_teacher:profile' %}">
+                       
+                        {% elif request.user.type == "admin" %}
+                        <a class="dropdown-item" href="{% url 'admin:profile' %}">
+                       
+                        {% elif request.user.type == "manager" %}
+                        <a class="dropdown-item" href="{% url 'manager:profile' %}">
+                       
+                
+
+                        {% endif %} 
+                        <i class="bi bi-person me-2"></i> Profile {{request.user.type}}
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="{% url 'accounts:logout_confirm' %}">
+                            <i class="bi bi-box-arrow-right me-2"></i> Chiqish
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+        {% else %}
+            <!-- Login/Register links for guests -->
+            <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary me-2">Kirish</a>
+            <a href="{% url 'accounts:register' %}" class="btn btn-primary">Ro'yxatdan o'tish</a>
+        {% endif %}
+        
+    </div>
+    
+</nav>
+
+<style>
+    .dropdown-item {
+        padding: 10px 15px;
+    }
+    
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .dropdown-header {
+        padding: 10px 15px;
+    }
+</style>

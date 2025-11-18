@@ -1,0 +1,18 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}404 - Sahifa Topilmadi{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <i class="bi bi-exclamation-triangle" style="font-size: 6rem; color: #ffc107;"></i>
+    <h1 class="mt-4 mb-3">404 - Sahifa Topilmadi</h1>
+    <p class="lead text-muted mb-4">
+        Kechirasiz, siz qidirayotgan sahifa topilmadi.
+    </p>
+    <a href="{% url 'home' %}" class="btn btn-primary">
+        <i class="bi bi-house"></i> Bosh Sahifaga Qaytish
+    </a>
+</div>
+{% endblock %}

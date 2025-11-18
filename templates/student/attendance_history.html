@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Davomat Tarixi - Student{% endblock %}
+
+{% block page_title %}Davomat Tarixi{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<a href="{% url 'student:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a> / 
+<span>Davomat</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        padding: 35px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s;
+        border: 2px solid transparent;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .stat-card.total { border-color: #667eea; }
+    .stat-card.present { border-color: #28a745; }
+    .stat-card.absent { border-color: #dc3545; }
+    .stat-card.late { border-color: #ffc107; }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 10px 0;
+        color: #2c3e50;
+    }
+    
+    .attendance-table-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    }
+    
+    .table thead {
+        background: #f8f9fa;
+    }
+    
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h2 class="mb-2">
+                <i class="bi bi-calendar-check"></i> Davomat Tarixi
+            </h2>
+            <p class="mb-0 opacity-85">
+                Sizning davomat qaydlaringiz va statistika
+            </p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <div class="badge bg-white text-dark px-3 py-2" style="font-size: 1.1rem;">
+                <i class="bi bi-graph-up"></i> {{ attendance_rate }}%
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics -->
+<div class="row mb-4">
+    
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card total">
+            <i class="bi bi-list-ul" style="font-size: 2rem; color: #667eea;"></i>
+            <div class="stat-number">{{ total_records }}</div>
+            <div class="text-muted">Jami Qaydlar</div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card present">
+            <i class="bi bi-check-circle" style="font-size: 2rem; color: #28a745;"></i>
+            <div class="stat-number">{{ present_count }}</div>
+            <div class="text-muted">Kelgan</div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card absent">
+            <i class="bi bi-x-circle" style="font-size: 2rem; color: #dc3545;"></i>
+            <div class="stat-number">{{ absent_count }}</div>
+            <div class="text-muted">Kelmagan</div>
+        </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card late">
+            <i class="bi bi-clock" style="font-size: 2rem; color: #ffc107;"></i>
+            <div class="stat-number">{{ late_count }}</div>
+            <div class="text-muted">Kech Kelgan</div>
+        </div>
+    </div>
+    
+</div>
+
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="mb-0"><i class="bi bi-funnel"></i> Filterlash</h6>
+            {% if current_status or current_group or current_date_from or current_date_to %}
+            <a href="{% url 'student:attendance_history' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-x-circle"></i> Tozalash
+            </a>
+            {% endif %}
+        </div>
+        
+        <form method="get" id="filterForm">
+            <div class="row g-3">
+                
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold">Guruh</label>
+                    <select name="group" class="form-select" id="groupFilter">
+                        <option value="">Barcha guruhlar</option>
+                        {% for group in groups %}
+                        <option value="{{ group.id }}" {% if current_group == group.id|stringformat:"s" %}selected{% endif %}>
+                            {{ group.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="col-md-2">
+                    <label class="form-label small fw-bold">Status</label>
+                    <select name="status" class="form-select" id="statusFilter">
+                        <option value="">Barchasi</option>
+                        <option value="present" {% if current_status == 'present' %}selected{% endif %}>Kelgan</option>
+                        <option value="absent" {% if current_status == 'absent' %}selected{% endif %}>Kelmagan</option>
+                        <option value="late" {% if current_status == 'late' %}selected{% endif %}>Kech</option>
+                        <option value="excused" {% if current_status == 'excused' %}selected{% endif %}>Sababli</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold">Dan</label>
+                    <input type="date" name="date_from" class="form-control" value="{{ current_date_from }}">
+                </div>
+                
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold">Gacha</label>
+                    <input type="date" name="date_to" class="form-control" value="{{ current_date_to }}">
+                </div>
+                
+                <div class="col-md-1">
+                    <label class="form-label small fw-bold">&nbsp;</label>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+{% if attendances %}
+<div class="attendance-table-card">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Sana</th>
+                    <th>Guruh</th>
+                    <th>Kurs</th>
+                    <th>Status</th>
+                    <th>Izoh</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attendance in attendances %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        <i class="bi bi-calendar3"></i> {{ attendance.date|date:"d.m.Y" }}
+                        <br>
+                        <small class="text-muted">{{ attendance.date|date:"l" }}</small>
+                    </td>
+                    <td>
+                        <span class="badge bg-primary">{{ attendance.group.name }}</span>
+                    </td>
+                    <td>{{ attendance.group.course.title }}</td>
+                    <td>
+                        <span class="status-badge 
+                            {% if attendance.status == 'present' %}bg-success
+                            {% elif attendance.status == 'absent' %}bg-danger
+                            {% elif attendance.status == 'late' %}bg-warning text-dark
+                            {% elif attendance.status == 'excused' %}bg-info
+                            {% endif %}">
+                            {% if attendance.status == 'present' %}
+                                <i class="bi bi-check-circle"></i> Kelgan
+                            {% elif attendance.status == 'absent' %}
+                                <i class="bi bi-x-circle"></i> Kelmagan
+                            {% elif attendance.status == 'late' %}
+                                <i class="bi bi-clock"></i> Kech
+                            {% elif attendance.status == 'excused' %}
+                                <i class="bi bi-file-text"></i> Sababli
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        {% if attendance.note %}
+                            <small class="text-muted">{{ attendance.note|truncatewords:8 }}</small>
+                        {% else %}
+                            <small class="text-muted">-</small>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="p-3 border-top">
+        <nav>
+            <ul class="pagination justify-content-center mb-0">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Oldingi</a>
+                </li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+                </li>
+                
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Keyingi</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="bi bi-calendar-x" style="font-size: 5rem; opacity: 0.3;"></i>
+    <h4 class="mt-3">Davomat qaydi topilmadi</h4>
+    <p class="text-muted">Sizning davomat qaydlaringiz hali yo'q.</p>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filters = document.querySelectorAll('#groupFilter, #statusFilter');
+    filters.forEach(filter => {
+        filter.addEventListener('change', function() {
+            document.getElementById('filterForm').submit();
+        });
+    });
+});
+</script>
+{% endblock %}

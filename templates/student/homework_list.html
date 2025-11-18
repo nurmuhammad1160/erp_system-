@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Topshiriqlar - Student{% endblock %}
+
+{% block page_title %}Mening Topshiriqlarim{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<a href="{% url 'student:dashboard' %}" class="text-decoration-none text-muted">Dashboard</a> / 
+<span>Topshiriqlar</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 35px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .homework-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        transition: all 0.3s;
+        border-left: 4px solid #667eea;
+    }
+    
+    .homework-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+    
+    .homework-card.pending {
+        border-left-color: #ffc107;
+    }
+    
+    .homework-card.submitted {
+        border-left-color: #17a2b8;
+    }
+    
+    .homework-card.graded {
+        border-left-color: #28a745;
+    }
+    
+    .homework-card.overdue {
+        border-left-color: #dc3545;
+    }
+    
+    .filter-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    
+    .status-badge {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .badge-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+    
+    .badge-submitted {
+        background: #d1ecf1;
+        color: #0c5460;
+    }
+    
+    .badge-graded {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .badge-overdue {
+        background: #f8d7da;
+        color: #721c24;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h2 class="mb-2">
+                <i class="bi bi-file-text"></i> Mening Topshiriqlarim
+            </h2>
+            <p class="mb-0 opacity-85">
+                Barcha topshiriqlar va ularning holati
+            </p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <div class="badge bg-white text-dark px-3 py-2" style="font-size: 1rem;">
+                <i class="bi bi-list"></i> {{ homeworks|length }} ta topshiriq
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="filter-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="mb-0">
+            <i class="bi bi-funnel"></i> Filterlash
+        </h6>
+        {% if current_status or current_course %}
+        <a href="{% url 'student:homework_list' %}" class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-x-circle"></i> Tozalash
+        </a>
+        {% endif %}
+    </div>
+    
+    <form method="get" id="filterForm">
+        <div class="row g-3">
+            
+            <!-- Status Filter -->
+            <div class="col-md-6">
+                <label class="form-label small fw-bold">
+                    <i class="bi bi-check2-square"></i> Holat
+                </label>
+                <select name="status" class="form-select" id="statusFilter">
+                    <option value="">Barchasi</option>
+                    <option value="pending" {% if current_status == 'pending' %}selected{% endif %}>
+                        ⏳ Kutilmoqda
+                    </option>
+                    <option value="submitted" {% if current_status == 'submitted' %}selected{% endif %}>
+                        📤 Yuborilgan
+                    </option>
+                    <option value="graded" {% if current_status == 'graded' %}selected{% endif %}>
+                        ✅ Baholangan
+                    </option>
+                    <option value="overdue" {% if current_status == 'overdue' %}selected{% endif %}>
+                        ❌ Muddati o'tgan
+                    </option>
+                </select>
+            </div>
+            
+            <!-- Course Filter -->
+            <div class="col-md-6">
+                <label class="form-label small fw-bold">
+                    <i class="bi bi-book"></i> Kurs
+                </label>
+                <select name="course" class="form-select" id="courseFilter">
+                    <option value="">Barcha kurslar</option>
+                    {% for course in courses %}
+                    <option value="{{ course.id }}" {% if current_course == course.id|stringformat:"s" %}selected{% endif %}>
+                        {{ course.title }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+        </div>
+    </form>
+</div>
+
+<!-- Homeworks List -->
+{% if homeworks %}
+    {% for homework in homeworks %}
+    <div class="homework-card 
+        {% if homework.submission %}
+            {% if homework.submission.score is not None %}graded{% else %}submitted{% endif %}
+        {% elif homework.deadline < now %}overdue
+        {% else %}pending{% endif %}">
+        
+        <div class="row align-items-center">
+            
+            <!-- Left: Homework Info -->
+            <div class="col-md-7">
+                <h5 class="mb-2">{{ homework.title }}</h5>
+                
+                <div class="mb-2">
+                    <span class="badge bg-primary">
+                        <i class="bi bi-book"></i> {{ homework.group.course.title }}
+                    </span>
+                    <span class="badge bg-secondary">
+                        <i class="bi bi-people"></i> {{ homework.group.name }}
+                    </span>
+                </div>
+                
+                <div class="text-muted small">
+                    <i class="bi bi-person"></i> {{ homework.teacher.user.get_full_name }}
+                    <span class="ms-3">
+                        <i class="bi bi-calendar"></i> {{ homework.deadline|date:"d.m.Y H:i" }}
+                    </span>
+                    {% if homework.deadline < now %}
+                        <span class="text-danger ms-2">
+                            <i class="bi bi-exclamation-triangle"></i> Muddati o'tgan
+                        </span>
+                    {% else %}
+                        <span class="text-success ms-2">
+                            <i class="bi bi-clock"></i> {{ homework.deadline|timeuntil }} qoldi
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Right: Status & Actions -->
+            <div class="col-md-5 text-md-end mt-3 mt-md-0">
+                
+                <!-- Status Badge -->
+                <div class="mb-2">
+                    {% if homework.submission %}
+                        {% if homework.submission.score is not None %}
+                            <span class="status-badge badge-graded">
+                                <i class="bi bi-check-circle"></i> Baholangan: {{ homework.submission.score }}/{{ homework.max_score }}
+                            </span>
+                        {% else %}
+                            <span class="status-badge badge-submitted">
+                                <i class="bi bi-check"></i> Yuborilgan
+                            </span>
+                        {% endif %}
+                    {% elif homework.deadline < now %}
+                        <span class="status-badge badge-overdue">
+                            <i class="bi bi-x-circle"></i> Muddati o'tgan
+                        </span>
+                    {% else %}
+                        <span class="status-badge badge-pending">
+                            <i class="bi bi-clock"></i> Kutilmoqda
+                        </span>
+                    {% endif %}
+                </div>
+                
+                <!-- Action Button -->
+                <div>
+                    <a href="{% url 'student:homework_detail' homework.pk %}" class="btn btn-primary">
+                        {% if homework.submission %}
+                            {% if homework.submission.score is not None %}
+                                <i class="bi bi-eye"></i> Ko'rish
+                            {% else %}
+                                <i class="bi bi-pencil"></i> Tahrirlash
+                            {% endif %}
+                        {% else %}
+                            <i class="bi bi-upload"></i> Yuborish
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- Description (if exists) -->
+        {% if homework.description %}
+        <div class="mt-3 pt-3 border-top">
+            <small class="text-muted">
+                <i class="bi bi-info-circle"></i> 
+                {{ homework.description|truncatewords:30 }}
+            </small>
+        </div>
+        {% endif %}
+        
+    </div>
+    {% endfor %}
+    
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <div class="d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_course %}&course={{ current_course }}{% endif %}">
+                        <i class="bi bi-chevron-left"></i> Oldingi
+                    </a>
+                </li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link">
+                        {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                    </span>
+                </li>
+                
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_status %}&status={{ current_status }}{% endif %}{% if current_course %}&course={{ current_course }}{% endif %}">
+                        Keyingi <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    {% endif %}
+    
+{% else %}
+    <!-- Empty State -->
+    <div class="text-center py-5">
+        <i class="bi bi-inbox" style="font-size: 5rem; opacity: 0.3;"></i>
+        <h4 class="mt-3">Topshiriq topilmadi</h4>
+        <p class="text-muted">
+            {% if current_status or current_course %}
+                Filter bo'yicha topshiriq yo'q. Boshqa parametrlar bilan qayta urinib ko'ring.
+            {% else %}
+                Hali topshiriq berilmagan.
+            {% endif %}
+        </p>
+        {% if current_status or current_course %}
+        <a href="{% url 'student:homework_list' %}" class="btn btn-outline-primary mt-3">
+            <i class="bi bi-arrow-counterclockwise"></i> Filtrlarni Tozalash
+        </a>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-submit on filter change
+    const filters = document.querySelectorAll('#statusFilter, #courseFilter');
+    filters.forEach(filter => {
+        filter.addEventListener('change', function() {
+            document.getElementById('filterForm').submit();
+        });
+    });
+});
+</script>
+{% endblock %}

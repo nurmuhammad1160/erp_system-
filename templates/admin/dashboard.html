@@ -1,0 +1,384 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard - ERP Sistema{% endblock %}
+
+{% block page_title %}Admin Dashboard{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'home' %}" class="text-decoration-none text-muted">Bosh sahifa</a> / 
+<span>Admin Dashboard</span>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s;
+        border-left: 5px solid;
+        height: 100%;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .stat-card.blue { border-left-color: #667eea; }
+    .stat-card.green { border-left-color: #28a745; }
+    .stat-card.orange { border-left-color: #ffc107; }
+    .stat-card.red { border-left-color: #dc3545; }
+    .stat-card.purple { border-left-color: #764ba2; }
+    .stat-card.cyan { border-left-color: #17a2b8; }
+    
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+    
+    .stat-card.blue .stat-icon { background: rgba(102, 126, 234, 0.1); color: #667eea; }
+    .stat-card.green .stat-icon { background: rgba(40, 167, 69, 0.1); color: #28a745; }
+    .stat-card.orange .stat-icon { background: rgba(255, 193, 7, 0.1); color: #ffc107; }
+    .stat-card.red .stat-icon { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
+    .stat-card.purple .stat-icon { background: rgba(118, 75, 162, 0.1); color: #764ba2; }
+    .stat-card.cyan .stat-icon { background: rgba(23, 162, 184, 0.1); color: #17a2b8; }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 10px 0;
+        color: #2c3e50;
+    }
+    
+    .content-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    
+    .quick-action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        border-radius: 10px;
+        background: #f8f9fa;
+        transition: all 0.3s;
+        text-decoration: none;
+        color: #2c3e50;
+    }
+    
+    .quick-action-btn:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .activity-item {
+        padding: 12px;
+        border-bottom: 1px solid #f0f0f0;
+        transition: background 0.3s;
+    }
+    
+    .activity-item:hover {
+        background: #f8f9fa;
+    }
+    
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="admin-header">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h2 class="mb-2">
+                <i class="bi bi-speedometer2"></i> Admin Dashboard
+            </h2>
+            <p class="mb-0 opacity-85">
+                Sistema boshqaruvi va monitoring
+            </p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <div class="badge bg-white text-dark px-3 py-2" style="font-size: 1rem;">
+                <i class="bi bi-calendar3"></i> {% now "d F, Y" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Statistics -->
+<div class="row mb-4">
+    
+    <!-- Total Users -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card blue">
+            <div class="stat-icon">
+                <i class="bi bi-people"></i>
+            </div>
+            <div class="stat-number">{{ total_users }}</div>
+            <div class="text-muted">Jami Foydalanuvchilar</div>
+            <small class="text-success">
+                <i class="bi bi-arrow-up"></i> {{ new_users_this_month }} yangi (bu oy)
+            </small>
+        </div>
+    </div>
+    
+    <!-- Students -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card green">
+            <div class="stat-icon">
+                <i class="bi bi-person-badge"></i>
+            </div>
+            <div class="stat-number">{{ total_students }}</div>
+            <div class="text-muted">O'quvchilar</div>
+            <small class="text-muted">Faol: {{ active_users }}</small>
+        </div>
+    </div>
+    
+    <!-- Teachers -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card orange">
+            <div class="stat-icon">
+                <i class="bi bi-person-check"></i>
+            </div>
+            <div class="stat-number">{{ total_teachers }}</div>
+            <div class="text-muted">O'qituvchilar</div>
+            <small class="text-muted">+{{ total_admins }} admin</small>
+        </div>
+    </div>
+    
+    <!-- Courses & Groups -->
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="stat-card purple">
+            <div class="stat-icon">
+                <i class="bi bi-book"></i>
+            </div>
+            <div class="stat-number">{{ total_courses }}</div>
+            <div class="text-muted">Kurslar</div>
+            <small class="text-muted">{{ total_groups }} guruh</small>
+        </div>
+    </div>
+    
+</div>
+
+<!-- Quick Actions -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="content-card">
+            <h5 class="mb-3">
+                <i class="bi bi-lightning"></i> Tezkor Harakatlar
+            </h5>
+            <div class="row g-3">
+                <div class="col-lg-3 col-md-6">
+                    <a href="{% url 'admin:user_create' %}" class="quick-action-btn">
+                        <i class="bi bi-person-plus me-2" style="font-size: 1.5rem;"></i>
+                        <span>Foydalanuvchi Qo'shish</span>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <a href="{% url 'admin:course_create' %}" class="quick-action-btn">
+                        <i class="bi bi-book-half me-2" style="font-size: 1.5rem;"></i>
+                        <span>Kurs Yaratish</span>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <a href="{% url 'admin:group_create' %}" class="quick-action-btn">
+                        <i class="bi bi-people me-2" style="font-size: 1.5rem;"></i>
+                        <span>Guruh Yaratish</span>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <a href="{% url 'admin:reports' %}" class="quick-action-btn">
+                        <i class="bi bi-graph-up me-2" style="font-size: 1.5rem;"></i>
+                        <span>Hisobotlar</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    
+    <!-- Left Column -->
+    <div class="col-lg-8">
+        
+        <!-- Registration Trend Chart -->
+        <div class="content-card">
+            <h5 class="mb-3">
+                <i class="bi bi-graph-up"></i> Ro'yxatdan O'tish Tendentsiyasi
+            </h5>
+            <canvas id="registrationChart" height="100"></canvas>
+        </div>
+        
+        <!-- Top Courses -->
+        <div class="content-card">
+            <h5 class="mb-3">
+                <i class="bi bi-trophy"></i> Eng Ommabop Kurslar
+            </h5>
+            {% if top_courses %}
+                {% for course in top_courses %}
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <strong>{{ course.title }}</strong>
+                        <span class="badge bg-primary">{{ course.student_count }} talaba</span>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar bg-primary" 
+                             style="width: {{ course.student_count|floatformat:0 }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted text-center py-3">Ma'lumot yo'q</p>
+            {% endif %}
+        </div>
+        
+    </div>
+    
+    <!-- Right Column -->
+    <div class="col-lg-4">
+        
+        <!-- Recent Users -->
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">
+                    <i class="bi bi-person-lines-fill"></i> Yangi Foydalanuvchilar
+                </h5>
+                <a href="{% url 'admin:user_list' %}" class="btn btn-sm btn-outline-primary">
+                    Barchasi
+                </a>
+            </div>
+            
+            {% if recent_users %}
+                {% for user in recent_users %}
+                <div class="activity-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ user.get_full_name|default:user.email }}</strong>
+                            <br>
+                            <small class="text-muted">
+                                <span class="badge bg-secondary">{{ user.get_type_display }}</span>
+                            </small>
+                        </div>
+                        <small class="text-muted">
+                            {{ user.date_joined|timesince }} oldin
+                        </small>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted text-center py-3">Ma'lumot yo'q</p>
+            {% endif %}
+        </div>
+        
+        <!-- System Status -->
+        <div class="content-card">
+            <h5 class="mb-3">
+                <i class="bi bi-info-circle"></i> Sistema Holati
+            </h5>
+            
+            <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <small>Faol Foydalanuvchilar</small>
+                    <strong class="text-success">{{ active_users }}</strong>
+                </div>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-success" style="width: 85%"></div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <small>Faol Guruhlar</small>
+                    <strong class="text-info">{{ active_groups }}</strong>
+                </div>
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-info" style="width: 92%"></div>
+                </div>
+            </div>
+            
+            <div class="mb-0">
+                <div class="d-flex justify-content-between mb-1">
+                    <small>Server Status</small>
+                    <span class="badge bg-success">Online</span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Registration Trend Chart
+    const ctx = document.getElementById('registrationChart');
+    if (ctx) {
+        new Chart(ctx.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: [
+                    {% for data in registration_data %}
+                    '{{ data.month }}'{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: 'Yangi foydalanuvchilar',
+                    data: [
+                        {% for data in registration_data %}
+                        {{ data.count }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    ],
+                    borderColor: 'rgb(102, 126, 234)',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}
